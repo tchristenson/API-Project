@@ -44,7 +44,7 @@ module.exports = {
       },
       type: {
         allowNull: false,
-        type: Sequelize.ENUM('Social', 'Food', 'Career', 'Sports', 'Fitness', 'Politics', 'Education', 'Travel')
+        type: Sequelize.ENUM('Online', 'In Person')
       },
       capacity: {
         type: Sequelize.INTEGER,

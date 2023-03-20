@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     type: {
       allowNull: false,
-      type: DataTypes.ENUM('Social', 'Food', 'Career', 'Sports', 'Fitness', 'Politics', 'Education', 'Travel')
+      type: DataTypes.ENUM('In Person', 'Online')
     },
     private: {
       type: DataTypes.BOOLEAN,

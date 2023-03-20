@@ -8,15 +8,26 @@ if (process.env.NODE_ENV === 'production') {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Groups', {
+    await queryInterface.createTable('Attendances', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      organizerId: {
+      eventId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Events',
+          key: 'id'
+        },
+        onDelete: 'cascade',
+        hooks: true
+      },
+      userId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
           model: 'Users',
           key: 'id'
@@ -24,29 +35,8 @@ module.exports = {
         onDelete: 'cascade',
         hooks: true
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
-      },
-      about: {
-        type: Sequelize.STRING
-      },
-      type: {
-        allowNull: false,
-        type: Sequelize.ENUM('In Person', 'Online')
-      },
-      private: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false
-      },
-      city: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      state: {
-        type: Sequelize.STRING,
-        allowNull: false
+      status: {
+        type: Sequelize.ENUM('attending', 'waitlist', 'pending')
       },
       createdAt: {
         allowNull: false,
@@ -61,7 +51,7 @@ module.exports = {
     }, options);
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = "Groups";
+    options.tableName = "Attendances";
     await queryInterface.dropTable(options);
   }
 };

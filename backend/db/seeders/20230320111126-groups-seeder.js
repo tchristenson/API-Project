@@ -15,7 +15,7 @@ module.exports = {
         organizerId: 1,
         name: 'Yankees Fan Club',
         about: 'Come cheer on the Yankees',
-        type: 'Sports',
+        type: 'In Person',
         private: false,
         city: 'Queens',
         state: 'NY'
@@ -24,7 +24,7 @@ module.exports = {
         organizerId: 2,
         name: 'Coffee Shop Club',
         about: 'Come talk about yada yada yada',
-        type: 'Food',
+        type: 'In Person',
         private: true,
         city: 'Manhattan',
         state: 'NY'
@@ -33,7 +33,7 @@ module.exports = {
         organizerId: 4,
         name: 'Millenium Party',
         about: 'Come celebrate Y2K',
-        type: 'Social',
+        type: 'In Person',
         private: true,
         city: 'Manhattan',
         state: 'NY'
@@ -45,6 +45,5 @@ module.exports = {
 
     options.tableName = 'Groups';
     await queryInterface.bulkDelete(options, {});
-
   }
 };
