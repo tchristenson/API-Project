@@ -13,17 +13,17 @@ module.exports = {
     await queryInterface.bulkInsert(options, [
       {
         groupId: 1,
-        url: 'example-url-1.com',
+        url: 'example-group-image-url-1',
         preview: true
       },
       {
         groupId: 2,
-        url: 'example-url-2.com',
+        url: 'example-group-image-url-2',
         preview: true
       },
       {
         groupId: 3,
-        url: 'example-url-3.com',
+        url: 'example-group-image-url-3',
         preview: false
       }
     ])
@@ -32,7 +32,6 @@ module.exports = {
   async down (queryInterface, Sequelize) {
 
     options.tableName = 'GroupImages';
-    const Op = Sequelize.Op;
     await queryInterface.bulkDelete(options, {});
   }
 };

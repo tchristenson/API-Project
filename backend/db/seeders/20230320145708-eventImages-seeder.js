@@ -9,34 +9,29 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   async up (queryInterface, Sequelize) {
 
-    options.tableName = 'Memberships';
+    options.tableName = 'EventImages';
     await queryInterface.bulkInsert(options, [
       {
-        userId: 1,
-        groupId: 1,
-        status: 'Active'
+        eventId: 1,
+        url: 'example-event-image-url-1',
+        preview: true
       },
       {
-        userId: 3,
-        groupId: 2,
-        status: 'Active'
+        eventId: 2,
+        url: 'example-event-image-url-2',
+        preview: true
       },
       {
-        userId: 2,
-        groupId: 3,
-        status: 'Inactive'
-      },
-      {
-        userId: 4,
-        groupId: 2,
-        status: 'Active'
-      },
+        eventId: 3,
+        url: 'example-event-image-url-3',
+        preview: true
+      }
     ])
   },
 
   async down (queryInterface, Sequelize) {
 
-    options.tableName = 'Memberships';
+    options.tableName = 'EventImages';
     await queryInterface.bulkDelete(options, {});
   }
 };
