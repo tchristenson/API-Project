@@ -29,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     type: {
+      allowNull: false,
       type: DataTypes.ENUM('Social', 'Food', 'Career', 'Sports', 'Fitness', 'Politics', 'Education', 'Travel')
     },
     private: {

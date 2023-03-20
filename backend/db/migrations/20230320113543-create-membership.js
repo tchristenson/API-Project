@@ -8,14 +8,14 @@ if (process.env.NODE_ENV === 'production') {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Groups', {
+    await queryInterface.createTable('Memberships', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      organizerId: {
+      userId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Users',
@@ -24,29 +24,18 @@ module.exports = {
         onDelete: 'cascade',
         hooks: true
       },
-      name: {
-        type: Sequelize.STRING,
+      groupId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Groups',
+          key: 'id'
+        },
+        onDelete: 'cascade',
+        hooks: true
+      },
+      status: {
         allowNull: false,
-        unique: true
-      },
-      about: {
-        type: Sequelize.STRING
-      },
-      type: {
-        allowNull: false,
-        type: Sequelize.ENUM('Social', 'Food', 'Career', 'Sports', 'Fitness', 'Politics', 'Education', 'Travel')
-      },
-      private: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false
-      },
-      city: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      state: {
-        type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.ENUM('Active', 'Inactive')
       },
       createdAt: {
         allowNull: false,
@@ -58,10 +47,10 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
-    }, options);
+    });
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = "Groups";
+    options.tableName = "Memberships";
     await queryInterface.dropTable(options);
   }
 };
