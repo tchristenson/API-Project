@@ -4,11 +4,12 @@ const { Op } = require('sequelize');
 const bcrypt = require('bcryptjs');
 
 const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
-const { Group, Membership, GroupImage } = require('../../db/models');
+const { User, Group, Membership, GroupImage, Venue } = require('../../db/models');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const group = require('../../db/models/group');
+const { VERSION_NUMBER } = require('sqlite3');
 
 const router = express.Router();
 
@@ -23,7 +24,7 @@ const validateLogin = [
   handleValidationErrors
 ];
 
-// Get all groups
+// GET ALL GROUPS
 // Get all groups and get all groups joined or organized by the Current User are very similar,
 // Consider putting mechanics into a single function if there is time later
 router.get('/', async (req, res, next) => {
@@ -66,15 +67,61 @@ router.get('/', async (req, res, next) => {
   res.json(finalObj)
 })
 
-// Get details of a Group from an id
+// GET DETAILS OF A GROUP FROM AN ID
 router.get('/:groupId', async (req, res, next) => {
+
+  try {
+    let group = await Group.findByPk(req.params.groupId, {
+      include: [
+        {
+          model: GroupImage,
+          attributes: {
+            exclude: ['createdAt', 'updatedAt', 'groupId']
+          }
+        },
+        {
+          model: Venue,
+          attributes: {
+            exclude: ['createdAt', 'updatedAt']
+          }
+        }
+      ]
+    })
+
+    let count = await Membership.count({
+      where: {
+        groupId: group.id
+      }
+    })
+
+    group = group.toJSON()
+    group.numMembers = count;
+
+    let organizer = await User.findByPk(group.organizerId, {
+      attributes: {
+        exclude: ['username']
+      }
+    })
+    group.Organizer = organizer
+
+    res.json(group);
+
+  }
+  catch (err) {
+    let newErr = new Error()
+    newErr.message = "Group couln't be found"
+    newErr.status = 404;
+
+    next(newErr);
+
+  }
 
 })
 
 
 
 
-// Get all groups joined or organized by the Current User
+// GET ALL GROUPS JOINED OR ORGANIZED BY THE CURRENT USER
 router.get('/current', requireAuth, async (req, res, next) => {
   const userId = req.user.id
 
@@ -82,7 +129,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
 
 
-// Create a group
+// CREATE A GROUP
 router.post('/', requireAuth, async (req, res, next) => {
   try {
     const { name, about, type, private, city, state } = req.body
