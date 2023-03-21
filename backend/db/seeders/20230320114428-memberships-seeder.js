@@ -24,7 +24,7 @@ module.exports = {
       {
         userId: 2,
         groupId: 3,
-        status: 'co-host'
+        status: 'organizer'
       },
       {
         userId: 4,
