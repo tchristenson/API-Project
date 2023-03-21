@@ -11,6 +11,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const router = express.Router();
 
+// Get all groups
 router.get('/', async (req, res, next) => {
   const groups = await Group.findAll()
   let groupsArr = [];
@@ -24,26 +25,29 @@ router.get('/', async (req, res, next) => {
         groupId: currGroup.id
       }
     })
-    // console.log(currGroup)
-    // console.log(count)
     currGroup.numMembers = count;
 
-    console.log(currGroup)
-    const groupImages = await GroupImage.findAll()
-
-    for (let i = 0; i < groupImages.length; i++) {
-      let currGroupImage = groupImages[i].toJSON()
-      // console.log(currGroupImage)
-      // console.log(typeof currGroupImage)
-      if (currGroupImage.id === currGroup.id) {
-        currGroup.previewImage = currGroupImage.url
+    // console.log(currGroup)
+    const groupImages = await GroupImage.findAll({
+      where: {
+        groupId: currGroup.id
       }
-    }
-      groupsArr.push(currGroup)
+    })
+
+    let groupImage = groupImages[0].toJSON()
+    currGroup.previewImage = groupImage.url
+
+    groupsArr.push(currGroup)
   }
+
   finalObj.Groups = groupsArr
   res.json(finalObj)
 })
+
+
+
+
+module.exports = router;
 
 
 
