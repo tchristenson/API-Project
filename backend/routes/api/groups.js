@@ -8,6 +8,7 @@ const { Group, Membership, GroupImage } = require('../../db/models');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
+const group = require('../../db/models/group');
 
 const router = express.Router();
 
@@ -23,6 +24,8 @@ const validateLogin = [
 ];
 
 // Get all groups
+// Get all groups and get all groups joined or organized by the Current User are very similar,
+// Consider putting mechanics into a single function if there is time later
 router.get('/', async (req, res, next) => {
   const groups = await Group.findAll()
   let groupsArr = [];
@@ -41,12 +44,20 @@ router.get('/', async (req, res, next) => {
     // console.log(currGroup)
     const groupImages = await GroupImage.findAll({
       where: {
-        groupId: currGroup.id
+        groupId: currGroup.id,
+        preview: true
       }
     })
+    // console.log(groupImages)
+    if (groupImages.length) {
+      let groupImage = groupImages[0].toJSON()
+      // console.log(groupImage)
 
-    let groupImage = groupImages[0].toJSON()
-    currGroup.previewImage = groupImage.url
+        currGroup.previewImage = groupImage.url
+
+    } else {
+      currGroup.previewImage = 'no preview image available'
+    }
 
     groupsArr.push(currGroup)
   }
@@ -55,10 +66,21 @@ router.get('/', async (req, res, next) => {
   res.json(finalObj)
 })
 
+// Get details of a Group from an id
+router.get('/:groupId', async (req, res, next) => {
+
+})
+
+
+
+
 // Get all groups joined or organized by the Current User
 router.get('/current', requireAuth, async (req, res, next) => {
   const userId = req.user.id
+
 })
+
+
 
 // Create a group
 router.post('/', requireAuth, async (req, res, next) => {
