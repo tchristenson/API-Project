@@ -11,6 +11,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const router = express.Router();
 
+// Get all groups
 router.get('/', async (req, res, next) => {
   const groups = await Group.findAll()
   let groupsArr = [];
