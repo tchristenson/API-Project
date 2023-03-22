@@ -226,6 +226,49 @@ router.get('/:groupId', async (req, res, next) => {
   }
 })
 
+// ADD AN IMAGE TO A GROUP BASED ON THE GROUP'S ID
+router.post('/:groupId/images', requireAuth, async (req, res, next) => {
+
+  try {
+    let group = await Group.findByPk(req.params.groupId)
+    group = group.toJSON();
+
+    let img = await GroupImage.findAll({
+      where: {
+        groupId: req.params.groupId
+      },
+      attributes: {
+        exclude: ['groupId', 'createdAt', 'updatedAt']
+      }
+    })
+
+    const { url, preview } = req.body
+
+    if (group.organizerId === req.user.id) {
+
+      img = img[0].toJSON()
+      img.url = url
+      img.preview = preview
+      res.json(img);
+    } else {
+      let newErr = new Error()
+      newErr.message = "Group couln't be found"
+      newErr.status = 404;
+
+      next(newErr);
+    }
+
+    // Should I just not have a try/catch? And instead just use a simple if/else
+  }
+  catch(err) {
+    let newErr = new Error()
+    newErr.message = "Group couln't be found"
+    newErr.status = 404;
+
+    next(newErr);
+  }
+})
+
 
 
 
