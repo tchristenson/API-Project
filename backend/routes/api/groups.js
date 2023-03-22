@@ -9,7 +9,7 @@ const { User, Group, Membership, GroupImage, Venue } = require('../../db/models'
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const group = require('../../db/models/group');
-const { VERSION_NUMBER } = require('sqlite3');
+
 
 const router = express.Router();
 
@@ -335,25 +335,6 @@ router.post('/:groupId/images', requireAuth, async (req, res, next) => {
     next(newErr);
   }
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
