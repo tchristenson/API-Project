@@ -128,7 +128,6 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
   finalObj.Groups = groupsArr
   res.json(finalObj)
-
 })
 
 
@@ -177,48 +176,48 @@ router.post('/', requireAuth, async (req, res, next) => {
 // EDIT A GROUP
 router.put('/:groupId', requireAuth, async (req, res, next) => {
 
-  const { name, about, type, private, city, state } = req.body
+  try {
+    const { name, about, type, private, city, state } = req.body
 
-  let group = await Group.findByPk(req.params.groupId)
-  group = group.toJSON()
-  // thinking I need to combine these two into a single query. Find the group based on req.params.groupId
-  // Then you'll have to check if this group's the organizer Id equals req.user id
-  // Also check if any members of this group match req.user.id
-  // group will only end up being defined if req.user has the privilege to edit it (ie they are organizer or a member)
-  // if not defined you can enter the error handling
-  const isMember = await Group.findAll({
-    where: {
-      [Op.or]: [
-        {organizerId: req.user.id},
-        {'$memberships.userId$': req.user.id}
-      ]
-    },
-    include: [
-      {
-        model: Membership,
-        attributes: [],
-        include: [
-          {
-            model: User,
-            attributes: []
-          }
-        ]
+    let group = await Group.findOne({
+      where: {
+        id: req.params.groupId,
+        organizerId: req.user.id
       }
-    ]
-  })
-  console.log(isMember)
+    })
 
-  if (isMember) {
-    group.name = name
-    group.about = about
-    group.type = type
-    group.private = private
-    group.city = city
-    group.state = state
+    if (group) {
+      // group = group.toJSON()
+      group.name = name
+      group.about = about
+      group.type = type
+      group.private = private
+      group.city = city
+      group.state = state
+      await group.save()
 
-    res.status(200).json(group)
+      res.status(200).json(group)
+    } else {
+      res.status(404).json({message: "Group couldn't be found"})
+    }
+
+  } catch (err) {
+    let newErr = new Error()
+    newErr.message = 'Bad Request'
+
+    newErr.errors = {};
+
+    newErr.status = 400;
+
+    newErr.errors.name = 'Name must be 60 characters or less'
+    newErr.errors.about = 'About must be 50 chracters or more'
+    newErr.errors.type = "Type must be 'Online' or 'In person'"
+    newErr.errors.private = 'Private must be a boolean'
+    newErr.errors.city = 'City is required'
+    newErr.errors.state = 'State is required'
+
+    next(newErr);
   }
-
 })
 
 
@@ -272,14 +271,35 @@ router.get('/:groupId', async (req, res, next) => {
   }
 })
 
+// DELETE A GROUP
+router.delete('/:groupId', requireAuth, async (req, res, next) => {
+  let group = await Group.findOne({
+    where: {
+      id: req.params.groupId,
+      organizerId: req.user.id
+    }
+  })
+
+  if (group) {
+    await group.destroy()
+    res.status(200).json({ message: 'Successfully deleted'})
+
+  } else {
+      let newErr = new Error()
+      newErr.message = "Group couln't be found"
+      newErr.status = 404;
+
+      next(newErr);
+  }
+})
+
 // ADD AN IMAGE TO A GROUP BASED ON THE GROUP'S ID
 router.post('/:groupId/images', requireAuth, async (req, res, next) => {
 
   try {
     let group = await Group.findByPk(req.params.groupId)
-    group = group.toJSON();
 
-    let img = await GroupImage.findAll({
+    let img = await GroupImage.findOne({
       where: {
         groupId: req.params.groupId
       },
@@ -292,11 +312,13 @@ router.post('/:groupId/images', requireAuth, async (req, res, next) => {
 
     if (group.organizerId === req.user.id) {
 
-      img = img[0].toJSON()
       img.url = url
       img.preview = preview
+
+      await img.save()
       res.json(img);
-    } else {
+    }
+    else {
       let newErr = new Error()
       newErr.message = "Group couln't be found"
       newErr.status = 404;
