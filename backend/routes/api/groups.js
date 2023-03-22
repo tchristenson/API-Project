@@ -72,24 +72,41 @@ router.get('/', async (req, res, next) => {
 router.get('/current', requireAuth, async (req, res, next) => {
   const userId = req.user.id
   const organizedGroups = await Group.findAll({
-    where: {
-      [Op.or]: [
-        {organizerId: userId},
-        {'$memberships.userId$': userId}
-      ]
-    },
-    include: [
-      {
-        model: Membership,
-        attributes: [],
+
+    // Works locally but does not work live
+        where: {
+          [Op.or]: [
+            {organizerId: userId},
+            {'$Memberships.userId$': userId}
+          ]
+        },
         include: [
           {
-            model: User,
-            attributes: []
+            model: Membership,
+            attributes: [],
+            include: [
+              {
+                model: User,
+                attributes: []
+              }
+            ]
           }
         ]
-      }
-    ]
+
+// Attempting to first pull groups where organizerId matches req.user.id, then also pull groups where a userId in the
+// Members table matches req.user.id
+    // where: {
+    //   organizerId: userId
+    // },
+    // include: [
+    //   {
+    //     model: Membership,
+    //     attributes: ['userId'],
+    //     where: {
+    //       userId: userId
+    //     }
+    //   }
+    // ]
   })
 
   let groupsArr = [];
