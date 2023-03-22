@@ -30,11 +30,12 @@ module.exports = {
         unique: true
       },
       about: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       type: {
         allowNull: false,
-        type: Sequelize.ENUM('In Person', 'Online')
+        type: Sequelize.ENUM('In person', 'Online')
       },
       private: {
         type: Sequelize.BOOLEAN,
