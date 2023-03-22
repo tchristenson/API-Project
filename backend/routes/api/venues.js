@@ -25,7 +25,7 @@ const validateLogin = [
 ];
 
 // EDIT A VENUE SPECIFIED BY ITS ID
-router.put('/:venueId', validateLogin, async (req, res, next) => {
+router.put('/:venueId', requireAuth, async (req, res, next) => {
   let editedVenue = await Venue.findOne({
     where: {
       id: req.params.venueId,
