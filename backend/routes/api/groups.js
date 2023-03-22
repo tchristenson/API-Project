@@ -77,13 +77,13 @@ router.get('/current', requireAuth, async (req, res, next) => {
         where: {
           [Op.or]: [
             {organizerId: userId},
-            {'$memberships.userId$': userId}
+            {'$Memberships.userId$': userId}
           ]
         },
         include: [
           {
             model: Membership,
-            attributes: ['userId'],
+            attributes: [],
             include: [
               {
                 model: User,
