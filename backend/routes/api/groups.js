@@ -142,7 +142,6 @@ router.post('/', requireAuth, async (req, res, next) => {
     // console.log(name)
 
     if (req.user) {
-      console.log('is this hitting')
       const newGroup = await Group.create({
         organizerId: organizerId,
         name,
@@ -152,7 +151,6 @@ router.post('/', requireAuth, async (req, res, next) => {
         city,
         state
       })
-      console.log(newGroup)
 
       res.status(201).json(newGroup);
     }
@@ -175,6 +173,54 @@ router.post('/', requireAuth, async (req, res, next) => {
     next(newErr);
   }
 })
+
+// EDIT A GROUP
+router.put('/:groupId', requireAuth, async (req, res, next) => {
+
+  const { name, about, type, private, city, state } = req.body
+
+  let group = await Group.findByPk(req.params.groupId)
+  group = group.toJSON()
+  // thinking I need to combine these two into a single query. Find the group based on req.params.groupId
+  // Then you'll have to check if this group's the organizer Id equals req.user id
+  // Also check if any members of this group match req.user.id
+  // group will only end up being defined if req.user has the privilege to edit it (ie they are organizer or a member)
+  // if not defined you can enter the error handling
+  const isMember = await Group.findAll({
+    where: {
+      [Op.or]: [
+        {organizerId: req.user.id},
+        {'$memberships.userId$': req.user.id}
+      ]
+    },
+    include: [
+      {
+        model: Membership,
+        attributes: [],
+        include: [
+          {
+            model: User,
+            attributes: []
+          }
+        ]
+      }
+    ]
+  })
+  console.log(isMember)
+
+  if (isMember) {
+    group.name = name
+    group.about = about
+    group.type = type
+    group.private = private
+    group.city = city
+    group.state = state
+
+    res.status(200).json(group)
+  }
+
+})
+
 
 // GET DETAILS OF A GROUP FROM AN ID
 router.get('/:groupId', async (req, res, next) => {
