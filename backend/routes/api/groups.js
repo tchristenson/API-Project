@@ -73,7 +73,6 @@ router.get('/current', requireAuth, async (req, res, next) => {
   const userId = req.user.id
   const organizedGroups = await Group.findAll({
 
-    // Works locally but does not work live
         where: {
           [Op.or]: [
             {organizerId: userId},
@@ -93,20 +92,6 @@ router.get('/current', requireAuth, async (req, res, next) => {
           }
         ]
 
-// Attempting to first pull groups where organizerId matches req.user.id, then also pull groups where a userId in the
-// Members table matches req.user.id
-    // where: {
-    //   organizerId: userId
-    // },
-    // include: [
-    //   {
-    //     model: Membership,
-    //     attributes: ['userId'],
-    //     where: {
-    //       userId: userId
-    //     }
-    //   }
-    // ]
   })
 
   let groupsArr = [];
@@ -354,6 +339,96 @@ router.post('/:groupId/images', requireAuth, async (req, res, next) => {
 })
 
 
+//  GET ALL VENUES FOR A GROUP SPECIFIED BY ITS ID
+router.get('/:groupId/venues', requireAuth, async (req, res, next) => {
+
+  let venuesArr = [];
+  let finalObj = {};
+
+  const group = await Group.findByPk(req.params.groupId)
+
+  const isMember = await Membership.findAll({
+    where: {
+      userId: req.user.id,
+      status: 'co-host'
+    }
+  })
+
+
+  if (isMember.length || group.organizerId === req.user.id) {
+
+
+      let venues = await Venue.findAll({
+        attributes: {
+          exclude: ['createdAt', 'updatedAt']
+        },
+        include: [
+          {
+            model: Group,
+            attributes: [],
+            where: {
+              id: req.params.groupId
+            }
+          }
+        ]
+    })
+
+    for (let i = 0; i < venues.length; i++) {
+      let currVenue = venues[i].toJSON()
+      venuesArr.push(currVenue)
+    }
+
+    finalObj.Venues = venuesArr
+    res.json(finalObj)
+
+  } else {
+    let newErr = new Error()
+    newErr.message = "Group couln't be found"
+    newErr.status = 404;
+
+    next(newErr);
+
+  }
+})
+
+
 
 
 module.exports = router;
+
+// let groupsArr = [];
+// let finalObj = {};
+
+// for (let i = 0; i < organizedGroups.length; i++) {
+//   let currGroup = organizedGroups[i].toJSON()
+
+//   let count = await Membership.count({
+//     where: {
+//       groupId: currGroup.id
+//     }
+//   })
+//   currGroup.numMembers = count;
+
+//   // console.log(currGroup)
+//   const groupImages = await GroupImage.findAll({
+//     where: {
+//       groupId: currGroup.id,
+//       preview: true
+//     }
+//   })
+//   // console.log(groupImages)
+//   if (groupImages.length) {
+//     let groupImage = groupImages[0].toJSON()
+//     // console.log(groupImage)
+
+//       currGroup.previewImage = groupImage.url
+
+//   } else {
+//     currGroup.previewImage = 'no preview image available'
+//   }
+
+//   groupsArr.push(currGroup)
+// }
+
+// finalObj.Groups = groupsArr
+// res.json(finalObj)
