@@ -28,9 +28,14 @@ const validateLogin = [
 router.put('/:venueId', validateLogin, async (req, res, next) => {
   let editedVenue = await Venue.findOne({
     where: {
-      [Op.or]: [
-        {'$groups.organizerId$': req.user.id},
-        {'$memberships.status$': 'co-host'}
+      id: req.params.venueId,
+      [Op.and]: [
+        {
+          [Op.or]: [
+            {'$Groups.organizerId$': req.user.id},
+            {'$Memberships.status$': 'co-host'}
+          ]
+        }
       ]
     },
     include: [
