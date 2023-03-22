@@ -187,7 +187,6 @@ router.put('/:groupId', requireAuth, async (req, res, next) => {
     })
 
     if (group) {
-      // group = group.toJSON()
       group.name = name
       group.about = about
       group.type = type
