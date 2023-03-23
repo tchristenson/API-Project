@@ -4,7 +4,7 @@ const { Op } = require('sequelize');
 const bcrypt = require('bcryptjs');
 
 const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
-const { User, Group, Membership, GroupImage, Venue } = require('../../db/models');
+const { Attendance, EventImage, Event, User, Group, Membership, GroupImage, Venue } = require('../../db/models');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -443,6 +443,75 @@ router.post('/:groupId/venues', requireAuth, async (req, res, next) => {
   }
 
 })
+
+
+// GET ALL EVENTS OF A GROUP SPECIFIED BY ITS ID
+router.get('/:groupId/events', async (req, res, next) => {
+
+  let group = await Group.findByPk(req.params.groupId)
+
+  if (!group) {
+    let newErr = new Error()
+    newErr.message = "Group couldn't be found"
+    newErr.status = 404;
+
+    next(newErr);
+  }
+
+  let eventArr = [];
+  let finalObj = {};
+
+  const events = await Event.findAll({
+    attributes: ['id', 'groupId', 'venueId', 'name', 'type', 'startDate', 'endDate'],
+    where: {
+      groupId: req.params.groupId
+    },
+    include: [
+      {
+        model: Group,
+        attributes: ['id', 'name', 'city', 'state']
+      },
+      {
+        model: Venue,
+        attributes: ['id', 'city', 'state']
+      }
+    ]
+  })
+
+  for (let i = 0; i < events.length; i++) {
+    currEvent = events[i]
+    currEvent = currEvent.toJSON()
+
+    const numAttending = await Attendance.count({
+      where: {
+        eventId: currEvent.id,
+        status: 'attending'
+      }
+    })
+    currEvent.numAttending = numAttending
+
+    const eventImages = await EventImage.findAll({
+      where: {
+        eventId: currEvent.id,
+        preview: true
+      }
+    })
+
+    if (eventImages.length) {
+      let eventImage = eventImages[0].toJSON()
+      currEvent.previewImage = eventImage.url
+
+    } else {
+      currEvent.previewImage = 'no preview image available'
+    }
+
+    eventArr.push(currEvent)
+  }
+
+  finalObj.Events = eventArr
+  res.status(200).json(finalObj)
+})
+
 
 
 module.exports = router;
