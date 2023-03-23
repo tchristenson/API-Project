@@ -4,7 +4,7 @@ const { Op } = require('sequelize');
 const bcrypt = require('bcryptjs');
 
 const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
-const { User, Group, Membership, GroupImage, Venue } = require('../../db/models');
+const { Event, User, Group, Membership, GroupImage, Venue } = require('../../db/models');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -443,6 +443,45 @@ router.post('/:groupId/venues', requireAuth, async (req, res, next) => {
   }
 
 })
+
+
+// GET ALL EVENTS OF A GROUP SPECIFIED BY ITS ID
+router.get('/:groupId/events', async (req, res, next) => {
+  const events = await Event.findAll({
+    attributes: ['id', 'groupId', 'venueId', 'name', 'type', 'startDate', 'endDate'],
+    where: {
+      groupId: req.params.groupId
+    },
+    include: [
+      {
+        model: Group,
+        attributes: ['id', 'name', 'city', 'state']
+      },
+      {
+        model: Venue,
+        attributes: ['id', 'city', 'state']
+      }
+    ]
+  })
+
+
+
+
+
+
+
+  if (events.length) {
+    res.json(events)
+
+  } else {
+    let newErr = new Error()
+    newErr.message = "Group couldn't be found"
+    newErr.status = 404;
+
+    next(newErr);
+  }
+})
+
 
 
 module.exports = router;
