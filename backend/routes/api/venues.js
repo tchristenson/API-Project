@@ -60,7 +60,10 @@ router.put('/:venueId', requireAuth, async (req, res, next) => {
       venue.lng = lng
       await venue.save()
 
-      res.json(venue);
+      venue = venue.toJSON()
+      delete venue.updatedAt
+
+      res.status(200).json(venue);
 
     } else {
       let newErr = new Error()
