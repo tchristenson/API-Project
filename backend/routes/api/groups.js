@@ -64,7 +64,7 @@ router.get('/', async (req, res, next) => {
   }
 
   finalObj.Groups = groupsArr
-  res.json(finalObj)
+  res.status(200).json(finalObj)
 })
 
 
@@ -129,7 +129,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
   }
 
   finalObj.Groups = groupsArr
-  res.json(finalObj)
+  res.status(200).json(finalObj)
 })
 
 
@@ -259,12 +259,12 @@ router.get('/:groupId', async (req, res, next) => {
     })
     group.Organizer = organizer
 
-    res.json(group);
+    res.status(200).json(group);
 
   }
   catch (err) {
     let newErr = new Error()
-    newErr.message = "Group couln't be found"
+    newErr.message = "Group couldn't be found"
     newErr.status = 404;
 
     next(newErr);
@@ -287,7 +287,7 @@ router.delete('/:groupId', requireAuth, async (req, res, next) => {
 
   } else {
       let newErr = new Error()
-      newErr.message = "Group couln't be found"
+      newErr.message = "Group couldn't be found"
       newErr.status = 404;
 
       next(newErr);
@@ -317,11 +317,11 @@ router.post('/:groupId/images', requireAuth, async (req, res, next) => {
       img.preview = preview
 
       await img.save()
-      res.json(img);
+      res.status(200).json(img);
     }
     else {
       let newErr = new Error()
-      newErr.message = "Group couln't be found"
+      newErr.message = "Group couldn't be found"
       newErr.status = 404;
 
       next(newErr);
@@ -331,7 +331,7 @@ router.post('/:groupId/images', requireAuth, async (req, res, next) => {
   }
   catch(err) {
     let newErr = new Error()
-    newErr.message = "Group couln't be found"
+    newErr.message = "Group couldn't be found"
     newErr.status = 404;
 
     next(newErr);
@@ -354,11 +354,8 @@ router.get('/:groupId/venues', requireAuth, async (req, res, next) => {
       groupId: req.params.groupId
     }
   })
-  console.log(isMember)
-
 
   if (isMember || group.organizerId === req.user.id) {
-
 
       let venues = await Venue.findAll({
         attributes: {
@@ -381,61 +378,71 @@ router.get('/:groupId/venues', requireAuth, async (req, res, next) => {
     }
 
     finalObj.Venues = venuesArr
-    res.json(finalObj)
+    res.status(200).json(finalObj)
 
   } else {
     let newErr = new Error()
-    newErr.message = "Group couln't be found"
+    newErr.message = "Group couldn't be found"
     newErr.status = 404;
 
     next(newErr);
-
   }
 })
 
 // CREATE A NEW VENUE FOR A GROUP SPECIFIED BY ITS ID
 router.post('/:groupId/venues', requireAuth, async (req, res, next) => {
 
+  try {
+    const { address, city, state, lat, lng } = req.body
+
+    const group = await Group.findByPk(req.params.groupId)
+
+    const isMember = await Membership.findOne({
+      where: {
+        userId: req.user.id,
+        status: 'co-host',
+        groupId: req.params.groupId
+      }
+    })
+
+    if (isMember || group.organizerId === req.user.id) {
+      let newVenue = await Venue.create({
+        groupId: req.params.groupId,
+        address,
+        city,
+        state,
+        lat,
+        lng
+      })
+      res.status(200).json(newVenue)
+
+    } else {
+      let newErr = new Error()
+      newErr.message = "Group couldn't be found"
+      newErr.status = 404;
+
+      next(newErr);
+    }
+
+  } catch(err) {
+    let newErr = new Error()
+    newErr.message = 'Bad Request'
+
+    newErr.errors = {};
+
+    newErr.status = 400;
+
+    newErr.errors.address = 'Street address is required'
+    newErr.errors.city = 'City is required'
+    newErr.errors.state = "State is required"
+    newErr.errors.lat = 'Latitude is not valid'
+    newErr.errors.lng = 'Longitude is not valid'
+
+    next(newErr);
+
+  }
+
 })
 
 
-
-
 module.exports = router;
-
-// let groupsArr = [];
-// let finalObj = {};
-
-// for (let i = 0; i < organizedGroups.length; i++) {
-//   let currGroup = organizedGroups[i].toJSON()
-
-//   let count = await Membership.count({
-//     where: {
-//       groupId: currGroup.id
-//     }
-//   })
-//   currGroup.numMembers = count;
-
-//   // console.log(currGroup)
-//   const groupImages = await GroupImage.findAll({
-//     where: {
-//       groupId: currGroup.id,
-//       preview: true
-//     }
-//   })
-//   // console.log(groupImages)
-//   if (groupImages.length) {
-//     let groupImage = groupImages[0].toJSON()
-//     // console.log(groupImage)
-
-//       currGroup.previewImage = groupImage.url
-
-//   } else {
-//     currGroup.previewImage = 'no preview image available'
-//   }
-
-//   groupsArr.push(currGroup)
-// }
-
-// finalObj.Groups = groupsArr
-// res.json(finalObj)
