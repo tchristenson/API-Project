@@ -449,12 +449,8 @@ router.post('/:groupId/venues', requireAuth, async (req, res, next) => {
 router.get('/:groupId/events', async (req, res, next) => {
 
   let group = await Group.findByPk(req.params.groupId)
-  group = group.toJSON()
-  console.log(group)
-  console.log(!group)
 
   if (!group) {
-    console.log('line 455 check')
     let newErr = new Error()
     newErr.message = "Group couldn't be found"
     newErr.status = 404;
