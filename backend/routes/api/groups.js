@@ -513,5 +513,69 @@ router.get('/:groupId/events', async (req, res, next) => {
 })
 
 
+// CREATE AN EVENT FOR A GROUP SPECIFIED BY ITS ID
+router.post('/:groupId/events', requireAuth, async (req, res, next) => {
+
+  try {
+    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
+
+    const group = await Group.findByPk(req.params.groupId)
+
+    const isMember = await Membership.findOne({
+      where: {
+        userId: req.user.id,
+        status: 'co-host',
+        groupId: req.params.groupId
+      }
+    })
+
+    if (isMember || group.organizerId === req.user.id) {
+      let newEvent = await Event.create({
+        groupId: req.params.groupId,
+        venueId,
+        name,
+        type,
+        capacity,
+        price,
+        description,
+        startDate,
+        endDate
+      })
+      newEvent = newEvent.toJSON()
+
+      delete newEvent.createdAt
+      delete newEvent.updatedAt
+
+      res.status(200).json(newEvent)
+
+    } else {
+      let newErr = new Error()
+      newErr.message = "Group couldn't be found"
+      newErr.status = 404;
+
+      next(newErr);
+    }
+
+  } catch(err) {
+    let newErr = new Error()
+    newErr.message = 'Bad Request'
+    newErr.errors = {};
+    newErr.status = 400;
+
+    newErr.errors.venueId = 'Venue does not exist'
+    newErr.errors.name = 'Name must be at least 5 characters'
+    newErr.errors.type = 'Type must be Online or In person'
+    newErr.errors.capacity = 'Capacity must be an integer'
+    newErr.errors.price = 'Price is invalid'
+    newErr.errors.description = 'Description is required'
+    newErr.errors.startDate = 'Start date must be in the future'
+    newErr.errors.endDate = 'End date is less than start date'
+
+    next(newErr);
+  }
+
+})
+
+
 
 module.exports = router;
