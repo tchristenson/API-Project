@@ -190,6 +190,34 @@ router.put('/:eventId', requireAuth, async (req, res, next) => {
 })
 
 
+// DELETE AN EVENT SPECIFIED BY ITS ID
+router.delete('/:eventId', requireAuth, async (req, res, next) => {
+
+  let event = await Event.findByPk(req.params.eventId)
+
+  const group = await Group.findByPk(event.groupId)
+  const isMember = await Membership.findOne({
+    where: {
+      userId: req.user.id,
+      status: 'co-host',
+      groupId: event.groupId
+    }
+  })
+
+  if (isMember || group.organizerId === req.user.id) {
+    await event.destroy()
+    res.status(200).json({ message: 'Successfully deleted'})
+
+  } else {
+      let newErr = new Error()
+      newErr.message = "Event couldn't be found"
+      newErr.status = 404;
+
+      next(newErr);
+  }
+})
+
+
 // ADD AN IMAGE TO AN EVENT BASED ON THE EVENT'S ID
 router.post('/:eventId/images', requireAuth, async (req, res, next) => {
 
