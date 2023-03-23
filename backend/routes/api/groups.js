@@ -347,15 +347,17 @@ router.get('/:groupId/venues', requireAuth, async (req, res, next) => {
 
   const group = await Group.findByPk(req.params.groupId)
 
-  const isMember = await Membership.findAll({
+  const isMember = await Membership.findOne({
     where: {
       userId: req.user.id,
-      status: 'co-host'
+      status: 'co-host',
+      groupId: req.params.groupId
     }
   })
+  console.log(isMember)
 
 
-  if (isMember.length || group.organizerId === req.user.id) {
+  if (isMember || group.organizerId === req.user.id) {
 
 
       let venues = await Venue.findAll({
@@ -389,6 +391,11 @@ router.get('/:groupId/venues', requireAuth, async (req, res, next) => {
     next(newErr);
 
   }
+})
+
+// CREATE A NEW VENUE FOR A GROUP SPECIFIED BY ITS ID
+router.post('/:groupId/venues', requireAuth, async (req, res, next) => {
+
 })
 
 
