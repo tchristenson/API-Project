@@ -9,6 +9,7 @@ const { Attendance, EventImage, Event, User, Group, Membership, GroupImage, Venu
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const group = require('../../db/models/group');
+const { start } = require('repl');
 
 
 const router = express.Router();
@@ -119,6 +120,80 @@ router.get('/:eventId', async (req, res, next) => {
   res.status(200).json(event)
 })
 
+
+// EDIT AN EVENT SPECIFIED BY ITS ID
+router.put('/:eventId', requireAuth, async (req, res, next) => {
+
+  try {
+    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
+
+    let event = await Event.findByPk(req.params.eventId, {
+      // attributes: ['venueId', 'name', 'type', 'capacity', 'price', 'description', 'startDate', 'endDate']
+    })
+    if (!event) {
+      let newErr = new Error()
+      newErr.message = "Event couldn't be found"
+      newErr.status = 404;
+
+      next(newErr);
+    }
+
+    let venue = await Venue.findByPk(venueId)
+    if (!venue) {
+      let newErr = new Error()
+      newErr.message = "Venue couldn't be found"
+      newErr.status = 404;
+
+      next(newErr);
+    }
+
+    const group = await Group.findByPk(event.groupId)
+    const isMember = await Membership.findOne({
+      where: {
+        userId: req.user.id,
+        status: 'co-host',
+        groupId: event.groupId
+      }
+    })
+
+    if (isMember || group.organizerId === req.user.id) {
+      event.venueId = venueId,
+      event.name = name,
+      event.type = type,
+      event.capacity = capacity,
+      event.price = price,
+      event.description = description,
+      event.startDate = startDate,
+      event.endDate = endDate
+      await event.save()
+
+      res.json(event)
+    }
+
+  } catch(err) {
+    let newErr = new Error()
+    newErr.message = 'Bad Request'
+    newErr.errors = {};
+    newErr.status = 400;
+
+    newErr.errors.venueId = 'Venue does not exist'
+    newErr.errors.name = 'Name must be at least 5 characters'
+    newErr.errors.type = "Type must be Online or In person"
+    newErr.errors.capacity = 'Capacity must be an integer'
+    newErr.errors.price = 'Price is invalid'
+    newErr.errors.description = 'Description is required'
+    newErr.errors.startDate = 'Start date must be in the future'
+    newErr.errors.endDate = 'End date is less than start date'
+
+    next(newErr);
+  }
+})
+
+
+// ADD AN IMAGE TO AN EVENT BASED ON THE EVENT'S ID
+router.post('/:eventId/images', requireAuth, async (req, res, next) => {
+
+})
 
 
 

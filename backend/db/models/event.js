@@ -67,7 +67,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     price: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL,
       validate: {
         min: 0,
         max: 1000000
