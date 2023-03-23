@@ -297,27 +297,25 @@ router.delete('/:groupId', requireAuth, async (req, res, next) => {
 // ADD AN IMAGE TO A GROUP BASED ON THE GROUP'S ID
 router.post('/:groupId/images', requireAuth, async (req, res, next) => {
 
-  try {
-    let group = await Group.findByPk(req.params.groupId)
-
-    let img = await GroupImage.findOne({
-      where: {
-        groupId: req.params.groupId
-      },
-      attributes: {
-        exclude: ['groupId', 'createdAt', 'updatedAt']
-      }
-    })
-
     const { url, preview } = req.body
 
+    let group = await Group.findByPk(req.params.groupId)
+    console.log(group);
+
     if (group.organizerId === req.user.id) {
+      console.log('check line 315')
 
-      img.url = url
-      img.preview = preview
+      let newImg = await GroupImage.create({
+        groupId: req.params.groupId,
+        url: url,
+        preview: preview
+      })
+      newImg = newImg.toJSON()
+      delete newImg.createdAt
+      delete newImg.updatedAt
+      delete newImg.groupId
 
-      await img.save()
-      res.status(200).json(img);
+      res.status(200).json(newImg);
     }
     else {
       let newErr = new Error()
@@ -326,16 +324,6 @@ router.post('/:groupId/images', requireAuth, async (req, res, next) => {
 
       next(newErr);
     }
-
-    // Should I just not have a try/catch? And instead just use a simple if/else
-  }
-  catch(err) {
-    let newErr = new Error()
-    newErr.message = "Group couldn't be found"
-    newErr.status = 404;
-
-    next(newErr);
-  }
 })
 
 
