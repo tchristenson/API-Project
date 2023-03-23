@@ -4,7 +4,7 @@ const { Op } = require('sequelize');
 const bcrypt = require('bcryptjs');
 
 const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
-const { EventImage, Event, User, Group, Membership, GroupImage, Venue } = require('../../db/models');
+const { Attendance, EventImage, Event, User, Group, Membership, GroupImage, Venue } = require('../../db/models');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -56,6 +56,14 @@ router.get('/', async (req, res, nexr) => {
       }
     })
 
+    const numAttending = await Attendance.count({
+      where: {
+        eventId: currEvent.id,
+        status: 'attending'
+      }
+    })
+    currEvent.numAttending = numAttending
+
     if (eventImages.length) {
       let eventImage = eventImages[0].toJSON()
       currEvent.previewImage = eventImage.url
@@ -69,6 +77,46 @@ router.get('/', async (req, res, nexr) => {
 
   finalObj.Events = eventArr
   res.status(200).json(finalObj)
+})
+
+
+// GET DETAILS OF AN EVENT SPECIFIED BY ITS ID
+router.get('/:eventId', async (req, res, next) => {
+
+  let event = await Event.findOne({
+    where: {
+      id: req.params.eventId
+    },
+    attributes: {
+      exclude: ['createdAt', 'updatedAt']
+    },
+    include: [
+      {
+        model: Group,
+        attributes: ['id', 'name', 'private', 'city', 'state']
+      },
+      {
+        model: Venue,
+        attributes: ['id', 'address', 'city', 'state', 'lat', 'lng']
+      },
+      {
+        model: EventImage,
+        attributes: ['id', 'url', 'preview']
+      }
+    ]
+  })
+
+  event = event.toJSON()
+
+  const numAttending = await Attendance.count({
+    where: {
+      eventId: req.params.eventId,
+      status: 'attending'
+    }
+  })
+  event.numAttending = numAttending
+
+  res.status(200).json(event)
 })
 
 
