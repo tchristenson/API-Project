@@ -414,6 +414,9 @@ router.post('/:groupId/venues', requireAuth, async (req, res, next) => {
         lat,
         lng
       })
+      newVenue = newVenue.toJSON()
+      delete newVenue.createdAt
+      delete newVenue.updatedAt
       res.status(200).json(newVenue)
 
     } else {
