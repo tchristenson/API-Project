@@ -13,16 +13,60 @@ const group = require('../../db/models/group');
 
 const router = express.Router();
 
-const validateLogin = [
-  check('credential')
+const validateGroupBody = [
+  check('name')
     .exists({ checkFalsy: true })
     .notEmpty()
-    .withMessage('Please provide a valid email or username.'),
-  check('password')
+    .isLength({ max: 60 })
+    .withMessage('Name must be 60 characters or less'),
+  check('about')
     .exists({ checkFalsy: true })
-    .withMessage('Please provide a password.'),
+    .isLength({ min: 50 })
+    .withMessage('About must be 50 characters or more'),
+  check('type')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Type must be Online or In Person'),
+  check('private')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Private must be a boolean'),
+  check('city')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('City is required'),
+  check('state')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('State is required'),
   handleValidationErrors
 ];
+
+const validateVenueBody = [
+  check('address')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Street address is required'),
+  check('city')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('City is required'),
+  check('state')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('State is required'),
+  check('lat')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Latitude is not valid'),
+  check('lng')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Longitude is not valid'),
+  handleValidationErrors
+];
+
+
 
 // GET ALL GROUPS
 // Get all groups and get all groups joined or organized by the Current User are very similar,
@@ -134,13 +178,10 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
 
 // CREATE A GROUP
-router.post('/', requireAuth, async (req, res, next) => {
-  try {
+router.post('/', requireAuth, validateGroupBody, async (req, res, next) => {
+
     const { name, about, type, private, city, state } = req.body
     const organizerId = req.user.id
-    // console.log(req.user);
-    // console.log(organizerId)
-    // console.log(name)
 
     if (req.user) {
       const newGroup = await Group.create({
@@ -155,30 +196,11 @@ router.post('/', requireAuth, async (req, res, next) => {
 
       res.status(201).json(newGroup);
     }
-
-  } catch(err) {
-    let newErr = new Error()
-    newErr.message = 'Bad Request'
-
-    newErr.errors = {};
-
-    newErr.status = 400;
-
-    newErr.errors.name = 'Name must be 60 characters or less'
-    newErr.errors.about = 'About must be 50 chracters or more'
-    newErr.errors.type = "Type must be 'Online' or 'In person'"
-    newErr.errors.private = 'Private must be a boolean'
-    newErr.errors.city = 'City is required'
-    newErr.errors.state = 'State is required'
-
-    next(newErr);
-  }
 })
 
 // EDIT A GROUP
-router.put('/:groupId', requireAuth, async (req, res, next) => {
+router.put('/:groupId', requireAuth, validateGroupBody, async (req, res, next) => {
 
-  try {
     const { name, about, type, private, city, state } = req.body
 
     let group = await Group.findOne({
@@ -201,24 +223,6 @@ router.put('/:groupId', requireAuth, async (req, res, next) => {
     } else {
       res.status(404).json({message: "Group couldn't be found"})
     }
-
-  } catch (err) {
-    let newErr = new Error()
-    newErr.message = 'Bad Request'
-
-    newErr.errors = {};
-
-    newErr.status = 400;
-
-    newErr.errors.name = 'Name must be 60 characters or less'
-    newErr.errors.about = 'About must be 50 chracters or more'
-    newErr.errors.type = "Type must be 'Online' or 'In person'"
-    newErr.errors.private = 'Private must be a boolean'
-    newErr.errors.city = 'City is required'
-    newErr.errors.state = 'State is required'
-
-    next(newErr);
-  }
 })
 
 
