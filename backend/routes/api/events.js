@@ -51,7 +51,7 @@ const validateEventBody = [
 ];
 
 // GET ALL EVENTS
-router.get('/', async (req, res, nexr) => {
+router.get('/', async (req, res, next) => {
   let eventArr = [];
   let finalObj = {};
 
@@ -132,6 +132,14 @@ router.get('/:eventId', async (req, res, next) => {
     ]
   })
 
+  if (!event) {
+    let newErr = new Error()
+    newErr.message = "Event couldn't be found"
+    newErr.status = 404;
+
+    next(newErr);
+  }
+
   event = event.toJSON()
 
   const numAttending = await Attendance.count({
@@ -171,17 +179,15 @@ router.put('/:eventId', requireAuth, validateEventBody, async (req, res, next) =
     }
 
     const group = await Group.findByPk(event.groupId)
-    const isMember = await Membership.findOne({
+    const isCoHost = await Membership.findOne({
       where: {
         userId: req.user.id,
         status: 'co-host',
         groupId: event.groupId
       }
     })
-    console.log(isMember)
-    console.log(group.organizerId)
 
-    if (isMember || group.organizerId === req.user.id) {
+    if (isCoHost || group.organizerId === req.user.id) {
       event.venueId = venueId,
       event.name = name,
       event.type = type,
@@ -199,8 +205,8 @@ router.put('/:eventId', requireAuth, validateEventBody, async (req, res, next) =
       res.status(200).json(event)
     } else {
       let newErr = new Error()
-      newErr.message = "Event couldn't be found"
-      newErr.status = 404;
+      newErr.message = "Forbidden"
+      newErr.status = 403;
 
       next(newErr);
     }
@@ -212,25 +218,33 @@ router.delete('/:eventId', requireAuth, async (req, res, next) => {
 
   let event = await Event.findByPk(req.params.eventId)
 
+  if (!event) {
+    let newErr = new Error()
+    newErr.message = "Event couldn't be found"
+    newErr.status = 404;
+
+    next(newErr);
+  }
+
   const group = await Group.findByPk(event.groupId)
-  const isMember = await Membership.findOne({
+  const isCoHost = await Membership.findOne({
     where: {
       userId: req.user.id,
       status: 'co-host',
       groupId: event.groupId
     }
   })
+  console.log(isCoHost)
 
-  if (isMember || group.organizerId === req.user.id) {
+  if (isCoHost || group.organizerId === req.user.id) {
     await event.destroy()
     res.status(200).json({ message: 'Successfully deleted'})
-
   } else {
-      let newErr = new Error()
-      newErr.message = "Event couldn't be found"
-      newErr.status = 404;
+    let newErr = new Error()
+    newErr.message = "Forbidden"
+    newErr.status = 403;
 
-      next(newErr);
+    next(newErr);
   }
 })
 
@@ -239,6 +253,17 @@ router.delete('/:eventId', requireAuth, async (req, res, next) => {
 router.post('/:eventId/images', requireAuth, async (req, res, next) => {
 
   const { url, preview } = req.body
+
+  const event = await Event.findByPk(req.params.eventId);
+  console.log(event)
+
+  if (!event) {
+    let newErr = new Error()
+    newErr.message = "Event couldn't be found"
+    newErr.status = 404;
+
+    next(newErr);
+  }
 
   const isAttendee = await Attendance.findOne({
     where: {
@@ -266,8 +291,8 @@ router.post('/:eventId/images', requireAuth, async (req, res, next) => {
   }
   else {
     let newErr = new Error()
-    newErr.message = "Event couldn't be found"
-    newErr.status = 404;
+    newErr.message = "Forbidden"
+    newErr.status = 403;
 
     next(newErr);
   }
@@ -276,4 +301,4 @@ router.post('/:eventId/images', requireAuth, async (req, res, next) => {
 
 
 
-module.exports = router;
+module.exports = router
