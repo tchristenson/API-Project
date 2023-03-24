@@ -57,12 +57,11 @@ router.put('/:venueId', requireAuth, validateVenueBody,async (req, res, next) =>
       newErr.status = 404;
 
       next(newErr);
-
     }
 
     const group = await Group.findByPk(venue.groupId)
 
-    const isMember = await Membership.findOne({
+    const isCoHost = await Membership.findOne({
       where: {
         userId: req.user.id,
         status: 'co-host',
@@ -70,7 +69,7 @@ router.put('/:venueId', requireAuth, validateVenueBody,async (req, res, next) =>
       }
     })
 
-    if (isMember || group.organizerId === req.user.id) {
+    if (isCoHost || group.organizerId === req.user.id) {
       venue.address = address
       venue.city = city
       venue.state = state
@@ -85,8 +84,8 @@ router.put('/:venueId', requireAuth, validateVenueBody,async (req, res, next) =>
 
     } else {
       let newErr = new Error()
-      newErr.message = "Venue couln't be found"
-      newErr.status = 404;
+      newErr.message = "Forbidden"
+      newErr.status = 403;
 
       next(newErr);
     }
