@@ -78,6 +78,30 @@ const validateEventBody = [
   handleValidationErrors
 ];
 
+const validateVenueBody = [
+  check('address')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Street address is required'),
+  check('city')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('City is required'),
+  check('state')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('State is required'),
+  check('lat')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Latitude is not valid'),
+  check('lng')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Longitude is not valid'),
+  handleValidationErrors
+];
+
 
 // GET ALL GROUPS
 // Get all groups and get all groups joined or organized by the Current User are very similar,
@@ -393,9 +417,8 @@ router.get('/:groupId/venues', requireAuth, async (req, res, next) => {
 })
 
 // CREATE A NEW VENUE FOR A GROUP SPECIFIED BY ITS ID
-router.post('/:groupId/venues', requireAuth, async (req, res, next) => {
+router.post('/:groupId/venues', requireAuth, validateVenueBody,async (req, res, next) => {
 
-  try {
     const { address, city, state, lat, lng } = req.body
 
     const group = await Group.findByPk(req.params.groupId)
@@ -429,25 +452,6 @@ router.post('/:groupId/venues', requireAuth, async (req, res, next) => {
 
       next(newErr);
     }
-
-  } catch(err) {
-    let newErr = new Error()
-    newErr.message = 'Bad Request'
-
-    newErr.errors = {};
-
-    newErr.status = 400;
-
-    newErr.errors.address = 'Street address is required'
-    newErr.errors.city = 'City is required'
-    newErr.errors.state = "State is required"
-    newErr.errors.lat = 'Latitude is not valid'
-    newErr.errors.lng = 'Longitude is not valid'
-
-    next(newErr);
-
-  }
-
 })
 
 
