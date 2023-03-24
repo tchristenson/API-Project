@@ -544,6 +544,14 @@ router.post('/:groupId/events', requireAuth, validateEventBody, async (req, res,
 
     const group = await Group.findByPk(req.params.groupId)
 
+    if (!group) {
+      let newErr = new Error()
+      newErr.message = "Group couldn't be found"
+      newErr.status = 404;
+
+      next(newErr);
+    }
+
     const isMember = await Membership.findOne({
       where: {
         userId: req.user.id,
