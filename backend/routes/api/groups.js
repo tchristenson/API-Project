@@ -42,31 +42,6 @@ const validateGroupBody = [
   handleValidationErrors
 ];
 
-const validateVenueBody = [
-  check('address')
-    .exists({ checkFalsy: true })
-    .notEmpty()
-    .withMessage('Street address is required'),
-  check('city')
-    .exists({ checkFalsy: true })
-    .notEmpty()
-    .withMessage('City is required'),
-  check('state')
-    .exists({ checkFalsy: true })
-    .notEmpty()
-    .withMessage('State is required'),
-  check('lat')
-    .exists({ checkFalsy: true })
-    .notEmpty()
-    .withMessage('Latitude is not valid'),
-  check('lng')
-    .exists({ checkFalsy: true })
-    .notEmpty()
-    .withMessage('Longitude is not valid'),
-  handleValidationErrors
-];
-
-
 
 // GET ALL GROUPS
 // Get all groups and get all groups joined or organized by the Current User are very similar,
