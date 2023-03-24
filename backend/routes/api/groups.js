@@ -417,11 +417,19 @@ router.get('/:groupId/venues', requireAuth, async (req, res, next) => {
 })
 
 // CREATE A NEW VENUE FOR A GROUP SPECIFIED BY ITS ID
-router.post('/:groupId/venues', requireAuth, validateVenueBody,async (req, res, next) => {
+router.post('/:groupId/venues', requireAuth, validateVenueBody, async (req, res, next) => {
 
     const { address, city, state, lat, lng } = req.body
 
     const group = await Group.findByPk(req.params.groupId)
+
+    if (!group) {
+      let newErr = new Error()
+      newErr.message = "Group couldn't be found"
+      newErr.status = 404;
+
+      next(newErr);
+    }
 
     const isMember = await Membership.findOne({
       where: {
