@@ -51,7 +51,7 @@ const validateEventBody = [
 ];
 
 // GET ALL EVENTS
-router.get('/', async (req, res, nexr) => {
+router.get('/', async (req, res, next) => {
   let eventArr = [];
   let finalObj = {};
 
@@ -276,4 +276,7 @@ router.post('/:eventId/images', requireAuth, async (req, res, next) => {
 
 
 
-module.exports = router;
+module.exports = {
+  router,
+  validateEventBody
+};
