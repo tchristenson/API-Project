@@ -37,10 +37,10 @@ module.exports = {
         allowNull: false
       },
       lat: {
-        type: Sequelize.DECIMAL
+        type: Sequelize.DECIMAL(8, 5)
       },
       lng: {
-        type: Sequelize.DECIMAL
+        type: Sequelize.DECIMAL(8, 5)
       },
       createdAt: {
         allowNull: false,
