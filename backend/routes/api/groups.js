@@ -699,5 +699,131 @@ router.get('/:groupId/members', async (req, res, next) => {
 })
 
 
+// REQUEST A MEMBERSHIP FOR A GROUP BASED ON THE GROUP'S ID
+router.post('/:groupId/membership', requireAuth, async (req, res, next) => {
+
+  const group = await Group.findByPk(req.params.groupId)
+
+  if (!group) {
+    let newErr = new Error()
+    newErr.message = "Group couldn't be found"
+    newErr.status = 404;
+
+    next(newErr);
+  }
+
+  const currMemberCheck = await Membership.findOne({
+    where: {
+      groupId: req.params.groupId,
+      userId: req.user.id
+    }
+  })
+
+  if (!currMemberCheck) {
+    const pendingMember = await Membership.create({
+      userId: req.user.id,
+      groupId: req.params.groupId,
+      status: 'pending'
+    })
+
+    res.status(200).json(pendingMember);
+  }
+
+  if (currMemberCheck.status === 'pending') {
+    let newErr = new Error()
+    newErr.message = "Membership has already been requested"
+    newErr.status = 400;
+
+    next(newErr);
+  }
+
+  else if (currMemberCheck.status === 'member' || currMemberCheck.status === 'organizer' || currMemberCheck.status === 'co-host') {
+    let newErr = new Error()
+    newErr.message = "User is already a member of the group"
+    newErr.status = 400;
+
+    next(newErr);
+  }
+})
+
+
+// CHANGE THE STATUS OF A MEMBERSHIP FOR A GROUP SPECIFIED BY ID
+router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
+
+  const { memberId, status } = req.body
+
+  if (status === 'pending') {
+    let newErr = new Error()
+    newErr.message = "Cannot change a membership status to pending"
+    newErr.status = 400;
+
+    next(newErr);
+  }
+
+  const user = await User.findByPk(memberId)
+
+  if (!user) {
+    let newErr = new Error()
+    newErr.message = "User couldn't be found"
+    newErr.status = 400;
+
+    next(newErr);
+
+  }
+
+  const group = await Group.findByPk(req.params.groupId)
+
+  if (!group) {
+    let newErr = new Error()
+    newErr.message = "Group couldn't be found"
+    newErr.status = 404;
+
+    next(newErr);
+  }
+
+  const member = await Membership.findOne({
+    where: {
+      groupId: req.params.groupId,
+      userId: memberId
+    }
+  })
+
+  if (!member) {
+    let newErr = new Error()
+    newErr.message = "Membership between the user and the group does not exist"
+    newErr.status = 404;
+
+    next(newErr);
+  }
+
+  if (group.organizerId === req.user.id && status === 'co-host') {
+    member.status = 'co-host'
+    await member.save()
+  }
+
+  const isCoHostorOrganizer = await Membership.findOne({
+    where: {
+      userId: req.user.id,
+      [Op.or]: [
+        {
+          status: 'co-host'
+        },
+        {
+          status: 'organizer'
+        }
+      ],
+      groupId: req.params.groupId
+    }
+  })
+
+  if (isCoHostorOrganizer || group.organizerId === req.user.id) {
+    member.status = 'member'
+    await member.save()
+  }
+
+  res.json(member)
+})
+
+
 
 module.exports = router;
