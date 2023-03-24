@@ -590,6 +590,102 @@ router.post('/:groupId/events', requireAuth, validateEventBody, async (req, res,
 
 // GET ALL MEMBERS OF A GROUP SPECIFIED BY ITS ID
 router.get('/:groupId/members', async (req, res, next) => {
+  let finalObj = {};
+  let memberArr = [];
+
+  const group = await Group.findByPk(req.params.groupId)
+
+  if (!group) {
+    let newErr = new Error()
+    newErr.message = "Group couldn't be found"
+    newErr.status = 404;
+
+    next(newErr);
+  }
+
+  const isCoHostorOrganizer = await Membership.findOne({
+    where: {
+      userId: req.user.id,
+      [Op.or]: [
+        {
+          status: 'co-host'
+        },
+        {
+          status: 'organizer'
+        }
+      ],
+      groupId: req.params.groupId
+    }
+  })
+
+  if (isCoHostorOrganizer || group.organizerId === req.user.id) {
+
+    let members = await User.findAll({
+      attributes: ['id', 'firstName', 'lastName'],
+      include: {
+        model: Membership,
+        attributes: ['status'],
+        where: {
+          groupId: req.params.groupId
+        }
+      }
+    })
+
+    for (let i = 0; i < members.length; i++) {
+      let currMember = members[i]
+      currMember = currMember.toJSON()
+      currMember.Membership = currMember.Memberships[0]
+      delete currMember.Memberships
+      memberArr.push(currMember)
+    }
+
+    finalObj.Members = memberArr
+    res.json(finalObj)
+
+    // If you are not the organizer or co-host, but the group still exists
+  } else if (group) {
+
+    let members = await User.findAll({
+      attributes: ['id', 'firstName', 'lastName'],
+      include: {
+        model: Membership,
+        attributes: ['status'],
+        where: {
+          groupId: req.params.groupId,
+          [Op.or]: [
+            {
+              status: 'co-host'
+            },
+            {
+              status: 'member'
+            },
+            {
+              status: 'organizer'
+            }
+          ]
+        }
+      }
+    })
+
+    for (let i = 0; i < members.length; i++) {
+      let currMember = members[i]
+      currMember = currMember.toJSON()
+      currMember.Membership = currMember.Memberships[0]
+      delete currMember.Memberships
+      memberArr.push(currMember)
+    }
+
+    finalObj.Members = memberArr
+    res.json(finalObj)
+
+  }
+  // else {
+  //   let newErr = new Error()
+  //   newErr.message = "Group couldn't be found"
+  //   newErr.status = 404;
+
+  //   next(newErr);
+  // }
 
 })
 
