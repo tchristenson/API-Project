@@ -14,14 +14,39 @@ const { start } = require('repl');
 
 const router = express.Router();
 
-const validateLogin = [
-  check('credential')
+const validateEventBody = [
+  check('venueId')
     .exists({ checkFalsy: true })
     .notEmpty()
-    .withMessage('Please provide a valid email or username.'),
-  check('password')
+    .withMessage('Venue does not exist'),
+  check('name')
     .exists({ checkFalsy: true })
-    .withMessage('Please provide a password.'),
+    .isLength({ min: 4 })
+    .withMessage('Name must be at least 5 characters'),
+  check('type')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Type must be Online or In Person'),
+  check('capacity')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Capacity must be an integer'),
+  check('price')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Price is invalid'),
+  check('description')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Description is required'),
+  check('startDate')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Start date must be in the future'),
+  check('endDate')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('End date is less than start date'),
   handleValidationErrors
 ];
 
@@ -122,14 +147,12 @@ router.get('/:eventId', async (req, res, next) => {
 
 
 // EDIT AN EVENT SPECIFIED BY ITS ID
-router.put('/:eventId', requireAuth, async (req, res, next) => {
+router.put('/:eventId', requireAuth, validateEventBody, async (req, res, next) => {
 
-  try {
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
 
-    let event = await Event.findByPk(req.params.eventId, {
-      // attributes: ['venueId', 'name', 'type', 'capacity', 'price', 'description', 'startDate', 'endDate']
-    })
+    let event = await Event.findByPk(req.params.eventId)
+
     if (!event) {
       let newErr = new Error()
       newErr.message = "Event couldn't be found"
@@ -155,6 +178,8 @@ router.put('/:eventId', requireAuth, async (req, res, next) => {
         groupId: event.groupId
       }
     })
+    console.log(isMember)
+    console.log(group.organizerId)
 
     if (isMember || group.organizerId === req.user.id) {
       event.venueId = venueId,
@@ -167,26 +192,18 @@ router.put('/:eventId', requireAuth, async (req, res, next) => {
       event.endDate = endDate
       await event.save()
 
-      res.json(event)
+      event = event.toJSON()
+      delete event.createdAt
+      delete event.updatedAt
+
+      res.status(200).json(event)
+    } else {
+      let newErr = new Error()
+      newErr.message = "Event couldn't be found"
+      newErr.status = 404;
+
+      next(newErr);
     }
-
-  } catch(err) {
-    let newErr = new Error()
-    newErr.message = 'Bad Request'
-    newErr.errors = {};
-    newErr.status = 400;
-
-    newErr.errors.venueId = 'Venue does not exist'
-    newErr.errors.name = 'Name must be at least 5 characters'
-    newErr.errors.type = "Type must be Online or In person"
-    newErr.errors.capacity = 'Capacity must be an integer'
-    newErr.errors.price = 'Price is invalid'
-    newErr.errors.description = 'Description is required'
-    newErr.errors.startDate = 'Start date must be in the future'
-    newErr.errors.endDate = 'End date is less than start date'
-
-    next(newErr);
-  }
 })
 
 
@@ -221,22 +238,40 @@ router.delete('/:eventId', requireAuth, async (req, res, next) => {
 // ADD AN IMAGE TO AN EVENT BASED ON THE EVENT'S ID
 router.post('/:eventId/images', requireAuth, async (req, res, next) => {
 
+  const { url, preview } = req.body
+
+  const isAttendee = await Attendance.findOne({
+    where: {
+      eventId: req.params.eventId,
+      userId: req.user.id,
+      status: 'attending'
+    }
+  })
+
+  if (isAttendee) {
+    let newImg = await EventImage.create({
+      eventId: req.params.eventId,
+      url: url,
+      preview: preview
+    })
+    console.log(newImg)
+
+    newImg = newImg.toJSON()
+    delete newImg.createdAt
+    delete newImg.updatedAt
+    delete newImg.eventId
+    delete newImg.userId
+
+    res.status(200).json(newImg);
+  }
+  else {
+    let newErr = new Error()
+    newErr.message = "Event couldn't be found"
+    newErr.status = 404;
+
+    next(newErr);
+  }
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
