@@ -238,17 +238,41 @@ router.delete('/:eventId', requireAuth, async (req, res, next) => {
 // ADD AN IMAGE TO AN EVENT BASED ON THE EVENT'S ID
 router.post('/:eventId/images', requireAuth, async (req, res, next) => {
 
+  const { url, preview } = req.body
 
+  const isAttendee = await Attendance.findOne({
+    where: {
+      eventId: req.params.eventId,
+      userId: req.user.id,
+      status: 'attending'
+    }
+  })
+  // console.log(isAttendee)
 
+  if (isAttendee) {
+    console.log('line 253')
+    let newImg = await EventImage.create({
+      eventid: req.params.eventId,
+      url: url,
+      preview: preview
+    })
+    console.log(newImg)
 
+    newImg = newImg.toJSON()
+    delete newImg.createdAt
+    delete newImg.updatedAt
+    delete newImg.eventId
+    delete newImg.userId
 
+    res.status(200).json(newImg);
+  }
+  else {
+    let newErr = new Error()
+    newErr.message = "Event couldn't be found"
+    newErr.status = 404;
 
-
-
-
-
-
-
+    next(newErr);
+  }
 })
 
 
