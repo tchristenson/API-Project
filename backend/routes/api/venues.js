@@ -13,20 +13,33 @@ const group = require('../../db/models/group');
 
 const router = express.Router();
 
-const validateLogin = [
-  check('credential')
+const validateVenueBody = [
+  check('address')
     .exists({ checkFalsy: true })
     .notEmpty()
-    .withMessage('Please provide a valid email or username.'),
-  check('password')
+    .withMessage('Street address is required'),
+  check('city')
     .exists({ checkFalsy: true })
-    .withMessage('Please provide a password.'),
+    .notEmpty()
+    .withMessage('City is required'),
+  check('state')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('State is required'),
+  check('lat')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Latitude is not valid'),
+  check('lng')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Longitude is not valid'),
   handleValidationErrors
 ];
 
 // EDIT A VENUE SPECIFIED BY ITS ID
-router.put('/:venueId', requireAuth, async (req, res, next) => {
-  try {
+router.put('/:venueId', requireAuth, validateVenueBody,async (req, res, next) => {
+
     const { address, city, state, lat, lng } = req.body
 
     let venue = await Venue.findOne({
@@ -37,7 +50,6 @@ router.put('/:venueId', requireAuth, async (req, res, next) => {
         id: req.params.venueId,
       }
     })
-    // console.log(venue)
 
     const group = await Group.findByPk(venue.groupId)
     console.log(group)
@@ -49,8 +61,6 @@ router.put('/:venueId', requireAuth, async (req, res, next) => {
         groupId: venue.groupId
       }
     })
-
-    // console.log(isMember)
 
     if (isMember || group.organizerId === req.user.id) {
       venue.address = address
@@ -72,23 +82,6 @@ router.put('/:venueId', requireAuth, async (req, res, next) => {
 
       next(newErr);
     }
-
-  } catch(err) {
-    let newErr = new Error()
-    newErr.message = 'Bad Request'
-
-    newErr.errors = {};
-
-    newErr.status = 400;
-
-    newErr.errors.address = 'Street address is required'
-    newErr.errors.city = 'City is required'
-    newErr.errors.state = "State is required"
-    newErr.errors.lng = 'Latitude is not valid'
-    newErr.errors.lat = 'Longitude is not valid'
-
-    next(newErr);
-  }
 })
 
 
