@@ -586,6 +586,10 @@ router.post('/:groupId/events', requireAuth, validateEventBody, async (req, res,
 
       next(newErr);
     }
+})
+
+// GET ALL MEMBERS OF A GROUP SPECIFIED BY ITS ID
+router.get('/:groupId/members', async (req, res, next) => {
 
 })
 
