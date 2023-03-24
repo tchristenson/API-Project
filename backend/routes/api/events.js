@@ -301,6 +301,9 @@ router.post('/:eventId/images', requireAuth, async (req, res, next) => {
 // GET ALL ATTENDEES OF AN EVENT SPECIFIED BY ITS ID
 router.get('/:eventId/attendees', async (req, res, next) => {
 
+  let finalObj = {};
+  let memberArr = [];
+
   const event = await Event.findByPk(req.params.eventId);
 
   if (!event) {
@@ -310,7 +313,80 @@ router.get('/:eventId/attendees', async (req, res, next) => {
 
     next(newErr);
   }
+  const group = await Group.findByPk(event.groupId)
 
+  const isCoHostorOrganizer = await Membership.findOne({
+    where: {
+      userId: req.user.id,
+      [Op.or]: [
+        {
+          status: 'co-host'
+        },
+        {
+          status: 'organizer'
+        }
+      ],
+      groupId: event.groupId
+    }
+  })
+
+  if (isCoHostorOrganizer || group.organizerId === req.user.id) {
+
+    let attendees = await User.findAll({
+      attributes: ['id', 'firstName', 'lastName'],
+      include: {
+        model: Attendance,
+        attributes: ['status'],
+        where: {
+          eventId: req.params.eventId
+        }
+      }
+    })
+
+    for (let i = 0; i < attendees.length; i++) {
+      let currAttend = attendees[i]
+      currAttend = currAttend.toJSON()
+      currAttend.Attendance = currAttend.Attendances[0]
+      delete currAttend.Attendances
+      memberArr.push(currAttend)
+    }
+
+    finalObj.Attendees = memberArr
+    res.json(finalObj)
+
+    // If you are not the organizer or co-host, but the event still exists
+  }
+  else if (event) {
+
+      let attendees = await User.findAll({
+        attributes: ['id', 'firstName', 'lastName'],
+        include: {
+          model: Attendance,
+          attributes: ['status'],
+          where: {
+            eventId: req.params.eventId,
+            [Op.or]: [
+              {
+                status: 'attending'
+              },
+              {
+                status: 'waitlist'
+              }
+            ]
+          }
+        }
+      })
+      for (let i = 0; i < attendees.length; i++) {
+        let currAttend = attendees[i]
+        currAttend = currAttend.toJSON()
+        currAttend.Attendance = currAttend.Attendances[0]
+        delete currAttend.Attendances
+        memberArr.push(currAttend)
+      }
+
+      finalObj.Attendees = memberArr
+      res.json(finalObj)
+    }
 })
 
 
