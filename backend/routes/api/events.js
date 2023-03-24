@@ -276,7 +276,4 @@ router.post('/:eventId/images', requireAuth, async (req, res, next) => {
 
 
 
-module.exports = {
-  router,
-  validateEventBody
-};
+module.exports = router
