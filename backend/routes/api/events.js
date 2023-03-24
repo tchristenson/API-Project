@@ -220,6 +220,14 @@ router.delete('/:eventId', requireAuth, async (req, res, next) => {
 
   let event = await Event.findByPk(req.params.eventId)
 
+  if (!event) {
+    let newErr = new Error()
+    newErr.message = "Event couldn't be found"
+    newErr.status = 404;
+
+    next(newErr);
+  }
+
   const group = await Group.findByPk(event.groupId)
   const isMember = await Membership.findOne({
     where: {
@@ -228,17 +236,17 @@ router.delete('/:eventId', requireAuth, async (req, res, next) => {
       groupId: event.groupId
     }
   })
+  console.log(isMember)
 
   if (isMember || group.organizerId === req.user.id) {
     await event.destroy()
     res.status(200).json({ message: 'Successfully deleted'})
-
   } else {
-      let newErr = new Error()
-      newErr.message = "Event couldn't be found"
-      newErr.status = 404;
+    let newErr = new Error()
+    newErr.message = "Event couldn't be found"
+    newErr.status = 404;
 
-      next(newErr);
+    next(newErr);
   }
 })
 
