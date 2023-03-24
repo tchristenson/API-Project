@@ -390,6 +390,73 @@ router.get('/:eventId/attendees', async (req, res, next) => {
 })
 
 
+// REQUEST TO ATTEND AN EVENT BASED ON THE EVENT'S ID
+router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
+
+  const event = await Event.findByPk(req.params.eventId);
+
+  if (!event) {
+    let newErr = new Error()
+    newErr.message = "Event couldn't be found"
+    newErr.status = 404;
+
+    next(newErr);
+  }
+
+  const isMember = await Membership.findOne({
+    where: {
+      userId: req.user.id
+    }
+  })
+
+  if (isMember) {
+    const attendance = await Attendance.findOne({
+      where: {
+        eventId: req.params.eventId,
+        userId: req.user.id
+      }
+    })
+
+    if (attendance.status === 'pending' || attendance.status === 'waitlist') {
+      let newErr = new Error()
+      newErr.message = "Attendance has already been requested"
+      newErr.status = 400;
+
+      next(newErr);
+    }
+
+    if (attendance.status === 'attending') {
+      let newErr = new Error()
+      newErr.message = "User is already an attendee of the event"
+      newErr.status = 400;
+
+      next(newErr);
+    }
+
+    let newAttendance = await Attendance.create({
+      eventId: req.params.eventId,
+      userId: req.body.user,
+      status: 'pending'
+    })
+
+    newAttendance = newAttendance.toJSON()
+    delete newAttendance.updatedAt
+    delete newAttendance.createdAt
+    delete newAttendance.eventId
+
+    res.status(200).json(newAttendance);
+
+  } else {
+    let newErr = new Error()
+    newErr.message = "Forbidden"
+    newErr.status = 403;
+
+    next(newErr);
+  }
+
+})
+
+
 
 
 module.exports = router
