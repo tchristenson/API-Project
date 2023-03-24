@@ -42,6 +42,42 @@ const validateGroupBody = [
   handleValidationErrors
 ];
 
+const validateEventBody = [
+  check('venueId')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Venue does not exist'),
+  check('name')
+    .exists({ checkFalsy: true })
+    .isLength({ min: 4 })
+    .withMessage('Name must be at least 5 characters'),
+  check('type')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Type must be Online or In Person'),
+  check('capacity')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Capacity must be an integer'),
+  check('price')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Price is invalid'),
+  check('description')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Description is required'),
+  check('startDate')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Start date must be in the future'),
+  check('endDate')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('End date is less than start date'),
+  handleValidationErrors
+];
+
 
 // GET ALL GROUPS
 // Get all groups and get all groups joined or organized by the Current User are very similar,
@@ -484,9 +520,8 @@ router.get('/:groupId/events', async (req, res, next) => {
 
 
 // CREATE AN EVENT FOR A GROUP SPECIFIED BY ITS ID
-router.post('/:groupId/events', requireAuth, async (req, res, next) => {
+router.post('/:groupId/events', requireAuth, validateEventBody, async (req, res, next) => {
 
-  try {
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
 
     const group = await Group.findByPk(req.params.groupId)
@@ -525,24 +560,6 @@ router.post('/:groupId/events', requireAuth, async (req, res, next) => {
 
       next(newErr);
     }
-
-  } catch(err) {
-    let newErr = new Error()
-    newErr.message = 'Bad Request'
-    newErr.errors = {};
-    newErr.status = 400;
-
-    newErr.errors.venueId = 'Venue does not exist'
-    newErr.errors.name = 'Name must be at least 5 characters'
-    newErr.errors.type = 'Type must be Online or In person'
-    newErr.errors.capacity = 'Capacity must be an integer'
-    newErr.errors.price = 'Price is invalid'
-    newErr.errors.description = 'Description is required'
-    newErr.errors.startDate = 'Start date must be in the future'
-    newErr.errors.endDate = 'End date is less than start date'
-
-    next(newErr);
-  }
 
 })
 
