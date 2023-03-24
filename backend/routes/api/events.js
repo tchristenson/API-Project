@@ -247,12 +247,10 @@ router.post('/:eventId/images', requireAuth, async (req, res, next) => {
       status: 'attending'
     }
   })
-  // console.log(isAttendee)
 
   if (isAttendee) {
-    console.log('line 253')
     let newImg = await EventImage.create({
-      eventid: req.params.eventId,
+      eventId: req.params.eventId,
       url: url,
       preview: preview
     })
