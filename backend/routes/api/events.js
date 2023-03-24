@@ -255,7 +255,6 @@ router.post('/:eventId/images', requireAuth, async (req, res, next) => {
   const { url, preview } = req.body
 
   const event = await Event.findByPk(req.params.eventId);
-  console.log(event)
 
   if (!event) {
     let newErr = new Error()
@@ -296,6 +295,22 @@ router.post('/:eventId/images', requireAuth, async (req, res, next) => {
 
     next(newErr);
   }
+})
+
+
+// GET ALL ATTENDEES OF AN EVENT SPECIFIED BY ITS ID
+router.get('/:eventId/attendees', async (req, res, next) => {
+
+  const event = await Event.findByPk(req.params.eventId);
+
+  if (!event) {
+    let newErr = new Error()
+    newErr.message = "Event couldn't be found"
+    newErr.status = 404;
+
+    next(newErr);
+  }
+
 })
 
 
