@@ -151,25 +151,24 @@ router.get('/', async (req, res, next) => {
 router.get('/current', requireAuth, async (req, res, next) => {
   const userId = req.user.id
   const organizedGroups = await Group.findAll({
-
-        where: {
-          [Op.or]: [
-            {organizerId: userId},
-            {'$Memberships.userId$': userId}
-          ]
-        },
+    where: {
+      [Op.or]: [
+        {organizerId: userId},
+        {'$Memberships.userId$': userId}
+      ]
+    },
+    include: [
+      {
+        model: Membership,
+        attributes: [],
         include: [
           {
-            model: Membership,
-            attributes: [],
-            include: [
-              {
-                model: User,
-                attributes: []
-              }
-            ]
+            model: User,
+            attributes: []
           }
         ]
+      }
+    ]
 
   })
 
@@ -238,14 +237,13 @@ router.put('/:groupId', requireAuth, validateGroupBody, async (req, res, next) =
 
     const { name, about, type, private, city, state } = req.body
 
-    let group = await Group.findOne({
-      where: {
-        id: req.params.groupId,
-        organizerId: req.user.id
-      }
-    })
+    let group = await Group.findByPk(req.params.groupId);
 
-    if (group) {
+    if (!group) {
+      res.status(404).json({message: "Group couldn't be found"})
+    }
+
+    if (group.organizerId === req.user.id) {
       group.name = name
       group.about = about
       group.type = type
@@ -256,7 +254,7 @@ router.put('/:groupId', requireAuth, validateGroupBody, async (req, res, next) =
 
       res.status(200).json(group)
     } else {
-      res.status(404).json({message: "Group couldn't be found"})
+      res.status(403).json({message: "Forbidden"})
     }
 })
 
