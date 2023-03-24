@@ -405,7 +405,18 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
 
   const isMember = await Membership.findOne({
     where: {
-      userId: req.user.id
+      userId: req.user.id,
+      [Op.or]: [
+        {
+          status: 'member'
+        },
+        {
+          status: 'co-host'
+        },
+        {
+          status: 'organizer'
+        }
+      ]
     }
   })
 
