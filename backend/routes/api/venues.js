@@ -51,8 +51,16 @@ router.put('/:venueId', requireAuth, validateVenueBody,async (req, res, next) =>
       }
     })
 
+    if (!venue) {
+      let newErr = new Error()
+      newErr.message = "Venue couln't be found"
+      newErr.status = 404;
+
+      next(newErr);
+
+    }
+
     const group = await Group.findByPk(venue.groupId)
-    console.log(group)
 
     const isMember = await Membership.findOne({
       where: {
