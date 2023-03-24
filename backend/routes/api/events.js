@@ -403,9 +403,16 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
     next(newErr);
   }
 
+  // const group = await Group.findOne({
+  //   where: {
+  //     id: event.groupId
+  //   }
+  // })
+
   const isMember = await Membership.findOne({
     where: {
       userId: req.user.id,
+      groupId: event.groupId,
       [Op.or]: [
         {
           status: 'member'
@@ -419,6 +426,7 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
       ]
     }
   })
+  console.log(isMember)
 
   if (isMember) {
     const attendance = await Attendance.findOne({
@@ -427,6 +435,7 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
         userId: req.user.id
       }
     })
+    console.log(attendance)
 
     if (attendance.status === 'pending' || attendance.status === 'waitlist') {
       let newErr = new Error()
