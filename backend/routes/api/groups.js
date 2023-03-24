@@ -781,7 +781,8 @@ router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
     next(newErr);
   }
 
-  const member = await Membership.findOne({
+  let member = await Membership.findOne({
+    attributes: ['id', 'groupId', 'status'],
     where: {
       groupId: req.params.groupId,
       userId: memberId
@@ -816,10 +817,14 @@ router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
     }
   })
 
-  if (isCoHostorOrganizer || group.organizerId === req.user.id) {
+  if ((isCoHostorOrganizer || group.organizerId === req.user.id) && status === 'member') {
     member.status = 'member'
     await member.save()
   }
+
+  member = member.toJSON()
+  member.memberId = memberId
+  delete member.updatedAt
 
   res.json(member)
 })
