@@ -768,7 +768,6 @@ router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
     newErr.status = 400;
 
     next(newErr);
-
   }
 
   const group = await Group.findByPk(req.params.groupId)
@@ -797,11 +796,6 @@ router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
     next(newErr);
   }
 
-  if (group.organizerId === req.user.id && status === 'co-host') {
-    member.status = 'co-host'
-    await member.save()
-  }
-
   const isCoHostorOrganizer = await Membership.findOne({
     where: {
       userId: req.user.id,
@@ -817,9 +811,20 @@ router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
     }
   })
 
-  if ((isCoHostorOrganizer || group.organizerId === req.user.id) && status === 'member') {
+  if (group.organizerId === req.user.id && status === 'co-host') {
+    member.status = 'co-host'
+    await member.save()
+  }
+  else if ((isCoHostorOrganizer || group.organizerId === req.user.id) && status === 'member') {
     member.status = 'member'
     await member.save()
+  }
+  else {
+    let newErr = new Error()
+    newErr.message = "Forbidden"
+    newErr.status = 403;
+
+    next(newErr);
   }
 
   member = member.toJSON()
@@ -827,6 +832,62 @@ router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
   delete member.updatedAt
 
   res.json(member)
+})
+
+
+// DELETE MEMBERSHIP TO A GROUP SPECIFIED BY ITS ID
+router.delete('/:groupId/membership', requireAuth, async (req, res, next) => {
+
+  const { memberId } = req.body
+
+  const user = await User.findByPk(memberId)
+
+  if (!user) {
+    let newErr = new Error()
+    newErr.message = "User couldn't be found"
+    newErr.status = 400;
+
+    next(newErr);
+  }
+
+  const group = await Group.findByPk(req.params.groupId)
+
+  if (!group) {
+    let newErr = new Error()
+    newErr.message = "Group couldn't be found"
+    newErr.status = 404;
+
+    next(newErr);
+  }
+
+  let member = await Membership.findOne({
+    attributes: ['id', 'groupId', 'status'],
+    where: {
+      groupId: req.params.groupId,
+      userId: memberId
+    }
+  })
+
+  if (!member) {
+    let newErr = new Error()
+    newErr.message = "Membership does not exist for this user"
+    newErr.status = 404;
+
+    next(newErr);
+  }
+  console.log(member.toJSON());
+
+  if (memberId === req.user.id || group.organizerId === req.user.id) {
+    await member.destroy()
+    res.status(200).json({ message: 'Successfully deleted membership from group'})
+  }
+  else {
+    let newErr = new Error()
+    newErr.message = "Forbidden"
+    newErr.status = 403;
+
+    next(newErr);
+  }
 })
 
 
