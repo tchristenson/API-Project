@@ -499,6 +499,7 @@ router.put('/:eventId/attendance', requireAuth, async (req, res, next) => {
       userId: userId
     }
   })
+  console.log(attendance)
 
   if (!attendance) {
     let newErr = new Error()
@@ -529,6 +530,9 @@ router.put('/:eventId/attendance', requireAuth, async (req, res, next) => {
 
     attendance = attendance.toJSON()
     delete attendance.updatedAt
+    delete attendance.createdAt
+
+    res.status(200).json(attendance);
 
   } else {
     let newErr = new Error()
