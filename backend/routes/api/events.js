@@ -470,6 +470,76 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
 })
 
 
+// CHANGE THE STATUS OF AN ATTENDANCE FOR AN EVENT SPECIFIED BY ITS ID
+router.put('/:eventId/attendance', requireAuth, async (req, res, next) => {
+
+  const { userId, status } = req.body
+
+  const event = await Event.findByPk(req.params.eventId);
+
+  if (!event) {
+    let newErr = new Error()
+    newErr.message = "Event couldn't be found"
+    newErr.status = 404;
+
+    next(newErr);
+  }
+
+  if (status === 'pending') {
+    let newErr = new Error()
+    newErr.message = "Cannot change an attendance status to pending"
+    newErr.status = 400;
+
+    next(newErr);
+  }
+
+  let attendance = await Attendance.findOne({
+    where: {
+      eventId: req.params.eventId,
+      userId: userId
+    }
+  })
+
+  if (!attendance) {
+    let newErr = new Error()
+    newErr.message = "Attendance between the user and the event does not exist"
+    newErr.status = 404;
+
+    next(newErr);
+  }
+
+  const isCoHostorOrganizer = await Membership.findOne({
+    where: {
+      userId: req.user.id,
+      [Op.or]: [
+        {
+          status: 'co-host'
+        },
+        {
+          status: 'organizer'
+        }
+      ],
+      groupId: event.groupId
+    }
+  })
+
+  if (isCoHostorOrganizer || group.organizerId === req.user.id) {
+    attendance.status = 'attending'
+    await attendance.save()
+
+    attendance = attendance.toJSON()
+    delete attendance.updatedAt
+
+  } else {
+    let newErr = new Error()
+    newErr.message = "Forbidden"
+    newErr.status = 403;
+
+    next(newErr);
+  }
+})
+
+
 
 
 module.exports = router
