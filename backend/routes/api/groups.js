@@ -661,7 +661,7 @@ router.get('/:groupId/members', async (req, res, next) => {
     }
 
     finalObj.Members = memberArr
-    res.json(finalObj)
+    res.status(200).json(finalObj)
 
     // If you are not the organizer or co-host, but the group still exists
   } else if (group) {
