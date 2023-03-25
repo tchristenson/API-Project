@@ -352,7 +352,7 @@ router.get('/:eventId/attendees', async (req, res, next) => {
     }
 
     finalObj.Attendees = memberArr
-    res.json(finalObj)
+    res.status(200).json(finalObj)
 
     // If you are not the organizer or co-host, but the event still exists
   }
@@ -385,7 +385,7 @@ router.get('/:eventId/attendees', async (req, res, next) => {
       }
 
       finalObj.Attendees = memberArr
-      res.json(finalObj)
+      res.status(200).json(finalObj)
     }
 })
 
