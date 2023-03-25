@@ -215,21 +215,24 @@ router.get('/current', requireAuth, async (req, res, next) => {
 router.post('/', requireAuth, validateGroupBody, async (req, res, next) => {
 
     const { name, about, type, private, city, state } = req.body
-    const organizerId = req.user.id
 
-    if (req.user) {
-      const newGroup = await Group.create({
-        organizerId: organizerId,
-        name,
-        about,
-        type,
-        private,
-        city,
-        state
-      })
+    const newGroup = await Group.create({
+      organizerId: req.user.id,
+      name,
+      about,
+      type,
+      private,
+      city,
+      state
+    })
 
-      res.status(201).json(newGroup);
-    }
+    await Membership.create({
+      userId: req.user.id,
+      groupId: newGroup.id,
+      status: 'organizer'
+    })
+
+    res.status(201).json(newGroup);
 })
 
 // EDIT A GROUP
