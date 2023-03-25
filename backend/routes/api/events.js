@@ -403,12 +403,6 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
     next(newErr);
   }
 
-  // const group = await Group.findOne({
-  //   where: {
-  //     id: event.groupId
-  //   }
-  // })
-
   const isMember = await Membership.findOne({
     where: {
       userId: req.user.id,
@@ -426,7 +420,6 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
       ]
     }
   })
-  console.log(isMember)
 
   if (isMember) {
     const attendance = await Attendance.findOne({
@@ -435,7 +428,21 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
         userId: req.user.id
       }
     })
-    console.log(attendance)
+
+    if (!attendance) {
+      let newAttendance = await Attendance.create({
+        eventId: req.params.eventId,
+        userId: req.user.id,
+        status: 'pending'
+      })
+
+      newAttendance = newAttendance.toJSON()
+      delete newAttendance.updatedAt
+      delete newAttendance.createdAt
+      delete newAttendance.eventId
+
+      res.status(200).json(newAttendance);
+    }
 
     if (attendance.status === 'pending' || attendance.status === 'waitlist') {
       let newErr = new Error()
@@ -453,19 +460,6 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
       next(newErr);
     }
 
-    let newAttendance = await Attendance.create({
-      eventId: req.params.eventId,
-      userId: req.body.user,
-      status: 'pending'
-    })
-
-    newAttendance = newAttendance.toJSON()
-    delete newAttendance.updatedAt
-    delete newAttendance.createdAt
-    delete newAttendance.eventId
-
-    res.status(200).json(newAttendance);
-
   } else {
     let newErr = new Error()
     newErr.message = "Forbidden"
@@ -473,7 +467,6 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
 
     next(newErr);
   }
-
 })
 
 
