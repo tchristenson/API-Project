@@ -697,7 +697,7 @@ router.get('/:groupId/members', async (req, res, next) => {
     }
 
     finalObj.Members = memberArr
-    res.json(finalObj)
+    res.status(200).json(finalObj)
   }
 })
 
@@ -834,7 +834,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
   member.memberId = memberId
   delete member.updatedAt
 
-  res.json(member)
+  res.status(200).json(member)
 })
 
 
