@@ -50,8 +50,8 @@ module.exports = (sequelize, DataTypes) => {
     lat: {
       type: DataTypes.DECIMAL(8, 5),
       validate: {
-        min: -180,
-        max: 180
+        min: -90,
+        max: 90
       }
     },
     lng: {
