@@ -116,7 +116,10 @@ router.get('/', async (req, res, next) => {
 
     let count = await Membership.count({
       where: {
-        groupId: currGroup.id
+        groupId: currGroup.id,
+        status: {
+          [Op.not]: 'pending'
+        }
       }
     })
     currGroup.numMembers = count;
@@ -154,7 +157,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
     where: {
       [Op.or]: [
         {organizerId: userId},
-        {'$Memberships.userId$': userId}
+        {'$Memberships.userId$': userId,'$Memberships.status$': {[Op.not]: 'pending'} }
       ]
     },
     include: [
@@ -180,7 +183,10 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
     let count = await Membership.count({
       where: {
-        groupId: currGroup.id
+        groupId: currGroup.id,
+        status: {
+          [Op.not]: 'pending'
+        }
       }
     })
     currGroup.numMembers = count;
@@ -293,7 +299,10 @@ router.get('/:groupId', async (req, res, next) => {
 
     let count = await Membership.count({
       where: {
-        groupId: group.id
+        groupId: currGroup.id,
+        status: {
+          [Op.not]: 'pending'
+        }
       }
     })
 
