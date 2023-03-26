@@ -237,7 +237,7 @@ router.delete('/:eventId', requireAuth, async (req, res, next) => {
       groupId: event.groupId
     }
   })
-  console.log(isCoHost)
+  // console.log(isCoHost)
 
   if (isCoHost || group.organizerId === req.user.id) {
     await event.destroy()
@@ -281,7 +281,7 @@ router.post('/:eventId/images', requireAuth, async (req, res, next) => {
       url: url,
       preview: preview
     })
-    console.log(newImg)
+    // console.log(newImg)
 
     newImg = newImg.toJSON()
     delete newImg.createdAt
