@@ -82,11 +82,13 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         isAfter: '2023-03-20'
-      }
+      },
+      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
     },
     endDate: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
     sequelize,
