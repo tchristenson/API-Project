@@ -443,6 +443,7 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
       delete newAttendance.updatedAt
       delete newAttendance.createdAt
       delete newAttendance.eventId
+      delete newAttendance.id
 
       res.status(200).json(newAttendance);
     }
