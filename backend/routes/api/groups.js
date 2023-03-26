@@ -903,7 +903,7 @@ router.delete('/:groupId/membership', requireAuth, async (req, res, next) => {
 
     next(newErr);
   }
-  console.log(member.toJSON());
+  // console.log(member.toJSON());
 
   if (memberId === req.user.id || group.organizerId === req.user.id) {
     await member.destroy()
