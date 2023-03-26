@@ -215,21 +215,24 @@ router.get('/current', requireAuth, async (req, res, next) => {
 router.post('/', requireAuth, validateGroupBody, async (req, res, next) => {
 
     const { name, about, type, private, city, state } = req.body
-    const organizerId = req.user.id
 
-    if (req.user) {
-      const newGroup = await Group.create({
-        organizerId: organizerId,
-        name,
-        about,
-        type,
-        private,
-        city,
-        state
-      })
+    const newGroup = await Group.create({
+      organizerId: req.user.id,
+      name,
+      about,
+      type,
+      private,
+      city,
+      state
+    })
 
-      res.status(201).json(newGroup);
-    }
+    await Membership.create({
+      userId: req.user.id,
+      groupId: newGroup.id,
+      status: 'organizer'
+    })
+
+    res.status(201).json(newGroup);
 })
 
 // EDIT A GROUP
@@ -658,7 +661,7 @@ router.get('/:groupId/members', async (req, res, next) => {
     }
 
     finalObj.Members = memberArr
-    res.json(finalObj)
+    res.status(200).json(finalObj)
 
     // If you are not the organizer or co-host, but the group still exists
   } else if (group) {
@@ -694,7 +697,7 @@ router.get('/:groupId/members', async (req, res, next) => {
     }
 
     finalObj.Members = memberArr
-    res.json(finalObj)
+    res.status(200).json(finalObj)
   }
 })
 
@@ -831,7 +834,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
   member.memberId = memberId
   delete member.updatedAt
 
-  res.json(member)
+  res.status(200).json(member)
 })
 
 
