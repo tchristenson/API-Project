@@ -478,8 +478,8 @@ router.post('/:groupId/venues', requireAuth, validateVenueBody, async (req, res,
         address,
         city,
         state,
-        lat,
-        lng
+        lat: lat,
+        lng: lng
       })
       newVenue = newVenue.toJSON()
       delete newVenue.createdAt
