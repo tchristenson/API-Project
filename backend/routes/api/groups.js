@@ -26,7 +26,7 @@ const validateGroupBody = [
   check('type')
     .exists({ checkFalsy: true })
     .notEmpty()
-    .withMessage('Type must be Online or In Person'),
+    .withMessage("Type must be 'Online' or 'In person'"),
   check('private')
     .exists({ checkFalsy: true })
     .notEmpty()
@@ -54,7 +54,7 @@ const validateEventBody = [
   check('type')
     .exists({ checkFalsy: true })
     .notEmpty()
-    .withMessage('Type must be Online or In Person'),
+    .withMessage("Type must be 'Online' or 'In person'"),
   check('capacity')
     .exists({ checkFalsy: true })
     .notEmpty()
@@ -279,7 +279,6 @@ router.put('/:groupId', requireAuth, validateGroupBody, async (req, res, next) =
 // GET DETAILS OF A GROUP FROM AN ID
 router.get('/:groupId', async (req, res, next) => {
 
-  try {
     let group = await Group.findByPk(req.params.groupId, {
       include: [
         {
@@ -297,9 +296,17 @@ router.get('/:groupId', async (req, res, next) => {
       ]
     })
 
+    if (!group) {
+      let newErr = new Error()
+      newErr.message = "Group couldn't be found"
+      newErr.status = 404;
+
+      next(newErr);
+    }
+
     let count = await Membership.count({
       where: {
-        groupId: currGroup.id,
+        groupId: group.id,
         status: {
           [Op.not]: 'pending'
         }
@@ -317,16 +324,6 @@ router.get('/:groupId', async (req, res, next) => {
     group.Organizer = organizer
 
     res.status(200).json(group);
-
-  }
-  catch (err) {
-    let newErr = new Error()
-    newErr.message = "Group couldn't be found"
-    newErr.status = 404;
-
-    next(newErr);
-
-  }
 })
 
 // DELETE A GROUP
