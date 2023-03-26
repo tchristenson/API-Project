@@ -810,7 +810,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
       userId: memberId
     }
   })
-  console.log(member.toJSON());
+  // console.log(member.toJSON());
 
   if (!member) {
     let newErr = new Error()
