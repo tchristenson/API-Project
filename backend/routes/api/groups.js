@@ -723,16 +723,24 @@ router.post('/:groupId/membership', requireAuth, async (req, res, next) => {
   })
 
   if (!currMemberCheck) {
-    const pendingMember = await Membership.create({
+    let pendingMember = await Membership.create({
       userId: req.user.id,
       groupId: req.params.groupId,
       status: 'pending'
     })
 
+    pendingMember = pendingMember.toJSON()
+    delete pendingMember.updatedAt
+    delete pendingMember.createdAt
+    delete pendingMember.id
+    delete pendingMember.groupId
+    pendingMember.memberId = pendingMember.userId
+    delete pendingMember.userId
+
     res.status(200).json(pendingMember);
   }
 
-  if (currMemberCheck.status === 'pending') {
+  else if (currMemberCheck.status === 'pending') {
     let newErr = new Error()
     newErr.message = "Membership has already been requested"
     newErr.status = 400;
