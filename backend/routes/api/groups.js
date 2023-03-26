@@ -602,6 +602,12 @@ router.post('/:groupId/events', requireAuth, validateEventBody, async (req, res,
         startDate,
         endDate
       })
+
+      await Attendance.create({
+        eventId: newEvent.id,
+        userId: req.user.id,
+        status: 'attending'
+      })
       newEvent = newEvent.toJSON()
 
       delete newEvent.createdAt
