@@ -116,7 +116,10 @@ router.get('/', async (req, res, next) => {
 
     let count = await Membership.count({
       where: {
-        groupId: currGroup.id
+        groupId: currGroup.id,
+        status: {
+          [Op.not]: 'pending'
+        }
       }
     })
     currGroup.numMembers = count;
@@ -154,7 +157,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
     where: {
       [Op.or]: [
         {organizerId: userId},
-        {'$Memberships.userId$': userId}
+        {'$Memberships.userId$': userId,'$Memberships.status$': {[Op.not]: 'pending'} }
       ]
     },
     include: [
@@ -180,7 +183,10 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
     let count = await Membership.count({
       where: {
-        groupId: currGroup.id
+        groupId: currGroup.id,
+        status: {
+          [Op.not]: 'pending'
+        }
       }
     })
     currGroup.numMembers = count;
@@ -293,7 +299,10 @@ router.get('/:groupId', async (req, res, next) => {
 
     let count = await Membership.count({
       where: {
-        groupId: group.id
+        groupId: currGroup.id,
+        status: {
+          [Op.not]: 'pending'
+        }
       }
     })
 
@@ -593,6 +602,12 @@ router.post('/:groupId/events', requireAuth, validateEventBody, async (req, res,
         startDate,
         endDate
       })
+
+      await Attendance.create({
+        eventId: newEvent.id,
+        userId: req.user.id,
+        status: 'attending'
+      })
       newEvent = newEvent.toJSON()
 
       delete newEvent.createdAt
@@ -723,16 +738,24 @@ router.post('/:groupId/membership', requireAuth, async (req, res, next) => {
   })
 
   if (!currMemberCheck) {
-    const pendingMember = await Membership.create({
+    let pendingMember = await Membership.create({
       userId: req.user.id,
       groupId: req.params.groupId,
       status: 'pending'
     })
 
+    pendingMember = pendingMember.toJSON()
+    delete pendingMember.updatedAt
+    delete pendingMember.createdAt
+    delete pendingMember.id
+    delete pendingMember.groupId
+    pendingMember.memberId = pendingMember.userId
+    delete pendingMember.userId
+
     res.status(200).json(pendingMember);
   }
 
-  if (currMemberCheck.status === 'pending') {
+  else if (currMemberCheck.status === 'pending') {
     let newErr = new Error()
     newErr.message = "Membership has already been requested"
     newErr.status = 400;
@@ -790,6 +813,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
       userId: memberId
     }
   })
+  console.log(member.toJSON());
 
   if (!member) {
     let newErr = new Error()
@@ -817,10 +841,20 @@ router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
   if (group.organizerId === req.user.id && status === 'co-host') {
     member.status = 'co-host'
     await member.save()
+    member = member.toJSON()
+    member.memberId = memberId
+    delete member.updatedAt
+
+    res.status(200).json(member)
   }
   else if ((isCoHostorOrganizer || group.organizerId === req.user.id) && status === 'member') {
     member.status = 'member'
     await member.save()
+    member = member.toJSON()
+    member.memberId = memberId
+    delete member.updatedAt
+
+    res.status(200).json(member)
   }
   else {
     let newErr = new Error()
@@ -829,12 +863,6 @@ router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
 
     next(newErr);
   }
-
-  member = member.toJSON()
-  member.memberId = memberId
-  delete member.updatedAt
-
-  res.status(200).json(member)
 })
 
 
