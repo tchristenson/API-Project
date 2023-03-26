@@ -141,6 +141,9 @@ router.get('/:eventId', async (req, res, next) => {
   }
 
   event = event.toJSON()
+  // console.log(event);
+  let decimalPrice = parseFloat(event.price)
+  event.price = decimalPrice
 
   const numAttending = await Attendance.count({
     where: {
