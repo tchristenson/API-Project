@@ -813,6 +813,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
       userId: memberId
     }
   })
+  console.log(member.toJSON());
 
   if (!member) {
     let newErr = new Error()
@@ -840,10 +841,20 @@ router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
   if (group.organizerId === req.user.id && status === 'co-host') {
     member.status = 'co-host'
     await member.save()
+    member = member.toJSON()
+    member.memberId = memberId
+    delete member.updatedAt
+
+    res.status(200).json(member)
   }
   else if ((isCoHostorOrganizer || group.organizerId === req.user.id) && status === 'member') {
     member.status = 'member'
     await member.save()
+    member = member.toJSON()
+    member.memberId = memberId
+    delete member.updatedAt
+
+    res.status(200).json(member)
   }
   else {
     let newErr = new Error()
@@ -852,12 +863,6 @@ router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
 
     next(newErr);
   }
-
-  member = member.toJSON()
-  member.memberId = memberId
-  delete member.updatedAt
-
-  res.status(200).json(member)
 })
 
 
