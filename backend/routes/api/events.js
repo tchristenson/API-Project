@@ -560,6 +560,7 @@ router.put('/:eventId/attendance', requireAuth, async (req, res, next) => {
 
     next(newErr);
   }
+  const group = await Group.findByPk(event.groupId)
 
   if (status === 'pending') {
     let newErr = new Error()
