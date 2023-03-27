@@ -7,9 +7,11 @@ const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth')
 const { Attendance, EventImage, Event, User, Group, Membership, GroupImage, Venue } = require('../../db/models');
 
 const { check } = require('express-validator');
+const { query } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const group = require('../../db/models/group');
 const { start } = require('repl');
+const { validationResult } = require('express-validator');
 
 
 const router = express.Router();
@@ -50,12 +52,79 @@ const validateEventBody = [
   handleValidationErrors
 ];
 
+const queryValidator = [
+  query('page')
+    .optional()
+    .isInt({ min: 1})
+    .withMessage('Page must be greater than or equal to 1'),
+  query('size')
+    .optional()
+    .isInt({ min: 1})
+    .withMessage('Size must be greater than or equal to 1'),
+  query('name')
+    .optional()
+    .custom(value => {
+      if (isInteger(value)) {
+        throw new Error('Name must be a string')
+      }
+      return true
+    })
+    .withMessage('Name must be a string'),
+  query('type')
+    .optional()
+    .isIn(['Online', 'In Person', 'In person'])
+    .withMessage("Type must be 'Online' or 'In Person'"),
+  query('startDate')
+    .optional()
+    .custom(value => {
+      const date = new Date(value)
+      if (isNaN(date.getTime())) {
+        throw new Error('Start date must be a valid datetime')
+      }
+      return true
+    })
+    .withMessage('Start date must be a valid datetime'),
+  handleValidationErrors
+];
+
 // GET ALL EVENTS
-router.get('/', async (req, res, next) => {
+router.get('/', queryValidator, async (req, res, next) => {
+
   let eventArr = [];
   let finalObj = {};
 
+  let { page, size, name, type, startDate } = req.query;
+
+  page = parseInt(page)
+  size = parseInt(size)
+
+  if (Number.isNaN(page) || page < 1) page = 1;
+  if (page > 10) page = 10;
+  if (Number.isNaN(size) || size < 1) size = 20;
+  if (size > 20) size = 20;
+
+  const offset = size * (page - 1)
+  let pagination = {};
+
+  pagination.limit = size
+  pagination.offset = offset
+
+  let where = {};
+
+  if (name && name !== '' && typeof(name) === 'string') {
+    where.name = name
+  }
+
+  if (type && type !== '') {
+    where.type = type
+  }
+
+  if (startDate && startDate !== '') {
+    where.startDate = startDate
+  }
+
   let events = await Event.findAll({
+    where,
     attributes: {
       exclude: ['description', 'capacity', 'price', 'createdAt', 'updatedAt']
     },
@@ -68,7 +137,9 @@ router.get('/', async (req, res, next) => {
         model: Venue,
         attributes: ['id', 'city', 'state']
       }
-    ]
+    ],
+    limit: pagination.limit,
+    offset: pagination.offset
   })
 
   for (let i = 0; i < events.length; i++) {
@@ -102,6 +173,7 @@ router.get('/', async (req, res, next) => {
   }
 
   finalObj.Events = eventArr
+  finalObj.Page = page
   res.status(200).json(finalObj)
 })
 
@@ -443,6 +515,7 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
       delete newAttendance.updatedAt
       delete newAttendance.createdAt
       delete newAttendance.eventId
+      delete newAttendance.id
 
       res.status(200).json(newAttendance);
     }
