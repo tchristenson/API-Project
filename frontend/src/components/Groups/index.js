@@ -7,23 +7,27 @@ import "./Groups.css"
 function Groups() {
   const dispatch = useDispatch()
   const groups = useSelector(state => Object.values(state.groups))
-  console.log('groups inside of Groups component', groups)
-
-  const groupList = groups.map(group => (
-    <div key={group.id}>
-      {group.name}
-      {group.city}
-      {group.state}
-      {group.about}
-      {group.private}
-      {group.previewImage}
-    </div>
-  ))
-
+  // console.log('groups inside of Groups component', groups)
 
   useEffect(() => {
     dispatch(getAllGroupsThunk())
   }, [dispatch])
+
+  const groupList = groups.map(group => (
+    <div className="single-group" key={group.id}>
+      <div className="group-image">
+        {group.previewImage}
+      </div>
+      <div className="group-info">
+        <div className="group-name"><h3>{group.name}</h3></div>
+        <div className="group-city-state">{group.city}, {group.state}</div>
+        <div className="group-about">{group.about}</div>
+        <div className="group-private-status">{group.private ? "Private" : "Public"}</div>
+      </div>
+    </div>
+  ))
+
+
 
 
 
@@ -38,7 +42,7 @@ function Groups() {
       <div className="subheader">
         <h5>Groups in Meetup</h5>
       </div>
-      <div>
+      <div className="full-group-list">
         {groupList}
       </div>
     </body>

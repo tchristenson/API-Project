@@ -17,7 +17,7 @@ export const getAllGroupsThunk = () => async (dispatch) => {
   const response = await csrfFetch('/api/groups')
   if (response.ok) {
     const groups = await response.json()
-    console.log('groups inside of getAllGroupsThunk', groups)
+    // console.log('groups inside of getAllGroupsThunk', groups)
     dispatch(getAllGroupsAction(groups))
 
   }
@@ -30,7 +30,7 @@ const groupReducer = (state = {}, action) => {
   switch (action.type) {
     case GET_ALL_GROUPS:
       newState = {...state}
-      console.log('action.payload inside of groupReducer', action.payload)
+      // console.log('action.payload inside of groupReducer', action.payload)
       action.payload.Groups.forEach(group => newState[group.id] = group)
       return newState
     default:
