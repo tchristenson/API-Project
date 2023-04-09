@@ -1,0 +1,9 @@
+.event-and-group-links {
+  text-align: center;
+}
+
+.subheader {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
