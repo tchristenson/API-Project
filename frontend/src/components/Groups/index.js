@@ -1,5 +1,9 @@
 function Groups() {
-  return null
+  return (
+    <div>
+      Hello from Groups
+    </div>
+  )
 }
 
 export default Groups

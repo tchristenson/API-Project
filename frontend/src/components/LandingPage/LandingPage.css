@@ -1,0 +1,60 @@
+/* GRID LAYOUT START*/
+.landing-page-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-areas:
+    "see-all-groups-img find-an-event-img start-a-group-img"
+    "see-all-groups-text find-an-event-text start-a-group-text"
+    "see-all-groups-description find-an-event-description start-a-group-description";
+}
+.see-all-groups-img {
+  grid-area: see-all-groups-img;
+}
+.see-all-groups-text {
+  grid-area: see-all-groups-text
+}
+.see-all-groups-description {
+  grid-area: see-all-groups-description
+}
+.find-an-event-img {
+  grid-area: find-an-event-img;
+}
+.find-an-event-text {
+  grid-area: find-an-event-text
+}
+.find-an-event-description {
+  grid-area: find-an-event-description
+}
+.start-a-new-group-img {
+  grid-area: start-a-group-img;
+}
+.start-a-group-text {
+  grid-area: start-a-group-text;
+}
+.start-a-group-description {
+  grid-area: start-a-group-description
+}
+/* GRID LAYOUT END*/
+
+.main-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.masthead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid gray;
+}
+
+.secondary-row {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.sign-up-button {
+  text-align: center;
+}
