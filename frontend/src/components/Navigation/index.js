@@ -34,14 +34,23 @@ function Navigation({ isLoaded }) {
   }
 
   return (
-    <ul>
-      <li>
-        <NavLink exact to="/">
-          Home
-        </NavLink>
-      </li>
-      {isLoaded && sessionLinks}
-    </ul>
+    <body>
+      <header>
+        <div className="masthead">
+          <div className="masthead__home-button">
+            <h2>
+              <NavLink exact to="/">
+              Meetup
+            </NavLink>
+
+              </h2>
+          </div>
+          <div className="masthead__actions">
+            {isLoaded && sessionLinks}
+          </div>
+        </div>
+      </header>
+    </body>
   );
 }
 

@@ -1,0 +1,33 @@
+.event-and-group-links {
+  text-align: center;
+}
+
+.full-event-list {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.event-about {
+  display: inline-block;
+}
+
+.event-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.image-event-wrapper {
+  display: flex;
+  align-items: center;
+  border-top: 2px solid gray;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: black
+}
+
+.placeholder {
+  color: red
+}

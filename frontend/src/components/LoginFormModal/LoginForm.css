@@ -1,0 +1,16 @@
+.credentials-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.credentials-errors {
+  color: red;
+}
+
+.login-container {
+  text-align: center;
+}
+
+.placeholder {
+  color: red
+}

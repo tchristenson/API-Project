@@ -1,0 +1,36 @@
+.event-and-group-links {
+  text-align: center;
+}
+
+.full-group-list {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.group-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: black
+}
+
+.placeholder {
+  color: red
+}
+
+.single-group {
+  display: flex;
+  align-items: center;
+  border-top: 2px solid gray;
+
+}
+
+.subheader {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
