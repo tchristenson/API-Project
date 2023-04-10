@@ -6,11 +6,12 @@ import { useSelector } from "react-redux"
 function GroupDetails() {
 
   const {groupId} = useParams()
-  // console.log('groupId', groupId)
+  console.log('groupId', groupId)
   const group = useSelector(state => state.groups[groupId])
-  // console.log('group inside of GroupDetail', group)
+  console.log('group inside of GroupDetail', group)
 
   return (
+    // <div>Hello</div>
     <body>
       <div className="breadcrumb-link">
         <span>{'< '}<NavLink to='/groups'>Groups</NavLink></span>

@@ -1,10 +1,13 @@
 import {useState, useEffect} from 'react'
 import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import './GroupNew.css'
+import { makeNewGroupThunk } from '../../store/groups';
 
 function NewGroup() {
 
   const history = useHistory();
+  const dispatch = useDispatch()
   const [location, setLocation] = useState('');
   const [groupName, setGroupName] = useState('')
   const [description, setDescription] = useState('')
@@ -14,10 +17,18 @@ function NewGroup() {
   const [errors, setErrors] = useState({})
   const [hasSubmitted, setHasSubmitted] = useState(false)
 
+  // HELPER FUNCTIONS FOR DATA VALIDATION / SANITIZING
   const fileTypeCheck = (str) => {
     const stringArr = str.split('.');
     const finalEl = stringArr[stringArr.length -1]
     return finalEl
+  }
+
+  const cityStateSplit = (str) => {
+    const stringArr = str.split(',')
+    const city = stringArr[0]
+    const state = (stringArr[1].trim())
+    return [city, state]
   }
 
   useEffect(() => {
@@ -37,6 +48,18 @@ function NewGroup() {
     e.preventDefault()
     setHasSubmitted(true);
 
+    const payload = {
+      city: cityStateSplit(location)[0],
+      state: cityStateSplit(location)[1],
+      groupName,
+      description,
+      groupType,
+      isPrivate,
+      imageUrl
+    }
+
+    let newGroup = dispatch(makeNewGroupThunk(payload))
+
     setLocation('')
     setGroupName('')
     setDescription('')
@@ -45,6 +68,10 @@ function NewGroup() {
     setImageUrl('')
     setErrors({})
     setHasSubmitted(false)
+
+    // if (newGroup) {
+    //   history.push(`/groups/${newGroup.id}`);
+    // }
 
     // Must build in navigation to new group detail page upon successful creation
     // thinking I'll need useSelector and get the group.id from there
@@ -121,8 +148,8 @@ function NewGroup() {
         <p>Is this group private or public?</p>
         <select onChange={e => setIsPrivate(e.target.value)}>
           <option value="">{'(select one)'}</option>
-          <option value={isPrivate}>Private</option>
-          <option value={isPrivate}>Public</option>
+          <option value={true}>Private</option>
+          <option value={false}>Public</option>
         </select>
         {errors.isPrivate && (<p className='errors'>{errors.isPrivate}</p>)}
 
@@ -138,7 +165,7 @@ function NewGroup() {
         {errors.imageUrl && (<p className='errors'>{errors.imageUrl}</p>)}
       </div>
       <div className='submit-button'>
-        <button>Create Group</button>
+        <button type="submit">Create Group</button>
       </div>
 
     </form>
