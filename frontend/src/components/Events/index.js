@@ -14,7 +14,7 @@ function Events() {
   }, [dispatch])
 
   const eventList = events.map(event => (
-    <NavLink className="nav-link" to={`/event/${event.id}`}>
+    <NavLink className="nav-link" to={`/events/${event.id}`}>
       <div className="single-event" key={event.id}>
         <div className="image-event-wrapper">
           <div className="event-image">
