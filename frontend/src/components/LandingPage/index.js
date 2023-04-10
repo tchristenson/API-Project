@@ -1,7 +1,10 @@
 import { NavLink } from "react-router-dom"
 import "./LandingPage.css"
+import { useSelector } from "react-redux"
 
 function LandingPage () {
+  const sessionUser = useSelector(state => state.session.user)
+
   return (
     <>
       <div className="main-row">
@@ -35,9 +38,11 @@ function LandingPage () {
           <h4 className="start-a-group-text">Start a new group</h4>
           <h5 className="start-a-group-description">You don’t have to be an expert to gather people together and explore shared interests.</h5>
       </div>
+      {!sessionUser &&
       <div className="sign-up-button">
         <button >Join Meetup</button>
-    </div>
+      </div>}
+
     </>
   )
 }

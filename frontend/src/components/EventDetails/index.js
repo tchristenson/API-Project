@@ -39,9 +39,9 @@ function EventDetails() {
             <div>{event.type}</div>
           </div>
         </div>
-     </div>
-     <h2>Details</h2>
-     <p className="placeholder">PLACEHOLDER TEXT ABOUT THE EVENT</p>
+      </div>
+      <h2>Details</h2>
+      <p className="placeholder">PLACEHOLDER TEXT ABOUT THE EVENT</p>
     </body>
   )
 }
