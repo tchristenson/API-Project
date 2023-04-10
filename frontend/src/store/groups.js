@@ -1,8 +1,6 @@
 import { csrfFetch } from "./csrf";
 
-
 // ACTIONS
-
 const GET_ALL_GROUPS = 'groups/getAllGroups'
 
 const getAllGroupsAction = (payload) => {
@@ -19,12 +17,10 @@ export const getAllGroupsThunk = () => async (dispatch) => {
     const groups = await response.json()
     // console.log('groups inside of getAllGroupsThunk', groups)
     dispatch(getAllGroupsAction(groups))
-
   }
 }
 
 //REDUCER
-
 const groupReducer = (state = {}, action) => {
   let newState;
   switch (action.type) {
