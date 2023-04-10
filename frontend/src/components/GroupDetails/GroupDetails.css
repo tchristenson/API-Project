@@ -1,0 +1,22 @@
+.about-info {
+  justify-content: center;
+}
+
+.group-and-image-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.group-organizer {
+  color: red
+}
+
+.placeholder {
+  color: red
+}
+
+.organizer-info {
+  color: red;
+  justify-content: center;
+}

@@ -13,10 +13,20 @@
   flex-direction: column;
 }
 
+.nav-link {
+  text-decoration: none;
+  color: black
+}
+
+.placeholder {
+  color: red
+}
+
 .single-group {
   display: flex;
   align-items: center;
   border-top: 2px solid gray;
+
 }
 
 .subheader {
