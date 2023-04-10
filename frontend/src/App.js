@@ -5,8 +5,9 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage";
 import Groups from "./components/Groups"
-import Events from "./components/Events"
 import GroupDetails from "./components/GroupDetails"
+import NewGroup from "./components/GroupNew"
+import Events from "./components/Events"
 import EventDetails from "./components/EventDetails";
 
 function App() {
@@ -26,6 +27,9 @@ function App() {
           </Route>
           <Route exact path='/groups'>
             <Groups />
+          </Route>
+          <Route exact path='/groups/new'>
+            <NewGroup />
           </Route>
           <Route exact path='/groups/:groupId'>
             <GroupDetails />
