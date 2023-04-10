@@ -1,0 +1,26 @@
+.event-container {
+  display: flex;
+}
+
+.event-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.group-image-detail {
+  display: flex
+}
+
+.group-detail-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.group-event-info-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.placeholder {
+  color: red
+}
