@@ -2,18 +2,20 @@ import {useState, useEffect} from 'react'
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import './GroupNew.css'
-import { makeNewGroupThunk } from '../../store/groups';
+import { makeNewGroupThunk, editGroupThunk } from '../../store/groups';
 
-function NewGroup() {
+function GroupForm({ group, formType }) {
+
+  // console.log('group inside of group form', group)
 
   const history = useHistory();
   const dispatch = useDispatch()
-  const [location, setLocation] = useState('');
-  const [groupName, setGroupName] = useState('')
-  const [description, setDescription] = useState('')
-  const [groupType, setGroupType] = useState('')
-  const [isPrivate, setIsPrivate] = useState('')
-  const [imageUrl, setImageUrl] = useState('')
+  const [location, setLocation] = useState(group?.location);
+  const [groupName, setGroupName] = useState(group?.groupName)
+  const [description, setDescription] = useState(group?.description)
+  const [groupType, setGroupType] = useState(group?.groupType)
+  const [isPrivate, setIsPrivate] = useState(group?.isPrivate)
+  const [imageUrl, setImageUrl] = useState(group?.imageUrl)
   const [errors, setErrors] = useState({})
   const [hasSubmitted, setHasSubmitted] = useState(false)
 
@@ -69,7 +71,8 @@ function NewGroup() {
     setErrors({})
     setHasSubmitted(false)
 
-    let newGroup = await dispatch(makeNewGroupThunk(payload))
+    if (formType === 'Create Group') dispatch(makeNewGroupThunk(payload))
+    if (formType === 'Edit Group') dispatch(editGroupThunk(payload))
 
     // console.log('newGroup after dispatching to thunk', newGroup)
 
@@ -84,8 +87,17 @@ function NewGroup() {
   return(
     <form className='new-group-form' onSubmit={handleSubmit}>
       <div className='header-container'>
-        <h4>BECOME AN ORGANIZER</h4>
-        <h2>We'll walk you through a few steps to build your local community</h2>
+        {formType === 'Create Group' ? (
+          <>
+            <h4>BECOME AN ORGANIZER</h4>
+            <h2>We'll walk you through a few steps to build your local community</h2>
+          </>
+        ) : (
+          <>
+            <h4>UPDATE YOUR GROUP'S INFORMATION</h4>
+            <h2>We'll walk you through a few steps to update your group's information</h2>
+          </>
+        )}
       </div>
 
       <div className='location-container'>
@@ -175,4 +187,4 @@ function NewGroup() {
   )
 }
 
-export default NewGroup
+export default GroupForm
