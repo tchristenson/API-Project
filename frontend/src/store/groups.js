@@ -115,9 +115,9 @@ export const editGroupThunk = (editedGroup) => async (dispatch) => {
     }),
   });
   if (response.ok) {
-    // console.log('response inside of makeNewGroupThunk', response)
+    // console.log('response inside of editGroupThunk', response)
     const group = await response.json();
-    // console.log('group inside of makeNewGroupThunk', group)
+    console.log('group inside of editGroupThunk', group)
 
     const imageResponse = await csrfFetch(`/api/groups/${group.id}/images`, {
       method: "POST",
