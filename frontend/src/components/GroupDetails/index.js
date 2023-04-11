@@ -7,19 +7,29 @@ import { useEffect } from "react"
 
 function GroupDetails() {
   const dispatch = useDispatch()
-  const {groupId} = useParams()
+  let {groupId} = useParams()
+  groupId = parseInt(groupId)
+  console.log('groupId inside GroupDetail component', (groupId))
 
   useEffect(() => {
     dispatch(getSingleGroupThunk(groupId))
-  }, [dispatch])
+  }, [dispatch, groupId])
 
   const group = useSelector(state => state.groups[groupId])
-  // console.log('group inside of GroupDetail component', group)
+  const currUserId = useSelector(state => state.session.user.id)
+  // console.log('typeof groupId inside GroupDetail component', typeof (groupId))
+  console.log('currUserId inside GroupDetail component', currUserId)
+  // console.log('typeof currUserId inside GroupDetail component', typeof currUserId)
+  console.log('group inside of GroupDetail component', group)
+  const organizerId = group.Organizer.id
+  console.log('organizerId inside of GroupDetail component', organizerId)
   if (!group) return null
 
   // console.log('groupId', groupId)
   // console.log('group.GroupImages[0].url printing here ------>', group.GroupImages[0].url)
-
+  function handleClick() {
+    alert('Feature Coming Soon...')
+  }
 
   return (
     // <div>Hello</div>
@@ -29,15 +39,23 @@ function GroupDetails() {
       </div>
       <div className="group-and-image-wrapper">
         <div className="group-image">
-          {/* {group.GroupImages[0].url} */}
+          {group.GroupImages[0].url}
         </div>
         <div className="group-info">
           <div className="group-name"><h3>{group.name}</h3></div>
           <div className="group-city-state">{group.city}, {group.state}</div>
           <div className="group-private-status">{group.private ? "Private" : "Public"}</div>
           <div className="placeholder">PLACEHOLDER - must add # of events</div>
-          {/* <div className="group-organizer">Organized by {group.Organizer.firstName} {group.Organizer.lastName}</div> */}
-          <button className="join-group-button">Join this group</button>
+          <div className="group-organizer">Organized by {group.Organizer.firstName} {group.Organizer.lastName}</div>
+          <button className="join-group-button" onClick={handleClick}>Join this group</button>
+          {currUserId === organizerId && (
+            <>
+              <button className="create-event-button">Create event</button>
+              <button className="update-group-button">Update</button>
+              <button className="delete-group-button">Delete</button>
+            </>
+          )}
+
         </div>
       </div>
       <div></div>
