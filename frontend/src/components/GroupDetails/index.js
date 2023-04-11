@@ -20,7 +20,7 @@ function GroupDetails() {
   const currUserId = useSelector(state => state.session.user.id)
   const group = useSelector(state => state.groups[groupId])
 
-  if (!group || !group.Organizer || !group.GroupImages) return null
+  if (!group || !group.Organizer) return null
 
   // console.log('typeof groupId inside GroupDetail component', typeof (groupId))
   console.log('currUserId inside GroupDetail component', currUserId)
@@ -36,15 +36,20 @@ function GroupDetails() {
   }
 
   return (
-    // <div>Hello</div>
     <body>
       <div className="breadcrumb-link">
         <span>{'< '}<NavLink to='/groups'>Groups</NavLink></span>
       </div>
       <div className="group-and-image-wrapper">
-        <div className="group-image">
-          {group.GroupImages[0].url}
+        {group.GroupImages.length ? (
+          <div className="group-image">
+            {group.GroupImages[0].url}
+          </div>
+          ) : (
+          <div className="group-image">
+          Preview Image Unavailable
         </div>
+        )}
         <div className="group-info">
           <div className="group-name"><h3>{group.name}</h3></div>
           <div className="group-city-state">{group.city}, {group.state}</div>

@@ -55,7 +55,7 @@ function NewGroup() {
       description,
       groupType,
       isPrivate,
-      // imageUrl
+      imageUrl
     }
 
     // console.log('payload', payload)

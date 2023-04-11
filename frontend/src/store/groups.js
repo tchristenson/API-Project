@@ -67,14 +67,26 @@ export const makeNewGroupThunk = (payload) => async (dispatch) => {
       private: payload.isPrivate,
       city: payload.city,
       state: payload.state,
-      // imageUrl
     }),
   });
   if (response.ok) {
     // console.log('response inside of makeNewGroupThunk', response)
     const group = await response.json();
     console.log('group inside of makeNewGroupThunk', group)
-    dispatch(makeNewGroupAction(group));
+
+    const imageResponse = await csrfFetch(`/api/groups/${group.id}/images`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        url: payload.imageUrl,
+        preview: true
+      }),
+    })
+    if (imageResponse.ok) {
+      dispatch(makeNewGroupAction(group));
+    }
   }
 }
 
