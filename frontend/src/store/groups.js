@@ -4,6 +4,7 @@ import { csrfFetch } from "./csrf";
 const GET_ALL_GROUPS = 'groups/getAllGroups'
 const GET_SINGLE_GROUP = 'groups/getSingleGroup'
 const MAKE_NEW_GROUP = 'groups/makeNewGroup'
+const DELETE_GROUP = 'groups/deleteGroup'
 
 const getAllGroupsAction = (groups) => {
   return {
@@ -22,6 +23,13 @@ const getSingleGroupAction = (group) => {
 const makeNewGroupAction = (group) => {
   return {
     type: MAKE_NEW_GROUP,
+    group
+  }
+}
+
+const deleteGroupAction = (group) => {
+  return {
+    type: DELETE_GROUP,
     group
   }
 }
@@ -60,15 +68,22 @@ export const makeNewGroupThunk = (payload) => async (dispatch) => {
       city: payload.city,
       state: payload.state,
       // imageUrl
-    }
-
-    ),
+    }),
   });
   if (response.ok) {
     // console.log('response inside of makeNewGroupThunk', response)
     const group = await response.json();
     console.log('group inside of makeNewGroupThunk', group)
     dispatch(makeNewGroupAction(group));
+  }
+}
+
+export const deleteGroupThunk = (groupId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/groups/${groupId}`)
+  if (response.ok) {
+    const group = await response.json()
+    console.log('group inside of deleteGroupThunk', group)
+    dispatch(deleteGroupAction(group))
   }
 }
 
@@ -91,6 +106,10 @@ const groupReducer = (state = {}, action) => {
     case MAKE_NEW_GROUP:
       newState = {...state}
       newState[action.group.id] = action.group
+      return newState
+    case DELETE_GROUP:
+      newState = {...state}
+      delete newState[action.group.id]
       return newState
     default:
       return state
