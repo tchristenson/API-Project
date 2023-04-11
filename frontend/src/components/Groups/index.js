@@ -7,7 +7,7 @@ import "./Groups.css"
 function Groups() {
   const dispatch = useDispatch()
   const groups = useSelector(state => Object.values(state.groups))
-  console.log('groups inside of Groups component', groups)
+  // console.log('groups inside of Groups component', groups)
 
   useEffect(() => {
     dispatch(getAllGroupsThunk())

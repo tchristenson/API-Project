@@ -12,10 +12,11 @@ function DeleteGroupModal({groupId}) {
   const history = useHistory()
   const { closeModal } = useModal();
 
-  const handleSubmit = (e) => {
+  const handleDelete = (e) => {
     e.preventDefault();
 
     dispatch(deleteGroupThunk(groupId))
+    closeModal()
 
     history.push('/groups')
   };
@@ -25,7 +26,7 @@ function DeleteGroupModal({groupId}) {
       <h2>Confirm Delete</h2>
       <h4>Are you sure you want to remove this group?</h4>
 
-      <button onClick={handleSubmit}>
+      <button onClick={handleDelete}>
         {'Yes (Delete Group)'}
       </button>
       <button onClick={closeModal}>

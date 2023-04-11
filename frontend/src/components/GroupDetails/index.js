@@ -11,7 +11,7 @@ function GroupDetails() {
   const dispatch = useDispatch()
   let {groupId} = useParams()
   groupId = parseInt(groupId)
-  console.log('groupId inside GroupDetail component', (groupId))
+  // console.log('groupId inside GroupDetail component', (groupId))
 
   useEffect(() => {
     dispatch(getSingleGroupThunk(groupId))
@@ -23,9 +23,9 @@ function GroupDetails() {
   if (!group || !group.Organizer) return null
 
   // console.log('typeof groupId inside GroupDetail component', typeof (groupId))
-  console.log('currUserId inside GroupDetail component', currUserId)
+  // console.log('currUserId inside GroupDetail component', currUserId)
   // console.log('typeof currUserId inside GroupDetail component', typeof currUserId)
-  console.log('group inside of GroupDetail component', group)
+  // console.log('group inside of GroupDetail component', group)
   const organizerId = group.Organizer.id
   // console.log('organizerId inside of GroupDetail component', organizerId)
 

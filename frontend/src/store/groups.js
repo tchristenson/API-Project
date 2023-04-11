@@ -27,10 +27,10 @@ const makeNewGroupAction = (group) => {
   }
 }
 
-const deleteGroupAction = (group) => {
+const deleteGroupAction = (groupId) => {
   return {
     type: DELETE_GROUP,
-    group
+    groupId
   }
 }
 
@@ -39,7 +39,7 @@ export const getAllGroupsThunk = () => async (dispatch) => {
   const response = await csrfFetch('/api/groups')
   if (response.ok) {
     const groups = await response.json()
-    console.log('groups inside of getAllGroupsThunk', groups)
+    // console.log('groups inside of getAllGroupsThunk', groups)
     dispatch(getAllGroupsAction(groups))
   }
 }
@@ -48,7 +48,7 @@ export const getSingleGroupThunk = (groupId) => async (dispatch) => {
   const response = await csrfFetch(`/api/groups/${groupId}`)
   if (response.ok) {
     const group = await response.json()
-    console.log('group inside of getSingleGroupThunk', group)
+    // console.log('group inside of getSingleGroupThunk', group)
     dispatch(getSingleGroupAction(group))
   }
 }
@@ -72,7 +72,7 @@ export const makeNewGroupThunk = (payload) => async (dispatch) => {
   if (response.ok) {
     // console.log('response inside of makeNewGroupThunk', response)
     const group = await response.json();
-    console.log('group inside of makeNewGroupThunk', group)
+    // console.log('group inside of makeNewGroupThunk', group)
 
     const imageResponse = await csrfFetch(`/api/groups/${group.id}/images`, {
       method: "POST",
@@ -91,11 +91,14 @@ export const makeNewGroupThunk = (payload) => async (dispatch) => {
 }
 
 export const deleteGroupThunk = (groupId) => async (dispatch) => {
-  const response = await csrfFetch(`/api/groups/${groupId}`)
+  const response = await csrfFetch(`/api/groups/${groupId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
   if (response.ok) {
-    const group = await response.json()
-    console.log('group inside of deleteGroupThunk', group)
-    dispatch(deleteGroupAction(group))
+    dispatch(deleteGroupAction(groupId))
   }
 }
 
@@ -109,11 +112,11 @@ const groupReducer = (state = {}, action) => {
       action.groups.Groups.forEach(group => newState[group.id] = group)
       return newState
     case GET_SINGLE_GROUP:
-      console.log('action inside of reducer', action)
+      // console.log('action inside of reducer', action)
       newState = {...state}
-      console.log('newState inside of reducer before edits', newState)
+      // console.log('newState inside of reducer before edits', newState)
       newState[action.group.id] = action.group
-      console.log('newState inside of reducer after edits', newState)
+      // console.log('newState inside of reducer after edits', newState)
       return newState
     case MAKE_NEW_GROUP:
       newState = {...state}
@@ -121,7 +124,8 @@ const groupReducer = (state = {}, action) => {
       return newState
     case DELETE_GROUP:
       newState = {...state}
-      delete newState[action.group.id]
+      console.log('newState inside case DELETE Reducer', newState)
+      delete newState[action.groupId]
       return newState
     default:
       return state
