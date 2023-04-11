@@ -99,7 +99,8 @@ export const makeNewGroupThunk = (group) => async (dispatch) => {
 }
 
 export const editGroupThunk = (editedGroup) => async (dispatch) => {
-  const response = await csrfFetch(`/api/groups/${editedGroup.id}/edit`, {
+  console.log('editedGroup inside editGroup thunk', editedGroup)
+  const response = await csrfFetch(`/api/groups/${editedGroup.id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

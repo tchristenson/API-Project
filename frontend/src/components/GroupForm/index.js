@@ -10,14 +10,15 @@ function GroupForm({ group, formType }) {
 
   const history = useHistory();
   const dispatch = useDispatch()
+  const [errors, setErrors] = useState({})
+  const [hasSubmitted, setHasSubmitted] = useState(false)
+
   const [location, setLocation] = useState(group?.location);
   const [groupName, setGroupName] = useState(group?.groupName)
   const [description, setDescription] = useState(group?.description)
   const [groupType, setGroupType] = useState(group?.groupType)
   const [isPrivate, setIsPrivate] = useState(group?.isPrivate)
   const [imageUrl, setImageUrl] = useState(group?.imageUrl)
-  const [errors, setErrors] = useState({})
-  const [hasSubmitted, setHasSubmitted] = useState(false)
 
   // HELPER FUNCTIONS FOR DATA VALIDATION / SANITIZING
   const fileTypeCheck = (str) => {
@@ -57,10 +58,11 @@ function GroupForm({ group, formType }) {
       description,
       groupType,
       isPrivate,
-      imageUrl
+      imageUrl,
+      id: group?.id
     }
 
-    // console.log('payload', payload)
+    console.log('payload inside of GroupForm', payload)
 
     setLocation('')
     setGroupName('')
@@ -180,7 +182,7 @@ function GroupForm({ group, formType }) {
         {errors.imageUrl && (<p className='errors'>{errors.imageUrl}</p>)}
       </div>
       <div className='submit-button'>
-        <button type="submit">Create Group</button>
+        <button type="submit">{formType === 'Create Group' ? 'Create Group' : 'Update Group' }</button>
       </div>
 
     </form>

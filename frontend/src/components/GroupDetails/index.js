@@ -1,5 +1,5 @@
 import "./GroupDetails.css"
-import { useParams, NavLink } from "react-router-dom"
+import { useParams, NavLink, Link } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { getSingleGroupThunk } from "../../store/groups"
 import { useEffect } from "react"
@@ -61,7 +61,11 @@ function GroupDetails() {
           {currUserId === organizerId && (
             <>
               <button className="create-event-button">Create event</button>
-              <button className="update-group-button">Update</button>
+
+              <Link to={`/groups/${group.id}/edit`}>
+                <button className="update-group-button">Update</button>
+              </Link>
+
               <OpenModalButton
                 buttonText="Delete"
                 modalComponent={<DeleteGroupModal groupId={groupId}/>}

@@ -6,14 +6,23 @@ import { editGroupThunk } from "../../store/groups";
 
 const EditGroupForm = () => {
   const { groupId } = useParams();
-  const group = useSelector(state => state.groups[groupId]);
+  let group = useSelector(state => state.groups[groupId]);
+  // console.log('group inside GroupEditForm', group)
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(editGroupThunk(group))
-  }, [dispatch])
-
   if (!group) return(<></>);
+
+  group = {
+    ...group,
+    ['location']: `${group.city}, ${group.state}`,
+    ['groupName']: group.name,
+    ['description']: group.about,
+    ['groupType']: group.type,
+    ['isPrivate']: group.private,
+    ['imageUrl']: group.GroupImages[0].url
+  }
+
+  // console.log('group after key edits', group)
+
 
   return (
     Object.keys(group).length > 1 && (
