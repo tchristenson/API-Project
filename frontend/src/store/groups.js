@@ -2,19 +2,27 @@ import { csrfFetch } from "./csrf";
 
 // ACTIONS
 const GET_ALL_GROUPS = 'groups/getAllGroups'
+const GET_SINGLE_GROUP = 'groups/getSingleGroup'
 const MAKE_NEW_GROUP = 'groups/makeNewGroup'
 
-const getAllGroupsAction = (payload) => {
+const getAllGroupsAction = (groups) => {
   return {
     type: GET_ALL_GROUPS,
-    payload
+    groups
   }
 }
 
-const makeNewGroupAction = (payload) => {
+const getSingleGroupAction = (group) => {
+  return {
+    type: GET_SINGLE_GROUP,
+    group
+  }
+}
+
+const makeNewGroupAction = (group) => {
   return {
     type: MAKE_NEW_GROUP,
-    payload
+    group
   }
 }
 
@@ -23,8 +31,17 @@ export const getAllGroupsThunk = () => async (dispatch) => {
   const response = await csrfFetch('/api/groups')
   if (response.ok) {
     const groups = await response.json()
-    // console.log('groups inside of getAllGroupsThunk', groups)
+    console.log('groups inside of getAllGroupsThunk', groups)
     dispatch(getAllGroupsAction(groups))
+  }
+}
+
+export const getSingleGroupThunk = (groupId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/groups/${groupId}`)
+  if (response.ok) {
+    const group = await response.json()
+    console.log('group inside of getSingleGroupThunk', group)
+    dispatch(getSingleGroupAction(group))
   }
 }
 
@@ -41,13 +58,14 @@ export const makeNewGroupThunk = (payload) => async (dispatch) => {
       type: payload.groupType,
       private: payload.isPrivate,
       city: payload.city,
-      state: payload.state
+      state: payload.state,
+      // imageUrl
     }
 
     ),
   });
   if (response.ok) {
-    console.log('response inside of makeNewGroupThunk', response)
+    // console.log('response inside of makeNewGroupThunk', response)
     const group = await response.json();
     console.log('group inside of makeNewGroupThunk', group)
     dispatch(makeNewGroupAction(group));
@@ -61,11 +79,19 @@ const groupReducer = (state = {}, action) => {
     case GET_ALL_GROUPS:
       newState = {...state}
       // console.log('action.payload inside of groupReducer', action.payload)
-      action.payload.Groups.forEach(group => newState[group.id] = group)
+      action.groups.Groups.forEach(group => newState[group.id] = group)
+      return newState
+    case GET_SINGLE_GROUP:
+      console.log('action inside of reducer', action)
+      newState = {...state}
+      console.log('newState inside of reducer before edits', newState)
+      newState[action.group.id] = action.group
+      console.log('newState inside of reducer after edits', newState)
       return newState
     case MAKE_NEW_GROUP:
       newState = {...state}
-      // newState[action.group.id] = group
+      newState[action.group.id] = action.group
+      return newState
     default:
       return state
   }

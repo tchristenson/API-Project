@@ -44,7 +44,7 @@ function NewGroup() {
     }
   }, [location, groupName, description, groupType, isPrivate, imageUrl])
 
-  function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setHasSubmitted(true);
 
@@ -55,10 +55,10 @@ function NewGroup() {
       description,
       groupType,
       isPrivate,
-      imageUrl
+      // imageUrl
     }
 
-    let newGroup = dispatch(makeNewGroupThunk(payload))
+    // console.log('payload', payload)
 
     setLocation('')
     setGroupName('')
@@ -69,9 +69,13 @@ function NewGroup() {
     setErrors({})
     setHasSubmitted(false)
 
-    // if (newGroup) {
-    //   history.push(`/groups/${newGroup.id}`);
-    // }
+    let newGroup = await dispatch(makeNewGroupThunk(payload))
+
+    // console.log('newGroup after dispatching to thunk', newGroup)
+
+    // newGroup.then((data) => {
+    //   console.log('data from resolved promise', data)
+    // })
 
     // Must build in navigation to new group detail page upon successful creation
     // thinking I'll need useSelector and get the group.id from there
@@ -125,8 +129,7 @@ function NewGroup() {
           <li>Who should join?</li>
           <li>What will you do at your events?</li>
         </ol>
-        <input
-          type="text-area"
+        <textarea
           placeholder="Please write at least 30 characters"
           value={description}
           onChange={e => setDescription(e.target.value)}
@@ -140,8 +143,8 @@ function NewGroup() {
         <p>Is this an in person or online group?</p>
         <select onChange={e => setGroupType(e.target.value)}>
           <option value="">{'(select one)'}</option>
-          <option value={groupType}>Online</option>
-          <option value={groupType}>In Person</option>
+          <option value={'Online'}>Online</option>
+          <option value={'In Person'}>In Person</option>
         </select>
         {errors.groupType && (<p className='errors'>{errors.groupType}</p>)}
 
