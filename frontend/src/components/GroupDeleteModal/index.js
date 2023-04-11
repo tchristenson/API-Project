@@ -15,7 +15,7 @@ function DeleteGroupModal({groupId}) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-
+    dispatch(deleteGroupThunk(groupId))
 
     history.push('/groups')
   };

@@ -17,15 +17,17 @@ function GroupDetails() {
     dispatch(getSingleGroupThunk(groupId))
   }, [dispatch, groupId])
 
-  const group = useSelector(state => state.groups[groupId])
   const currUserId = useSelector(state => state.session.user.id)
+  const group = useSelector(state => state.groups[groupId])
+
+  if (!group || !group.Organizer || !group.GroupImages) return null
+
   // console.log('typeof groupId inside GroupDetail component', typeof (groupId))
   console.log('currUserId inside GroupDetail component', currUserId)
   // console.log('typeof currUserId inside GroupDetail component', typeof currUserId)
   console.log('group inside of GroupDetail component', group)
-  // const organizerId = group.Organizer.id
+  const organizerId = group.Organizer.id
   // console.log('organizerId inside of GroupDetail component', organizerId)
-  if (!group) return null
 
   // console.log('groupId', groupId)
   // console.log('group.GroupImages[0].url printing here ------>', group.GroupImages[0].url)
@@ -41,17 +43,17 @@ function GroupDetails() {
       </div>
       <div className="group-and-image-wrapper">
         <div className="group-image">
-          {/* {group.GroupImages[0].url} */}
+          {group.GroupImages[0].url}
         </div>
         <div className="group-info">
           <div className="group-name"><h3>{group.name}</h3></div>
           <div className="group-city-state">{group.city}, {group.state}</div>
           <div className="group-private-status">{group.private ? "Private" : "Public"}</div>
           <div className="placeholder">PLACEHOLDER - must add # of events</div>
-          {/* <div className="group-organizer">Organized by {group.Organizer.firstName} {group.Organizer.lastName}</div> */}
+          <div className="group-organizer">Organized by {group.Organizer.firstName} {group.Organizer.lastName}</div>
           {/* Will need to conditionally render the join button if the user is not the organizer */}
           <button className="join-group-button" onClick={handleClick}>Join this group</button>
-          {/* {currUserId === organizerId && ( */}
+          {currUserId === organizerId && (
             <>
               <button className="create-event-button">Create event</button>
               <button className="update-group-button">Update</button>
@@ -60,14 +62,15 @@ function GroupDetails() {
                 modalComponent={<DeleteGroupModal groupId={groupId}/>}
               />
             </>
-          {/* )} */}
+          )}
+
 
         </div>
       </div>
       <div></div>
       <div className="organizer-info">
         <h3>Organizer</h3>
-        {/* <h5>{group.Organizer.firstName} {group.Organizer.lastName}</h5> */}
+        <h5>{group.Organizer.firstName} {group.Organizer.lastName}</h5>
       </div>
       <div className="about-info">
         <h3>What we're about</h3>
