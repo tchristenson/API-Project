@@ -4,6 +4,20 @@ import { useSelector, useDispatch } from 'react-redux';
 import './GroupNew.css'
 import { makeNewGroupThunk, editGroupThunk } from '../../store/groups';
 
+  // HELPER FUNCTIONS FOR DATA VALIDATION / SANITIZING
+  export const fileTypeCheck = (str) => {
+    const stringArr = str.split('.');
+    const finalEl = stringArr[stringArr.length -1]
+    return finalEl
+  }
+
+  const cityStateSplit = (str) => {
+    const stringArr = str.split(',')
+    const city = stringArr[0]
+    const state = (stringArr[1].trim())
+    return [city, state]
+  }
+
 function GroupForm({ group, formType }) {
 
   // console.log('group inside of group form', group)
@@ -19,20 +33,6 @@ function GroupForm({ group, formType }) {
   const [groupType, setGroupType] = useState(group?.groupType)
   const [isPrivate, setIsPrivate] = useState(group?.isPrivate)
   const [imageUrl, setImageUrl] = useState(group?.imageUrl)
-
-  // HELPER FUNCTIONS FOR DATA VALIDATION / SANITIZING
-  const fileTypeCheck = (str) => {
-    const stringArr = str.split('.');
-    const finalEl = stringArr[stringArr.length -1]
-    return finalEl
-  }
-
-  const cityStateSplit = (str) => {
-    const stringArr = str.split(',')
-    const city = stringArr[0]
-    const state = (stringArr[1].trim())
-    return [city, state]
-  }
 
   useEffect(() => {
     if (hasSubmitted) {
