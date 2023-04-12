@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
-import { useHistory } from "react-router"
-import { useDispatch } from "react-redux"
+import { useHistory, useParams } from "react-router"
+import { useDispatch, useSelector } from "react-redux"
 import { fileTypeCheck } from "../GroupForm"
 import './EventNew.css'
 
@@ -8,6 +8,10 @@ function EventForm({event, formType}) {
   const dispatch = useDispatch()
   const [errors, setErrors] = useState({})
   const [hasSubmitted, setHasSubmitted] = useState(false)
+  const {groupId} = useParams()
+  const group = useSelector(state => state.groups[groupId])
+  console.log('group inside of Event Form', group)
+
 
   const history = useHistory();
   const [name, setName] = useState(event?.name)
@@ -74,7 +78,10 @@ function EventForm({event, formType}) {
 
 
   return (
-    <div>Hello from Event Form</div>
+    <form className="new-event-form" onSubmit={handleSubmit}>
+      <h2>Create an event for</h2>
+
+    </form>
   )
 }
 
