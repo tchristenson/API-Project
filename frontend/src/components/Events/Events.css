@@ -1,15 +1,18 @@
+.date-time-wrapper {
+  display: flex;
+}
 .event-and-group-links {
   text-align: center;
+}
+
+.event-about {
+  display: inline-block;
 }
 
 .full-event-list {
   display: flex;
   align-items: center;
   flex-direction: column;
-}
-
-.event-about {
-  display: inline-block;
 }
 
 .event-info {

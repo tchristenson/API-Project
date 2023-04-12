@@ -47,7 +47,7 @@ export const getAllGroupsThunk = () => async (dispatch) => {
   const response = await csrfFetch('/api/groups')
   if (response.ok) {
     const groups = await response.json()
-    console.log('groups inside of getAllGroupsThunk', groups)
+    // console.log('groups inside of getAllGroupsThunk', groups)
     dispatch(getAllGroupsAction(groups))
   }
 }
@@ -99,7 +99,7 @@ export const makeNewGroupThunk = (group) => async (dispatch) => {
 }
 
 export const editGroupThunk = (editedGroup) => async (dispatch) => {
-  console.log('editedGroup inside editGroup thunk', editedGroup)
+  // console.log('editedGroup inside editGroup thunk', editedGroup)
   const response = await csrfFetch(`/api/groups/${editedGroup.id}`, {
     method: "PUT",
     headers: {
@@ -159,7 +159,7 @@ const groupReducer = (state = {}, action) => {
       return newState
     case DELETE_GROUP:
       newState = {...state}
-      console.log('newState inside case DELETE Reducer', newState)
+      // console.log('newState inside case DELETE Reducer', newState)
       delete newState[action.groupId]
       return newState
     default:

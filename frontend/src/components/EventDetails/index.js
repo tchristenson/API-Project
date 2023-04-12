@@ -1,6 +1,8 @@
 import "./EventDetails.css"
-import { useParams, NavLink } from "react-router-dom"
-import { useSelector } from "react-redux"
+import { useParams, NavLink, Link } from "react-router-dom"
+import { useSelector, useDispatch } from "react-redux"
+import { useEffect } from "react"
+import { dateTimeFix } from "../Events"
 
 function EventDetails() {
 
