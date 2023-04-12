@@ -107,7 +107,15 @@ const validateVenueBody = [
 // Get all groups and get all groups joined or organized by the Current User are very similar,
 // Consider putting mechanics into a single function if there is time later
 router.get('/', async (req, res, next) => {
-  const groups = await Group.findAll()
+  const groups = await Group.findAll({
+    include: {
+      model: Event,
+      attributes: {
+        exclude: ['createdAt', 'updatedAt']
+      }
+    }
+  });
+
   let groupsArr = [];
   let finalObj = {};
 
