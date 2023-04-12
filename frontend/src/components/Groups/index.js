@@ -12,9 +12,10 @@ function Groups() {
     dispatch(getAllGroupsThunk())
   }, [dispatch])
 
-  const groups = useSelector(state => Object.values(state.groups))
+  const groups = useSelector(state => state.groups)
+  const groupsArr = Object.values(groups)
 
-  const groupList = groups.map(group => (
+  const groupList = groupsArr.map(group => (
     <NavLink className="nav-link" to={`/groups/${group.id}`}>
       <div className="single-group" key={group.id}>
         <div className="group-image">
