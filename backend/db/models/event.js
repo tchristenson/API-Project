@@ -81,7 +81,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       allowNull: false,
       validate: {
-        isAfter: '2023-03-20'
+        isAfter: '2020-03-20'
       }
     },
     endDate: {
