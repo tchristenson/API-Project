@@ -55,8 +55,10 @@ function GroupDetails() {
         <div className="group-info">
           <div className="group-name"><h3>{group.name}</h3></div>
           <div className="group-city-state">{group.city}, {group.state}</div>
-          <div className="group-private-status">{group.private ? "Private" : "Public"}</div>
-          <div className="placeholder">PLACEHOLDER - must add # of events</div>
+          <div className="event-private-container">
+            <div className="group-event-count">{group.Events.length > 1 ? `${group.Events.length} Events` : `${group.Events.length} Event`}</div>
+            <div className="group-private-status">{group.private ? "Private" : "Public"}</div>
+          </div>
           <div className="group-organizer">Organized by {group.Organizer.firstName} {group.Organizer.lastName}</div>
 
           {currUser && currUser.id !== organizerId && (
