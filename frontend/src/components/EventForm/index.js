@@ -79,7 +79,7 @@ function EventForm({event, formType}) {
 
   return (
     <form className="new-event-form" onSubmit={handleSubmit}>
-      <h2>Create an event for</h2>
+      <h2>{`Create an event for ${group.name}`}</h2>
 
     </form>
   )
