@@ -66,7 +66,10 @@ function GroupDetails() {
           )}
           {currUser && currUser.id === organizerId && (
             <>
-              <button className="create-event-button">Create event</button>
+
+              <Link to={`/groups/${groupId}/events/new`}>
+                <button className="create-event-button">Create event</button>
+              </Link>
 
               <Link to={`/groups/${group.id}/edit`}>
                 <button className="update-group-button">Update</button>
