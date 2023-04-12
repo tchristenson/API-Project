@@ -62,7 +62,7 @@ function GroupForm({ group, formType }) {
       id: group?.id
     }
 
-    // console.log('payload inside of GroupForm', payload)
+    console.log('payload inside of GroupForm', payload)
 
     setLocation('')
     setGroupName('')
@@ -79,6 +79,7 @@ function GroupForm({ group, formType }) {
     }
 
     if (formType === 'Edit Group') {
+      delete payload.imageUrl
       const editedGroup = await dispatch(editGroupThunk(payload))
       history.push(`/groups/${editedGroup.id}`)
     }
