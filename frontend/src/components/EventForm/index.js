@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { useHistory, useParams } from "react-router"
 import { useDispatch, useSelector } from "react-redux"
 import { fileTypeCheck } from "../GroupForm"
+import { makeNewEventThunk } from "../../store/events"
 import './EventNew.css'
 
 function EventForm({event, formType}) {
@@ -52,8 +53,11 @@ function EventForm({event, formType}) {
       endDate,
       url,
       description,
-      id: event?.id
+      // id: event?.id,
+      groupId
     }
+
+    console.log('payload inside of EventForm', payload)
 
     setName('')
     setType('')
@@ -69,6 +73,8 @@ function EventForm({event, formType}) {
     if (formType === 'Create Event') {
       // this is where you'll dispatch the makeNewEventThunk with the payload. Remember to await the dispatch
       // Then you'll probably have to history.push the user to that event page
+      const newEvent = await dispatch(makeNewEventThunk(payload))
+      history.push(`/events/${newEvent.id}`)
     }
 
     if (formType === 'Edit Event') {

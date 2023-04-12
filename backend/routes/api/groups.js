@@ -581,7 +581,7 @@ router.get('/:groupId/events', async (req, res, next) => {
 // CREATE AN EVENT FOR A GROUP SPECIFIED BY ITS ID
 router.post('/:groupId/events', requireAuth, validateEventBody, async (req, res, next) => {
 
-    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body
+    const { venueId, name, type, capacity, price, description, startDate, endDate, private } = req.body
 
     const group = await Group.findByPk(req.params.groupId)
 
@@ -611,7 +611,8 @@ router.post('/:groupId/events', requireAuth, validateEventBody, async (req, res,
         price: price,
         description,
         startDate,
-        endDate
+        endDate,
+        private
       })
 
       await Attendance.create({
