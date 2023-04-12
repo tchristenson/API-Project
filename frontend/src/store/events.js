@@ -33,7 +33,7 @@ export const getSingleEventThunk = (eventId) => async (dispatch) => {
   const response = await csrfFetch(`/api/events/${eventId}`)
   if (response.ok) {
     const event = await response.json()
-    // console.log('event inside of getSingleEventThunk', event)
+    console.log('event inside of getSingleEventThunk', event)
     dispatch(getSingleEventAction(event))
   }
 }
@@ -50,7 +50,10 @@ const eventReducer = (state = {}, action) => {
       return newState
     case GET_SINGLE_EVENT:
       newState = {...state}
+      console.log('newState inside GET_SINGLE_EVENT Reducer case', newState)
+      console.log('action inside GET_SINGLE_EVENT Reducer case', action)
       newState[action.event.id] = action.event
+      console.log('newState inside GET_SINGLE_EVENT Reducer case ---- AFTER', newState)
       return newState
     default:
       return state
