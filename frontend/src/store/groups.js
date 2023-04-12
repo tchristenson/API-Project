@@ -137,7 +137,9 @@ export const deleteGroupThunk = (groupId) => async (dispatch) => {
   })
   if (response.ok) {
     dispatch(deleteGroupAction(groupId))
+    return {'message': 'delete successful'}
   }
+
 }
 
 //REDUCER
