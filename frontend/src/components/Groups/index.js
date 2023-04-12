@@ -6,12 +6,13 @@ import "./Groups.css"
 
 function Groups() {
   const dispatch = useDispatch()
-  const groups = useSelector(state => Object.values(state.groups))
-  console.log('groups inside of Groups component', groups)
+  // console.log('groups inside of Groups component', groups)
 
   useEffect(() => {
     dispatch(getAllGroupsThunk())
   }, [dispatch])
+
+  const groups = useSelector(state => Object.values(state.groups))
 
   const groupList = groups.map(group => (
     <NavLink className="nav-link" to={`/groups/${group.id}`}>
@@ -24,7 +25,11 @@ function Groups() {
           <div className="group-city-state">{group.city}, {group.state}</div>
           <div className="group-about">{group.about}</div>
           <div className="event-private-container">
-            <div className="group-event-count">{group.Events.length > 1 ? `${group.Events.length} Events` : `${group.Events.length} Event`}</div>
+            {(group.Events === undefined || group.Events.length === 0) ? (
+                <div className="group-event-count">No events</div>
+              ) : (
+                <div className="group-event-count">{group.Events.length === 1 ? `${group.Events.length} Event` : `${group.Events.length} Events`}</div>
+            )}
             <div className="group-private-status">{group.private ? "Private" : "Public"}</div>
           </div>
         </div>

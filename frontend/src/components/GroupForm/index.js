@@ -8,11 +8,11 @@ function GroupForm({ group, formType }) {
 
   // console.log('group inside of group form', group)
 
-  const history = useHistory();
   const dispatch = useDispatch()
   const [errors, setErrors] = useState({})
   const [hasSubmitted, setHasSubmitted] = useState(false)
 
+  const history = useHistory();
   const [location, setLocation] = useState(group?.location);
   const [groupName, setGroupName] = useState(group?.groupName)
   const [description, setDescription] = useState(group?.description)
