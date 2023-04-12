@@ -7,7 +7,7 @@ import { editGroupThunk } from "../../store/groups";
 const EditGroupForm = () => {
   const { groupId } = useParams();
   let group = useSelector(state => state.groups[groupId]);
-  // console.log('group inside GroupEditForm', group)
+  console.log('group inside GroupEditForm', group)
   const dispatch = useDispatch()
   if (!group) return(<></>);
 
@@ -18,10 +18,9 @@ const EditGroupForm = () => {
     ['description']: group.about,
     ['groupType']: group.type,
     ['isPrivate']: group.private,
-    ['imageUrl']: group.GroupImages[0].url
   }
 
-  // console.log('group after key edits', group)
+  console.log('group after key edits', group)
 
 
   return (

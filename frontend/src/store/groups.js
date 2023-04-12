@@ -47,7 +47,7 @@ export const getAllGroupsThunk = () => async (dispatch) => {
   const response = await csrfFetch('/api/groups')
   if (response.ok) {
     const groups = await response.json()
-    // console.log('groups inside of getAllGroupsThunk', groups)
+    console.log('groups inside of getAllGroupsThunk', groups)
     dispatch(getAllGroupsAction(groups))
   }
 }
@@ -112,26 +112,13 @@ export const editGroupThunk = (editedGroup) => async (dispatch) => {
       private: editedGroup.isPrivate,
       city: editedGroup.city,
       state: editedGroup.state,
+      id: editedGroup.id
     }),
   });
   if (response.ok) {
     // console.log('response inside of editGroupThunk', response)
     const group = await response.json();
-    console.log('group inside of editGroupThunk', group)
-
-    const imageResponse = await csrfFetch(`/api/groups/${group.id}/images`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        url: editedGroup.imageUrl,
-        preview: true
-      }),
-    })
-    if (imageResponse.ok) {
-      dispatch(editGroupAction(group));
-    }
+    dispatch(editGroupAction(group));
   }
 }
 
@@ -169,6 +156,7 @@ const groupReducer = (state = {}, action) => {
     case EDIT_GROUP:
       newState = {...state}
       newState[action.group.id] = action.group
+      return newState
     case DELETE_GROUP:
       newState = {...state}
       console.log('newState inside case DELETE Reducer', newState)

@@ -6,7 +6,7 @@ import { makeNewGroupThunk, editGroupThunk } from '../../store/groups';
 
 function GroupForm({ group, formType }) {
 
-  // console.log('group inside of group form', group)
+  console.log('group inside of group form', group)
 
   const history = useHistory();
   const dispatch = useDispatch()

@@ -17,15 +17,17 @@ function GroupDetails() {
     dispatch(getSingleGroupThunk(groupId))
   }, [dispatch, groupId])
 
-  const currUserId = useSelector(state => state.session.user.id)
+
+
+  const currUser = useSelector(state => state.session.user)
   const group = useSelector(state => state.groups[groupId])
 
-  if (!group || !group.Organizer) return null
+  if (!group || !group.Organizer ) return null
 
   // console.log('typeof groupId inside GroupDetail component', typeof (groupId))
   // console.log('currUserId inside GroupDetail component', currUserId)
   // console.log('typeof currUserId inside GroupDetail component', typeof currUserId)
-  // console.log('group inside of GroupDetail component', group)
+  console.log('group inside of GroupDetail component', group)
   const organizerId = group.Organizer.id
   // console.log('organizerId inside of GroupDetail component', organizerId)
 
@@ -56,9 +58,11 @@ function GroupDetails() {
           <div className="group-private-status">{group.private ? "Private" : "Public"}</div>
           <div className="placeholder">PLACEHOLDER - must add # of events</div>
           <div className="group-organizer">Organized by {group.Organizer.firstName} {group.Organizer.lastName}</div>
-          {/* Will need to conditionally render the join button if the user is not the organizer */}
-          <button className="join-group-button" onClick={handleClick}>Join this group</button>
-          {currUserId === organizerId && (
+
+          {currUser && currUser.id !== organizerId && (
+            <button className="join-group-button" onClick={handleClick}>Join this group</button>
+          )}
+          {currUser && currUser.id === organizerId && (
             <>
               <button className="create-event-button">Create event</button>
 
@@ -83,7 +87,7 @@ function GroupDetails() {
       </div>
       <div className="about-info">
         <h3>What we're about</h3>
-        <h5 className="placeholder">PLACEHOLDER TEXT</h5>
+        <h5>{group.about}</h5>
       </div>
       <div className="upcoming-event-info placeholder">
         <h3>Upcoming Events - MUST INCLUDE NUMBER OF EVENTS & CONDITONAL RENDERING</h3>

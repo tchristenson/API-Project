@@ -292,7 +292,13 @@ router.get('/:groupId', async (req, res, next) => {
           attributes: {
             exclude: ['createdAt', 'updatedAt']
           }
-        }
+        },
+        {
+          model: Event,
+          attributes: {
+            exclude: ['createdAt', 'updatedAt']
+          }
+        },
       ]
     })
 
