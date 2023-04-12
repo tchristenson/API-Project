@@ -129,18 +129,20 @@ function EventForm({event, formType}) {
       <div className="date-wrapper">
         <h4>When does your event start?</h4>
         <input
-          type="datetime-local"
-          value={startDate}
-          onChange={e => setPrice(e.target.value)}
-        />
+            type="text"
+            placeholder="MM/DD/YYYY HH:mm AM"
+            value={startDate}
+            onChange={e => setUrl(e.target.value)}
+          />
         {errors.startDate && (<p className='errors'>{errors.startDate}</p>)}
 
         <h4>When does your event end?</h4>
         <input
-          type="datetime-local"
-          value={endDate}
-          onChange={e => setPrice(e.target.value)}
-        />
+            type="text"
+            placeholder="MM/DD/YYYY HH:mm PM"
+            value={endDate}
+            onChange={e => setUrl(e.target.value)}
+          />
         {errors.endDate && (<p className='errors'>{errors.endDate}</p>)}
       </div>
 
