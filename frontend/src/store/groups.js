@@ -97,6 +97,7 @@ export const makeNewGroupThunk = (group) => async (dispatch) => {
     if (imageResponse.ok) {
       // history.push(`/groups/${newGroup.id}`)
       dispatch(makeNewGroupAction(newGroup));
+      return newGroup
     }
   }
 }
@@ -123,6 +124,7 @@ export const editGroupThunk = (editedGroup) => async (dispatch) => {
     const group = await response.json();
     // history.push(`/groups/${group.id}`)
     dispatch(editGroupAction(group));
+    return group
   }
 }
 

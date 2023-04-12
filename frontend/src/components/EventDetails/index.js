@@ -9,7 +9,6 @@ function EventDetails() {
   const {eventId} = useParams()
 
   const event = useSelector(state => state.events[eventId])
-  console.log('event price', event.price)
   console.log('event inside of EventDetail', event)
 
   return (
