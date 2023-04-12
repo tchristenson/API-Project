@@ -7,6 +7,8 @@ const MAKE_NEW_GROUP = 'groups/makeNewGroup'
 const EDIT_GROUP = 'groups/editGroup'
 const DELETE_GROUP = 'groups/deleteGroup'
 
+// const history = useHistory()
+
 const getAllGroupsAction = (groups) => {
   return {
     type: GET_ALL_GROUPS,
@@ -93,6 +95,7 @@ export const makeNewGroupThunk = (group) => async (dispatch) => {
       }),
     })
     if (imageResponse.ok) {
+      // history.push(`/groups/${newGroup.id}`)
       dispatch(makeNewGroupAction(newGroup));
     }
   }
@@ -118,6 +121,7 @@ export const editGroupThunk = (editedGroup) => async (dispatch) => {
   if (response.ok) {
     // console.log('response inside of editGroupThunk', response)
     const group = await response.json();
+    // history.push(`/groups/${group.id}`)
     dispatch(editGroupAction(group));
   }
 }
@@ -158,9 +162,11 @@ const groupReducer = (state = {}, action) => {
       newState[action.group.id] = action.group
       return newState
     case DELETE_GROUP:
+      // console.log('newState inside Delete Reducer - AS RECEIVED', newState)
       newState = {...state}
-      // console.log('newState inside case DELETE Reducer', newState)
+      // console.log('newState inside Delete Reducer - SPREAD', newState)
       delete newState[action.groupId]
+      // console.log('newState inside Delete Reducer - DELETION', newState)
       return newState
     default:
       return state
