@@ -47,6 +47,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.ENUM('Online', 'In Person', 'In person')
       },
+      private: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+      },
       capacity: {
         type: Sequelize.INTEGER,
         allowNull: false
