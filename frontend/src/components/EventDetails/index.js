@@ -26,7 +26,7 @@ function EventDetails() {
         <span>{'< '}<NavLink to='/events'>Events</NavLink></span>
       </div>
       <h2>{event.name}</h2>
-      <h5 className="placeholder">PLACEHOLDER FOR ORGANIZER'S NAME</h5>
+      <h5 className="event-organizer">{`Hosted by ${event.Group.User.firstName} ${event.Group.User.lastName}`}</h5>
       <div className="event-container">
         <div className="event-image">
           {event.previewImage}
