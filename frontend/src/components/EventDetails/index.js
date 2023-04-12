@@ -1,16 +1,24 @@
 import "./EventDetails.css"
 import { useParams, NavLink, Link } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
+import { getSingleEventThunk } from "../../store/events"
 import { useEffect } from "react"
 import { dateTimeFix } from "../Events"
 
 function EventDetails() {
+  const dispatch = useDispatch()
+  let {eventId} = useParams()
+  eventId = parseInt(eventId)
 
-  const {eventId} = useParams()
+  useEffect(() => {
+    dispatch(getSingleEventThunk(eventId))
+  }, [dispatch, eventId])
 
   const event = useSelector(state => state.events[eventId])
-  console.log('event price', event.price)
+  if (!event) return null
+
   console.log('event inside of EventDetail', event)
+
 
   return (
     <body>
@@ -35,15 +43,21 @@ function EventDetails() {
             </div>
           </div>
           <div className="event-details">
-            <div>Start {event.startDate}</div>
-            <div>End {event.endDate}</div>
-            <div className="placeholder">{event.price}Event Price</div>
+            <div className="start-container">
+              <div className="start-date">Start {dateTimeFix(event.startDate)[0]}</div>
+              <div className="start-time">{dateTimeFix(event.startDate)[1]}</div>
+            </div>
+            <div className="end-container">
+              <div className="end-date">End {dateTimeFix(event.endDate)[0]}</div>
+              <div className="end-time">{dateTimeFix(event.endDate)[1]}</div>
+            </div>
+            <div className="event-price">{`$${event.price}`}</div>
             <div>{event.type}</div>
           </div>
         </div>
       </div>
       <h2>Details</h2>
-      <p className="placeholder">PLACEHOLDER TEXT ABOUT THE EVENT</p>
+      <p className="event-description">{event.description}</p>
     </body>
   )
 }
