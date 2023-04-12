@@ -20,7 +20,8 @@ module.exports = {
         capacity: 50,
         price: 200,
         startDate: '2023-05-15 20:00:00',
-        endDate: '2023-05-15 21:00:00'
+        endDate: '2023-05-15 21:00:00',
+        private: false
       },
       {
         venueId: 1,
@@ -31,7 +32,8 @@ module.exports = {
         capacity: 50,
         price: 200,
         startDate: '2023-04-10 20:00:00',
-        endDate: '2023-04-10 21:00:00'
+        endDate: '2023-04-10 21:00:00',
+        private: false
       },
       {
         venueId: 2,
@@ -42,7 +44,8 @@ module.exports = {
         capacity: 4,
         price: 20,
         startDate: '2023-03-30 20:00:00',
-        endDate: '2023-03-30 21:00:00'
+        endDate: '2023-03-30 21:00:00',
+        private: true
       },
       {
         venueId: 2,
@@ -53,7 +56,8 @@ module.exports = {
         capacity: 4,
         price: 20,
         startDate: '2023-04-14 20:00:00',
-        endDate: '2023-04-14 21:00:00'
+        endDate: '2023-04-14 21:00:00',
+        private: true
       },
       {
         venueId: 2,
@@ -64,7 +68,8 @@ module.exports = {
         capacity: 4,
         price: 20,
         startDate: '2023-04-15 20:00:00',
-        endDate: '2023-04-15 21:00:00'
+        endDate: '2023-04-15 21:00:00',
+        private: true
       },
       {
         venueId: 2,
@@ -75,7 +80,8 @@ module.exports = {
         capacity: 4,
         price: 20,
         startDate: '2023-04-16 20:00:00',
-        endDate: '2023-04-16 21:00:00'
+        endDate: '2023-04-16 21:00:00',
+        private: true
       },
       {
         venueId: 2,
@@ -86,7 +92,8 @@ module.exports = {
         capacity: 4,
         price: 20,
         startDate: '2023-04-17 20:00:00',
-        endDate: '2023-04-17 21:00:00'
+        endDate: '2023-04-17 21:00:00',
+        private: true
       },
       {
         venueId: 2,
@@ -97,7 +104,8 @@ module.exports = {
         capacity: 4,
         price: 20,
         startDate: '2023-04-18 20:00:00',
-        endDate: '2023-04-18 21:00:00'
+        endDate: '2023-04-18 21:00:00',
+        private: true
       },
       {
         venueId: 2,
@@ -108,7 +116,8 @@ module.exports = {
         capacity: 4,
         price: 20,
         startDate: '2023-04-19 20:00:00',
-        endDate: '2023-04-19 21:00:00'
+        endDate: '2023-04-19 21:00:00',
+        private: true
       },
       {
         venueId: 3,
@@ -119,7 +128,8 @@ module.exports = {
         capacity: 20,
         price: 0,
         startDate: '2023-12-31 20:00:00',
-        endDate: '2024-01-01 21:00:00'
+        endDate: '2024-01-01 21:00:00',
+        private: false
       },
       {
         venueId: 2,
@@ -130,7 +140,8 @@ module.exports = {
         capacity: 30,
         price: 0,
         startDate: '2022-12-23 20:00:00',
-        endDate: '2022-12-23 21:00:00'
+        endDate: '2022-12-23 21:00:00',
+        private: false
       },
       {
         venueId: 2,
@@ -141,7 +152,8 @@ module.exports = {
         capacity: 4,
         price: 20,
         startDate: '2021-5-20 20:00:00',
-        endDate: '2021-5-20 21:00:00'
+        endDate: '2021-5-20 21:00:00',
+        private: true
       },
     ])
   },
