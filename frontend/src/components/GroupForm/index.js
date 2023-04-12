@@ -73,17 +73,18 @@ function GroupForm({ group, formType }) {
     setErrors({})
     setHasSubmitted(false)
 
-    if (formType === 'Create Group') dispatch(makeNewGroupThunk(payload))
-    if (formType === 'Edit Group') dispatch(editGroupThunk(payload))
+    if (formType === 'Create Group') {
+      const newGroup = await dispatch(makeNewGroupThunk(payload))
+      history.push(`/groups/${newGroup.id}`)
+    }
+
+    if (formType === 'Edit Group') {
+      const editedGroup = await dispatch(editGroupThunk(payload))
+      history.push(`/groups/${editedGroup.id}`)
+    }
 
     // console.log('newGroup after dispatching to thunk', newGroup)
 
-    // newGroup.then((data) => {
-    //   console.log('data from resolved promise', data)
-    // })
-
-    // Must build in navigation to new group detail page upon successful creation
-    // thinking I'll need useSelector and get the group.id from there
   }
 
   return(
@@ -155,7 +156,7 @@ function GroupForm({ group, formType }) {
         <h2>Final steps...</h2>
 
         <p>Is this an in person or online group?</p>
-        <select onChange={e => setGroupType(e.target.value)}>
+        <select value={groupType} onChange={e => setGroupType(e.target.value)}>
           <option value="">{'(select one)'}</option>
           <option value={'Online'}>Online</option>
           <option value={'In Person'}>In Person</option>
@@ -163,7 +164,7 @@ function GroupForm({ group, formType }) {
         {errors.groupType && (<p className='errors'>{errors.groupType}</p>)}
 
         <p>Is this group private or public?</p>
-        <select onChange={e => setIsPrivate(e.target.value)}>
+        <select value={isPrivate} onChange={e => setIsPrivate(e.target.value)}>
           <option value="">{'(select one)'}</option>
           <option value={true}>Private</option>
           <option value={false}>Public</option>
