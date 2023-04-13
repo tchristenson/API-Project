@@ -7,7 +7,6 @@ import DeleteGroupModal from "../GroupDeleteModal"
 import OpenModalButton from "../OpenModalButton";
 import { dateTimeFix } from "../Events"
 
-
 function GroupDetails() {
   const dispatch = useDispatch()
   let {groupId} = useParams()
@@ -18,65 +17,59 @@ function GroupDetails() {
     dispatch(getSingleGroupThunk(groupId))
   }, [dispatch, groupId])
 
-
-
   const currUser = useSelector(state => state.session.user)
   const group = useSelector(state => state.groups[groupId])
 
   if (!group || !group.Organizer ) return null
 
-  // let sortedEvents = group.Events.slice().sort((event1, event2) => {
-  //   new Date(event1.startDate).getTime() - new Date(event2.startDate).getTime()
-  // })
-
-
-  // console.log('sortedEvents', sortedEvents)
-
   const currentDate = new Date()
+
   const upcomingEventsList = group.Events.filter(event =>
     new Date(event.startDate).getTime() > currentDate.getTime())
     .sort((event1, event2) => new Date(event1.startDate).getTime() - new Date(event2.startDate).getTime())
     .map(event => (
-      <div className="event-container">
-          <div className="image-and-details">
-            <div className="event-image" key={event.id}>
-              <img src={event.EventImages.url} alt="event image"/>
-            </div>
-            <div className="event-info">
-              <div className="date-time-wrapper">
-                <div className="event-date">{dateTimeFix(event.startDate)[0]}</div>
-                <div className="event-time">{dateTimeFix(event.startDate)[1]}</div>
+      <NavLink to={`/events/${event.id}`}>
+        <div className="event-container">
+            <div className="image-and-details">
+              <div className="event-image" key={event.id}>
+                <img src={event.EventImages.url} alt="event image"/>
               </div>
-              <div className="event-name"><h4>{event.name}</h4></div>
-              <div className="event-location">{event.Venue.address}</div>
+              <div className="event-info">
+                <div className="date-time-wrapper">
+                  <div className="event-date">{dateTimeFix(event.startDate)[0]}</div>
+                  <div className="event-time">{dateTimeFix(event.startDate)[1]}</div>
+                </div>
+                <div className="event-name"><h4>{event.name}</h4></div>
+                <div className="event-location">{event.Venue.address}</div>
+              </div>
             </div>
+            <div className="event-about">{event.description}</div>
           </div>
-          <div className="event-about">{event.description}</div>
-        </div>
+      </NavLink>
     ));
-
-    // console.log('upcomingEventsList', upcomingEventsList)
 
   const pastEventsList = group.Events.filter(event =>
     new Date(event.startDate).getTime() < currentDate.getTime())
     .sort((event1, event2) => new Date(event2.startDate).getTime() - new Date(event1.startDate).getTime())
     .map(event => (
-      <div className="event-container">
-          <div className="image-and-details">
-            <div className="event-image" key={event.id}>
-              <img src={event.EventImages.url} alt="event image"/>
-            </div>
-            <div className="event-info">
-              <div className="date-time-wrapper">
-                <div className="event-date">{dateTimeFix(event.startDate)[0]}</div>
-                <div className="event-time">{dateTimeFix(event.startDate)[1]}</div>
+      <NavLink to={`/events/${event.id}`}>
+        <div className="event-container">
+            <div className="image-and-details">
+              <div className="event-image" key={event.id}>
+                <img src={event.EventImages.url} alt="event image"/>
               </div>
-              <div className="event-name"><h4>{event.name}</h4></div>
-              <div className="event-location">{event.Venue.address}</div>
+              <div className="event-info">
+                <div className="date-time-wrapper">
+                  <div className="event-date">{dateTimeFix(event.startDate)[0]}</div>
+                  <div className="event-time">{dateTimeFix(event.startDate)[1]}</div>
+                </div>
+                <div className="event-name"><h4>{event.name}</h4></div>
+                <div className="event-location">{event.Venue.address}</div>
+              </div>
             </div>
+            <div className="event-about">{event.description}</div>
           </div>
-          <div className="event-about">{event.description}</div>
-        </div>
+      </NavLink>
     ));
 
   // console.log('typeof groupId inside GroupDetail component', typeof (groupId))
@@ -137,7 +130,6 @@ function GroupDetails() {
             </>
           )}
 
-
         </div>
       </div>
       <div></div>
@@ -149,12 +141,14 @@ function GroupDetails() {
         <h3>What we're about</h3>
         <h5>{group.about}</h5>
       </div>
-      <div className="upcoming-event-info">
-        <h3>Upcoming Events {`(${upcomingEventsList.length})`}</h3>
-        <div className="upcoming-event-wrapper">
-          {upcomingEventsList}
+      {upcomingEventsList.length > 0 && (
+        <div className="upcoming-event-info">
+          <h3>Upcoming Events {`(${upcomingEventsList.length})`}</h3>
+          <div className="upcoming-event-wrapper">
+            {upcomingEventsList}
+          </div>
         </div>
-      </div>
+      )}
       {pastEventsList.length > 0 && (
         <div className="past-event-info">
           <h3>Past Events {`(${pastEventsList.length})`}</h3>

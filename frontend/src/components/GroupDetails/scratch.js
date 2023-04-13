@@ -30,3 +30,17 @@ const currentDate = new Date()
 // console.log(currentDate.getTime())
 
 // console.log(dateTimeFix(date))
+
+
+
+const cityStateSplit = (str) => {
+  const stringArr = str.split(',')
+  // console.log('stringArr', stringArr)
+  if (stringArr.length) {
+    const city = stringArr[0]
+    const state = (stringArr[1].trim())
+    return [city, state]
+  }
+}
+
+console.log(cityStateSplit('Omaha, NE'))

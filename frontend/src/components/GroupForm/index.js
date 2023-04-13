@@ -13,9 +13,12 @@ import { makeNewGroupThunk, editGroupThunk } from '../../store/groups';
 
   const cityStateSplit = (str) => {
     const stringArr = str.split(',')
-    const city = stringArr[0]
-    const state = (stringArr[1].trim())
-    return [city, state]
+    // console.log('stringArr', stringArr)
+    if (stringArr.length) {
+      const city = stringArr[0]
+      const state = (stringArr[1].trim())
+      return [city, state]
+    }
   }
 
 function GroupForm({ group, formType }) {
@@ -51,18 +54,29 @@ function GroupForm({ group, formType }) {
     e.preventDefault()
     setHasSubmitted(true);
 
-    const payload = {
-      city: cityStateSplit(location)[0],
-      state: cityStateSplit(location)[1],
-      groupName,
-      description,
-      groupType,
-      isPrivate,
-      imageUrl,
-      id: group?.id
-    }
+    if (location !== '') {
+      const payload = {
+        city: cityStateSplit(location)[0],
+        state: cityStateSplit(location)[1],
+        groupName,
+        description,
+        groupType,
+        isPrivate,
+        imageUrl,
+        id: group?.id
+      }
 
-    console.log('payload inside of GroupForm', payload)
+      if (formType === 'Create Group') {
+        const newGroup = await dispatch(makeNewGroupThunk(payload))
+        history.push(`/groups/${newGroup.id}`)
+      }
+
+      if (formType === 'Edit Group') {
+        delete payload.imageUrl
+        const editedGroup = await dispatch(editGroupThunk(payload))
+        history.push(`/groups/${editedGroup.id}`)
+      }
+    }
 
     setLocation('')
     setGroupName('')
@@ -73,19 +87,7 @@ function GroupForm({ group, formType }) {
     setErrors({})
     setHasSubmitted(false)
 
-    if (formType === 'Create Group') {
-      const newGroup = await dispatch(makeNewGroupThunk(payload))
-      history.push(`/groups/${newGroup.id}`)
-    }
-
-    if (formType === 'Edit Group') {
-      delete payload.imageUrl
-      const editedGroup = await dispatch(editGroupThunk(payload))
-      history.push(`/groups/${editedGroup.id}`)
-    }
-
     // console.log('newGroup after dispatching to thunk', newGroup)
-
   }
 
   return(
