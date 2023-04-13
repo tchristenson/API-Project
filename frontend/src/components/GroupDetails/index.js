@@ -25,10 +25,17 @@ function GroupDetails() {
 
   if (!group || !group.Organizer ) return null
 
-  const currentDate = new Date()
+  // let sortedEvents = group.Events.slice().sort((event1, event2) => {
+  //   new Date(event1.startDate).getTime() - new Date(event2.startDate).getTime()
+  // })
 
+
+  // console.log('sortedEvents', sortedEvents)
+
+  const currentDate = new Date()
   const upcomingEventsList = group.Events.filter(event =>
     new Date(event.startDate).getTime() > currentDate.getTime())
+    .sort((event1, event2) => new Date(event1.startDate).getTime() - new Date(event2.startDate).getTime())
     .map(event => (
       <div className="event-container">
           <div className="image-and-details">
@@ -48,8 +55,11 @@ function GroupDetails() {
         </div>
     ));
 
+    // console.log('upcomingEventsList', upcomingEventsList)
+
   const pastEventsList = group.Events.filter(event =>
     new Date(event.startDate).getTime() < currentDate.getTime())
+    .sort((event1, event2) => new Date(event2.startDate).getTime() - new Date(event1.startDate).getTime())
     .map(event => (
       <div className="event-container">
           <div className="image-and-details">

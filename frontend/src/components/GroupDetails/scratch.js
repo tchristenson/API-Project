@@ -30,6 +30,3 @@ const currentDate = new Date()
 // console.log(currentDate.getTime())
 
 // console.log(dateTimeFix(date))
-
-console.log(futureDate.getTime() > currentDate.getTime())
-console.log(futureDate.getTime() - currentDate.getTime())
