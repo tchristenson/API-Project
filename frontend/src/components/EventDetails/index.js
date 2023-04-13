@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from "react-redux"
 import { getSingleEventThunk } from "../../store/events"
 import { useEffect } from "react"
 import { dateTimeFix } from "../Events"
+import OpenModalButton from "../OpenModalButton"
+import DeleteEventModal from "../EventDeleteModal"
 
 function EventDetails() {
   const dispatch = useDispatch()
@@ -52,7 +54,14 @@ function EventDetails() {
               <div className="end-time">{dateTimeFix(event.endDate)[1]}</div>
             </div>
             <div className="event-price">{`$${event.price}`}</div>
-            <div>{event.type}</div>
+            <div className="event-type-buttons-container">
+              <div>{event.type}</div>
+              <button>Update</button>
+              <OpenModalButton
+                buttonText="Delete"
+                modalComponent={<DeleteEventModal event={event} eventId={eventId}/>}
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -21,6 +21,8 @@ function EventForm({event, formType}) {
   const [errors, setErrors] = useState({})
   const [hasSubmitted, setHasSubmitted] = useState(false)
 
+  console.log('errors', errors)
+
   useEffect(() => {
     if (hasSubmitted) {
       const newErrors = {};

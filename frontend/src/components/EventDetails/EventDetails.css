@@ -11,6 +11,10 @@
   flex-direction: column;
 }
 
+.event-type-buttons-container {
+  display: flex;
+}
+
 .group-image-detail {
   display: flex
 }

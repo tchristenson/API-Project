@@ -4,6 +4,7 @@ import { csrfFetch } from "./csrf";
 const GET_ALL_EVENTS = 'events/getAllEvents'
 const GET_SINGLE_EVENT = 'events/getSingleEvent'
 const MAKE_NEW_EVENT = 'events/makeNewEvent'
+const DELETE_EVENT = 'events/deleteEvent'
 
 const getAllEventsAction = (payload) => {
   console.log('payload inside of action', payload)
@@ -24,6 +25,13 @@ const makeNewEventAction = (event) => {
   return {
     type: MAKE_NEW_EVENT,
     event
+  }
+}
+
+const deleteEventAction = (eventId) => {
+  return {
+    type: DELETE_EVENT,
+    eventId
   }
 }
 
@@ -87,6 +95,19 @@ export const makeNewEventThunk = (payload) => async (dispatch) => {
   }
 }
 
+export const deleteEventThunk = (eventId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/events/${eventId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  if (response.ok) {
+    dispatch(deleteEventAction(eventId))
+    return {'message': 'delete successful'}
+  }
+}
+
 //REDUCER
 const eventReducer = (state = {}, action) => {
   let newState;
@@ -106,9 +127,15 @@ const eventReducer = (state = {}, action) => {
       return newState
     case MAKE_NEW_EVENT:
       newState = {...state}
-      console.log('state inside MAKE NEW EVENT case', newState)
+      // console.log('state inside MAKE NEW EVENT case', newState)
       newState[action.event.id] = action.event
-      console.log('state inside MAKE NEW EVENT case --- Revised', newState)
+      // console.log('state inside MAKE NEW EVENT case --- Revised', newState)
+      return newState
+    case DELETE_EVENT:
+      newState = {...state}
+      console.log('newState inside Delete Reducer - SPREAD', newState)
+      delete newState[action.eventId]
+      console.log('newState inside Delete Reducer - DELETION', newState)
       return newState
     default:
       return state
