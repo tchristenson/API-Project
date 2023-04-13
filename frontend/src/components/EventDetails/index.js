@@ -17,10 +17,12 @@ function EventDetails() {
   }, [dispatch, eventId])
 
   const currUser = useSelector(state => state.session.user)
+  console.log('currUser inside GroupDetails', currUser)
   const event = useSelector(state => state.events[eventId])
   if (!event ||  !event.Group || !event.Group.User) return null
 
   const organizerId = event.Group.User.id
+  console.log('organizerId inside GroupDetails', organizerId)
 
   console.log('event inside of EventDetail', event)
 
