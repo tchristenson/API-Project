@@ -15,7 +15,7 @@ function EventDetails() {
   }, [dispatch, eventId])
 
   const event = useSelector(state => state.events[eventId])
-  if (!event || !event.Group.User) return null
+  if (!event ||  !event.Group || !event.Group.User) return null
 
   console.log('event inside of EventDetail', event)
 

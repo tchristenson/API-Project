@@ -68,6 +68,7 @@ export const makeNewEventThunk = (payload) => async (dispatch) => {
   });
   if (response.ok) {
     const newEvent = await response.json()
+    console.log('newEvent inside newEvent thunk', newEvent)
 
     const imageResponse = await csrfFetch(`/api/events/${newEvent.id}/images`,  {
       method: "POST",
@@ -105,7 +106,9 @@ const eventReducer = (state = {}, action) => {
       return newState
     case MAKE_NEW_EVENT:
       newState = {...state}
+      console.log('state inside MAKE NEW EVENT case', newState)
       newState[action.event.id] = action.event
+      console.log('state inside MAKE NEW EVENT case --- Revised', newState)
       return newState
     default:
       return state

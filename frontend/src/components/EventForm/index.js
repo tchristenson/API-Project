@@ -38,7 +38,7 @@ function EventForm({event, formType}) {
 
   const group = useSelector(state => state.groups[groupId])
   if (!group) return null
-  console.log('group inside of Event Form', group)
+  // console.log('group inside of Event Form', group)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -109,7 +109,7 @@ function EventForm({event, formType}) {
         {errors.type && (<p className='errors'>{errors.type}</p>)}
 
         <h4>Is this event private or public?</h4>
-        <select value={isPrivate} onChange={e => setType(e.target.value)}>
+        <select value={isPrivate} onChange={e => setIsPrivate(e.target.value)}>
           <option value="">{'(select one)'}</option>
           <option value={true}>Private</option>
           <option value={false}>Public</option>
@@ -132,7 +132,7 @@ function EventForm({event, formType}) {
             type="text"
             placeholder="MM/DD/YYYY HH:mm AM"
             value={startDate}
-            onChange={e => setUrl(e.target.value)}
+            onChange={e => setStartDate(e.target.value)}
           />
         {errors.startDate && (<p className='errors'>{errors.startDate}</p>)}
 
@@ -141,7 +141,7 @@ function EventForm({event, formType}) {
             type="text"
             placeholder="MM/DD/YYYY HH:mm PM"
             value={endDate}
-            onChange={e => setUrl(e.target.value)}
+            onChange={e => setEndDate(e.target.value)}
           />
         {errors.endDate && (<p className='errors'>{errors.endDate}</p>)}
       </div>

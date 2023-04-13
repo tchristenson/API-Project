@@ -4,7 +4,7 @@ const CreateEventForm = () => {
   const event = {
     name: '',
     type: '',
-    private: '',
+    isPrivate: '',
     price: 0,
     startDate: '',
     endDate: '',
