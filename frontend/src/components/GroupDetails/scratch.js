@@ -24,12 +24,12 @@ const dateTimeFix = str => {
 
 const futureDate = new Date('2023-05-01T22:00:00.000Z')
 const currentDate = new Date()
-// console.log('date', date)
-// console.log('currentDate', currentDate)
-// console.log(date.getTime())
-// console.log(currentDate.getTime())
+console.log('date', date)
+console.log('currentDate', currentDate)
+console.log(date.getTime())
+console.log(currentDate.getTime())
 
-// console.log(dateTimeFix(date))
+console.log(dateTimeFix(date))
 
 
 
