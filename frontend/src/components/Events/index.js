@@ -31,8 +31,9 @@ import "./Events.css"
 
 function Events() {
   const dispatch = useDispatch()
-  const events = useSelector(state => Object.values(state.events))
-  console.log('events inside of Events component', events)
+  const events = useSelector(state => state.events)
+  const eventsArr = Object.values(events)
+  // console.log('events inside of Events component', events)
 
   useEffect(() => {
     dispatch(getAllEventsThunk())
@@ -40,7 +41,7 @@ function Events() {
 
 
 
-  const eventList = events.map(event => (
+  const eventList = eventsArr.map(event => (
     <NavLink className="nav-link" to={`/events/${event.id}`}>
       <div className="single-event" key={event.id}>
         <div className="image-event-wrapper">
