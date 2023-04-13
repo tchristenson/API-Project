@@ -145,12 +145,14 @@ function GroupDetails() {
           {upcomingEventsList}
         </div>
       </div>
-      <div className="past-event-info">
-        <h3>Past Events {`(${pastEventsList.length})`}</h3>
-        <div className="past-event-wrapper">
-          {pastEventsList}
+      {pastEventsList.length > 0 && (
+        <div className="past-event-info">
+          <h3>Past Events {`(${pastEventsList.length})`}</h3>
+          <div className="past-event-wrapper">
+            {pastEventsList}
+          </div>
         </div>
-      </div>
+      )}
     </body>
   )
 }
