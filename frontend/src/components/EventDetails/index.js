@@ -16,11 +16,13 @@ function EventDetails() {
     dispatch(getSingleEventThunk(eventId))
   }, [dispatch, eventId])
 
+  const currUser = useSelector(state => state.session.user)
   const event = useSelector(state => state.events[eventId])
   if (!event ||  !event.Group || !event.Group.User) return null
 
-  console.log('event inside of EventDetail', event)
+  const organizerId = event.Group.User.id
 
+  console.log('event inside of EventDetail', event)
 
   return (
     <body>
@@ -56,11 +58,15 @@ function EventDetails() {
             <div className="event-price">{`$${event.price}`}</div>
             <div className="event-type-buttons-container">
               <div>{event.type}</div>
-              <button>Update</button>
-              <OpenModalButton
-                buttonText="Delete"
-                modalComponent={<DeleteEventModal event={event} eventId={eventId}/>}
-              />
+              {currUser && currUser.id === organizerId && (
+                <>
+                  <button>Update</button>
+                  <OpenModalButton
+                    buttonText="Delete"
+                    modalComponent={<DeleteEventModal event={event} eventId={eventId}/>}
+                  />
+                </>
+              )}
             </div>
           </div>
         </div>
