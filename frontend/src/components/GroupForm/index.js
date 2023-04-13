@@ -30,12 +30,12 @@ function GroupForm({ group, formType }) {
   const [hasSubmitted, setHasSubmitted] = useState(false)
 
   const history = useHistory();
-  const [location, setLocation] = useState(group?.location);
-  const [groupName, setGroupName] = useState(group?.groupName)
-  const [description, setDescription] = useState(group?.description)
-  const [groupType, setGroupType] = useState(group?.groupType)
-  const [isPrivate, setIsPrivate] = useState(group?.isPrivate)
-  const [imageUrl, setImageUrl] = useState(group?.imageUrl)
+  const [location, setLocation] = useState(group.city ? `${group.city}, ${group.state}` : '');
+  const [groupName, setGroupName] = useState(group? group.name : '')
+  const [description, setDescription] = useState(group? group.about : '')
+  const [groupType, setGroupType] = useState(group? group.type : '')
+  const [isPrivate, setIsPrivate] = useState(group? group.private : '')
+  const [imageUrl, setImageUrl] = useState(group.GroupImages? group.GroupImages[0].url : '')
 
   useEffect(() => {
     if (hasSubmitted) {
@@ -114,6 +114,7 @@ function GroupForm({ group, formType }) {
         </p>
         <input
           type="text"
+          required={true}
           placeholder="City, STATE"
           value={location}
           onChange={e => setLocation(e.target.value)}
@@ -129,6 +130,7 @@ function GroupForm({ group, formType }) {
         </p>
         <input
           type="text"
+          required={true}
           placeholder="What is your group name?"
           value={groupName}
           onChange={e => setGroupName(e.target.value)}
@@ -149,6 +151,7 @@ function GroupForm({ group, formType }) {
         </ol>
         <textarea
           placeholder="Please write at least 30 characters"
+          required={true}
           value={description}
           onChange={e => setDescription(e.target.value)}
         />
@@ -159,7 +162,7 @@ function GroupForm({ group, formType }) {
         <h2>Final steps...</h2>
 
         <p>Is this an in person or online group?</p>
-        <select value={groupType} onChange={e => setGroupType(e.target.value)}>
+        <select required value={groupType} onChange={e => setGroupType(e.target.value)}>
           <option value="">{'(select one)'}</option>
           <option value={'Online'}>Online</option>
           <option value={'In Person'}>In Person</option>
@@ -167,7 +170,7 @@ function GroupForm({ group, formType }) {
         {errors.groupType && (<p className='errors'>{errors.groupType}</p>)}
 
         <p>Is this group private or public?</p>
-        <select value={isPrivate} onChange={e => setIsPrivate(e.target.value)}>
+        <select required value={isPrivate} onChange={e => setIsPrivate(e.target.value)}>
           <option value="">{'(select one)'}</option>
           <option value={true}>Private</option>
           <option value={false}>Public</option>
@@ -179,6 +182,7 @@ function GroupForm({ group, formType }) {
         </p>
         <input
           type="text"
+          required={true}
           placeholder="https://somewhere/com/image.gif"
           value={imageUrl}
           onChange={e => setImageUrl(e.target.value)}

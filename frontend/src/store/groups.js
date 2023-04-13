@@ -60,6 +60,7 @@ export const getSingleGroupThunk = (groupId) => async (dispatch) => {
     const group = await response.json()
     // console.log('group inside of getSingleGroupThunk', group)
     dispatch(getSingleGroupAction(group))
+    return group
   }
 }
 

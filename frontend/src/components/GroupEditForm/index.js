@@ -1,27 +1,27 @@
 import GroupForm from "../GroupForm";
 import { useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import { editGroupThunk } from "../../store/groups";
+import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { getSingleGroupThunk } from "../../store/groups";
 
 const EditGroupForm = () => {
   const { groupId } = useParams();
-  let group = useSelector(state => state.groups[groupId]);
-  console.log('group inside GroupEditForm', group)
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const [group, setGroup] = useState('');
+  console.log('group inside of edit form', group)
+
+  useEffect(() => {
+    dispatch(getSingleGroupThunk(groupId))
+    .then((data) => setGroup(data))
+
+    // const data = await dispatch(getSingleGroupThunk(groupId))
+    // setGroup(data)
+
+  }, [dispatch])
+
   if (!group) return(<></>);
 
-  group = {
-    ...group,
-    ['location']: `${group.city}, ${group.state}`,
-    ['groupName']: group.name,
-    ['description']: group.about,
-    ['groupType']: group.type,
-    ['isPrivate']: group.private,
-  }
-
-  console.log('group after key edits', group)
-
+  console.log('group before sending to group form', group)
 
   return (
     Object.keys(group).length > 1 && (

@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react"
-import { useHistory, useParams } from "react-router"
-import { useDispatch, useSelector } from "react-redux"
+import { useHistory} from "react-router"
+import { useDispatch } from "react-redux"
 import { fileTypeCheck } from "../GroupForm"
 import { makeNewEventThunk } from "../../store/events"
 import './EventNew.css'
 
-function EventForm({event, formType}) {
-  const dispatch = useDispatch()
-  const {groupId} = useParams()
+function EventForm({event, group, formType}) {
+  const dispatch = useDispatch();
   const history = useHistory();
 
   const [name, setName] = useState(event?.name)
@@ -38,8 +37,6 @@ function EventForm({event, formType}) {
     }
   }, [name, type, isPrivate, price, startDate, endDate, url, description])
 
-  const group = useSelector(state => state.groups[groupId])
-  if (!group) return null
   // console.log('group inside of Event Form', group)
 
   const handleSubmit = async (e) => {
@@ -56,7 +53,7 @@ function EventForm({event, formType}) {
       url,
       description,
       // id: event?.id,
-      groupId
+      groupId: group.id
     }
 
     console.log('payload inside of EventForm', payload)
