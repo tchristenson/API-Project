@@ -33,9 +33,12 @@ function EventForm({event, group, formType}) {
       if (!endDate) newErrors['endDate'] = 'Event end is required'
       if (!['png', 'jpg', 'jpeg'].includes(fileTypeCheck(url))) newErrors['url'] = 'Image URL must end in .png, .jpg, or .jpeg'
       if (description.length < 30) newErrors['description'] = 'Description must be at least 30 characters long'
+
+      // const startCheck = new Date(startDate).getTime()
+      // console.log('startCheck', startCheck)
       setErrors(newErrors)
     }
-  }, [name, type, isPrivate, price, startDate, endDate, url, description])
+  }, [name, type, isPrivate, price, startDate, endDate, url, description, hasSubmitted])
 
   // console.log('group inside of Event Form', group)
 
@@ -91,6 +94,7 @@ function EventForm({event, group, formType}) {
         <h4>What is the name of your event?</h4>
         <input
             type="text"
+            required={true}
             placeholder="Event Name"
             value={name}
             onChange={e => setName(e.target.value)}
@@ -100,7 +104,7 @@ function EventForm({event, group, formType}) {
 
       <div className="type-private-price-wrapper">
         <h4>Is this an in person or online event?</h4>
-        <select value={type} onChange={e => setType(e.target.value)}>
+        <select required value={type} onChange={e => setType(e.target.value)}>
           <option value="">{'(select one)'}</option>
           <option value={'Online'}>Online</option>
           <option value={'In Person'}>In Person</option>
@@ -108,7 +112,7 @@ function EventForm({event, group, formType}) {
         {errors.type && (<p className='errors'>{errors.type}</p>)}
 
         <h4>Is this event private or public?</h4>
-        <select value={isPrivate} onChange={e => setIsPrivate(e.target.value)}>
+        <select required value={isPrivate} onChange={e => setIsPrivate(e.target.value)}>
           <option value="">{'(select one)'}</option>
           <option value={true}>Private</option>
           <option value={false}>Public</option>
@@ -118,6 +122,7 @@ function EventForm({event, group, formType}) {
         <h4>What is the price of your event?</h4>
         <input
           type="number"
+          required={true}
           placeholder="0"
           value={price}
           onChange={e => setPrice(e.target.value)}
@@ -129,6 +134,7 @@ function EventForm({event, group, formType}) {
         <h4>When does your event start?</h4>
         <input
             type="text"
+            required={true}
             placeholder="MM/DD/YYYY HH:mm AM"
             value={startDate}
             onChange={e => setStartDate(e.target.value)}
@@ -138,6 +144,7 @@ function EventForm({event, group, formType}) {
         <h4>When does your event end?</h4>
         <input
             type="text"
+            required={true}
             placeholder="MM/DD/YYYY HH:mm PM"
             value={endDate}
             onChange={e => setEndDate(e.target.value)}
@@ -149,6 +156,7 @@ function EventForm({event, group, formType}) {
         <h4>Please add an image url for your event below</h4>
         <input
             type="text"
+            required={true}
             placeholder="Image URL"
             value={url}
             onChange={e => setUrl(e.target.value)}
@@ -160,6 +168,7 @@ function EventForm({event, group, formType}) {
         <h4>Please describe your event</h4>
         <textarea
             placeholder="Please include at least 30 characters"
+            required={true}
             value={description}
             onChange={e => setDescription(e.target.value)}
           />
