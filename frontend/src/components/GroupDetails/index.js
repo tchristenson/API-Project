@@ -5,6 +5,7 @@ import { getSingleGroupThunk } from "../../store/groups"
 import { useEffect } from "react"
 import DeleteGroupModal from "../GroupDeleteModal"
 import OpenModalButton from "../OpenModalButton";
+import { dateTimeFix } from "../Events"
 
 
 function GroupDetails() {
@@ -24,10 +25,54 @@ function GroupDetails() {
 
   if (!group || !group.Organizer ) return null
 
-  const upcomingEvents =
-    <div className="event-image">
-      {}
-    </div>
+  const currentDate = new Date()
+
+  const upcomingEventsList = group.Events.map(event => {
+    console.log((new Date(event.startDate)).getTime() > currentDate.getTime())
+    if ((new Date(event.startDate)).getTime() > currentDate.getTime()) {
+      return (
+        <div className="event-container">
+          <div className="image-and-details">
+            <div className="event-image" key={event.id}>
+              <img src={event.EventImages.url} alt="event image"/>
+            </div>
+            <div className="event-info">
+              <div className="date-time-wrapper">
+                <div className="event-date">{dateTimeFix(event.startDate)[0]}</div>
+                <div className="event-time">{dateTimeFix(event.startDate)[1]}</div>
+              </div>
+              <div className="event-name"><h4>{event.name}</h4></div>
+              <div className="event-location">{event.Venue.address}</div>
+            </div>
+          </div>
+          <div className="event-about">{event.description}</div>
+        </div>
+      )
+    }
+  })
+
+  const pastEventsList = group.Events.map(event => {
+    if ((new Date(event.startDate)).getTime() > currentDate.getTime()) {
+      return (
+        <div className="event-container">
+          <div className="image-and-details">
+            <div className="event-image" key={event.id}>
+              <img src={event.EventImages.url} alt="event image"/>
+            </div>
+            <div className="event-info">
+              <div className="date-time-wrapper">
+                <div className="event-date">{dateTimeFix(event.startDate)[0]}</div>
+                <div className="event-time">{dateTimeFix(event.startDate)[1]}</div>
+              </div>
+              <div className="event-name"><h4>{event.name}</h4></div>
+              <div className="event-location">{event.Venue.address}</div>
+            </div>
+          </div>
+          <div className="event-about">{event.description}</div>
+        </div>
+      )
+    }
+  })
 
   // console.log('typeof groupId inside GroupDetail component', typeof (groupId))
   // console.log('currUserId inside GroupDetail component', currUserId)
@@ -99,15 +144,17 @@ function GroupDetails() {
         <h3>What we're about</h3>
         <h5>{group.about}</h5>
       </div>
-      <div className="upcoming-event-info placeholder">
-        <h3>Upcoming Events - MUST INCLUDE NUMBER OF EVENTS & CONDITONAL RENDERING</h3>
-        <div className="upcoming-event-wrapper placeholder">
-          PLACEHOLDER FOR EVENT INFO
+      <div className="upcoming-event-info">
+        <h3>Upcoming Events {`(${upcomingEventsList.length})`}</h3>
+        <div className="upcoming-event-wrapper">
+          {upcomingEventsList}
         </div>
       </div>
-      <div className="past-event-info placeholder">
-        <h3>Past Events - MUST INCLUDE NUMBER OF EVENTS & CONDITONAL RENDERING</h3>
-        <div className="past-event-wrapper placeholder">PLACEHOLDER FOR EVENT INFO</div>
+      <div className="past-event-info">
+        <h3>Past Events {`(${pastEventsList.length})`}</h3>
+        <div className="past-event-wrapper">
+          {pastEventsList}
+        </div>
       </div>
     </body>
   )
