@@ -27,11 +27,10 @@ function GroupDetails() {
 
   const currentDate = new Date()
 
-  const upcomingEventsList = group.Events.map(event => {
-    console.log((new Date(event.startDate)).getTime() > currentDate.getTime())
-    if ((new Date(event.startDate)).getTime() > currentDate.getTime()) {
-      return (
-        <div className="event-container">
+  const upcomingEventsList = group.Events.filter(event =>
+    new Date(event.startDate).getTime() > currentDate.getTime())
+    .map(event => (
+      <div className="event-container">
           <div className="image-and-details">
             <div className="event-image" key={event.id}>
               <img src={event.EventImages.url} alt="event image"/>
@@ -47,14 +46,12 @@ function GroupDetails() {
           </div>
           <div className="event-about">{event.description}</div>
         </div>
-      )
-    }
-  })
+    ));
 
-  const pastEventsList = group.Events.map(event => {
-    if ((new Date(event.startDate)).getTime() > currentDate.getTime()) {
-      return (
-        <div className="event-container">
+  const pastEventsList = group.Events.filter(event =>
+    new Date(event.startDate).getTime() < currentDate.getTime())
+    .map(event => (
+      <div className="event-container">
           <div className="image-and-details">
             <div className="event-image" key={event.id}>
               <img src={event.EventImages.url} alt="event image"/>
@@ -70,9 +67,7 @@ function GroupDetails() {
           </div>
           <div className="event-about">{event.description}</div>
         </div>
-      )
-    }
-  })
+    ));
 
   // console.log('typeof groupId inside GroupDetail component', typeof (groupId))
   // console.log('currUserId inside GroupDetail component', currUserId)
