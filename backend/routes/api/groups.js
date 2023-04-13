@@ -305,7 +305,15 @@ router.get('/:groupId', async (req, res, next) => {
           model: Event,
           attributes: {
             exclude: ['createdAt', 'updatedAt']
-          }
+          },
+          include: [
+            {
+              model: EventImage
+            },
+            {
+              model: Venue
+            }
+          ]
         },
       ]
     })

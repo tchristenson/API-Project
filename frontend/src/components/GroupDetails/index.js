@@ -24,6 +24,11 @@ function GroupDetails() {
 
   if (!group || !group.Organizer ) return null
 
+  const upcomingEvents =
+    <div className="event-image">
+      {}
+    </div>
+
   // console.log('typeof groupId inside GroupDetail component', typeof (groupId))
   // console.log('currUserId inside GroupDetail component', currUserId)
   // console.log('typeof currUserId inside GroupDetail component', typeof currUserId)
@@ -96,7 +101,9 @@ function GroupDetails() {
       </div>
       <div className="upcoming-event-info placeholder">
         <h3>Upcoming Events - MUST INCLUDE NUMBER OF EVENTS & CONDITONAL RENDERING</h3>
-        <div className="upcoming-event-wrapper placeholder">PLACEHOLDER FOR EVENT INFO</div>
+        <div className="upcoming-event-wrapper placeholder">
+          PLACEHOLDER FOR EVENT INFO
+        </div>
       </div>
       <div className="past-event-info placeholder">
         <h3>Past Events - MUST INCLUDE NUMBER OF EVENTS & CONDITONAL RENDERING</h3>
