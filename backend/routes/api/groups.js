@@ -22,7 +22,7 @@ const validateGroupBody = [
   check('about')
     .exists({ checkFalsy: true })
     .isLength({ min: 50 })
-    .withMessage('About must be 50 characters or more'),
+    .withMessage('About must be 30 characters or more'),
   check('type')
     .exists({ checkFalsy: true })
     .notEmpty()
