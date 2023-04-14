@@ -23,21 +23,22 @@ function EventForm({event, group, formType}) {
   // console.log('errors', errors)
 
   useEffect(() => {
-    if (hasSubmitted) {
+
       const newErrors = {};
       if (!name) newErrors['name'] = 'Name is required'
       if (!type) newErrors['type'] = 'Event Type is required'
+
       if (typeof isPrivate !== 'boolean') newErrors['isPrivate'] = 'Visibility is required'
       if (price < 0) newErrors['price'] = 'Price is required'
       if (!startDate) newErrors['startDate'] = 'Event start is required'
       if (!endDate) newErrors['endDate'] = 'Event end is required'
       if (!['png', 'jpg', 'jpeg'].includes(fileTypeCheck(url))) newErrors['url'] = 'Image URL must end in .png, .jpg, or .jpeg'
       if (description.length < 30) newErrors['description'] = 'Description must be at least 30 characters long'
-
+      console.log('newErrors', newErrors)
       // const startCheck = new Date(startDate).getTime()
       // console.log('startCheck', startCheck)
       setErrors(newErrors)
-    }
+
   }, [name, type, isPrivate, price, startDate, endDate, url, description, hasSubmitted])
 
   // console.log('group inside of Event Form', group)
@@ -45,6 +46,8 @@ function EventForm({event, group, formType}) {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setHasSubmitted(true);
+    const errorArr = Object.values(errors)
+    if (errorArr.length) return
 
     const payload = {
       name,
@@ -99,7 +102,7 @@ function EventForm({event, group, formType}) {
             value={name}
             onChange={e => setName(e.target.value)}
           />
-          {errors.name && (<p className='errors'>{errors.name}</p>)}
+          {hasSubmitted && errors.name && (<p className='errors'>{errors.name}</p>)}
       </div>
 
       <div className="type-private-price-wrapper">
@@ -109,7 +112,7 @@ function EventForm({event, group, formType}) {
           <option value={'Online'}>Online</option>
           <option value={'In Person'}>In Person</option>
         </select>
-        {errors.type && (<p className='errors'>{errors.type}</p>)}
+        {hasSubmitted && errors.type && (<p className='errors'>{errors.type}</p>)}
 
         <h4>Is this event private or public?</h4>
         <select required value={isPrivate} onChange={e => setIsPrivate(e.target.value)}>
@@ -117,7 +120,7 @@ function EventForm({event, group, formType}) {
           <option value={true}>Private</option>
           <option value={false}>Public</option>
         </select>
-        {errors.isPrivate && (<p className='errors'>{errors.isPrivate}</p>)}
+        {hasSubmitted && errors.isPrivate && (<p className='errors'>{errors.isPrivate}</p>)}
 
         <h4>What is the price of your event?</h4>
         <input
@@ -127,7 +130,7 @@ function EventForm({event, group, formType}) {
           value={price}
           onChange={e => setPrice(e.target.value)}
         />
-        {errors.price && (<p className='errors'>{errors.price}</p>)}
+        {hasSubmitted && errors.price && (<p className='errors'>{errors.price}</p>)}
       </div>
 
       <div className="date-wrapper">
@@ -139,7 +142,7 @@ function EventForm({event, group, formType}) {
             value={startDate}
             onChange={e => setStartDate(e.target.value)}
           />
-        {errors.startDate && (<p className='errors'>{errors.startDate}</p>)}
+        {hasSubmitted && errors.startDate && (<p className='errors'>{errors.startDate}</p>)}
 
         <h4>When does your event end?</h4>
         <input
@@ -149,7 +152,7 @@ function EventForm({event, group, formType}) {
             value={endDate}
             onChange={e => setEndDate(e.target.value)}
           />
-        {errors.endDate && (<p className='errors'>{errors.endDate}</p>)}
+        {hasSubmitted && errors.endDate && (<p className='errors'>{errors.endDate}</p>)}
       </div>
 
       <div className="url-wrapper">
@@ -161,7 +164,7 @@ function EventForm({event, group, formType}) {
             value={url}
             onChange={e => setUrl(e.target.value)}
           />
-          {errors.url && (<p className='errors'>{errors.url}</p>)}
+          {hasSubmitted && errors.url && (<p className='errors'>{errors.url}</p>)}
       </div>
 
       <div>
@@ -172,7 +175,7 @@ function EventForm({event, group, formType}) {
             value={description}
             onChange={e => setDescription(e.target.value)}
           />
-          {errors.description && (<p className='errors'>{errors.description}</p>)}
+          {hasSubmitted && errors.description && (<p className='errors'>{errors.description}</p>)}
       </div>
 
       <div className='submit-button'>
