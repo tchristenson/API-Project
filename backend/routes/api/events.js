@@ -195,6 +195,9 @@ router.get('/:eventId', async (req, res, next) => {
         include: [
           {
             model: User
+          },
+          {
+            model: GroupImage
           }
         ]
       },
