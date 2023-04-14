@@ -27,7 +27,7 @@ function EventForm({event, group, formType}) {
       const newErrors = {};
       if (!name) newErrors['name'] = 'Name is required'
       if (!type) newErrors['type'] = 'Event Type is required'
-      if (!isPrivate) newErrors['isPrivate'] = 'Visibility is required'
+      if (typeof isPrivate !== 'boolean') newErrors['isPrivate'] = 'Visibility is required'
       if (price < 0) newErrors['price'] = 'Price is required'
       if (!startDate) newErrors['startDate'] = 'Event start is required'
       if (!endDate) newErrors['endDate'] = 'Event end is required'
