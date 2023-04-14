@@ -28,13 +28,13 @@ function EventForm({event, group, formType}) {
       if (!name) newErrors['name'] = 'Name is required'
       if (!type) newErrors['type'] = 'Event Type is required'
 
-      if (typeof isPrivate !== 'boolean') newErrors['isPrivate'] = 'Visibility is required'
+      if (isPrivate !== 'true' && isPrivate !== 'false') newErrors['isPrivate'] = 'Visibility type is required'
       if (price < 0) newErrors['price'] = 'Price is required'
       if (!startDate) newErrors['startDate'] = 'Event start is required'
       if (!endDate) newErrors['endDate'] = 'Event end is required'
       if (!['png', 'jpg', 'jpeg'].includes(fileTypeCheck(url))) newErrors['url'] = 'Image URL must end in .png, .jpg, or .jpeg'
       if (description.length < 30) newErrors['description'] = 'Description must be at least 30 characters long'
-      console.log('newErrors', newErrors)
+      // console.log('newErrors', newErrors)
       // const startCheck = new Date(startDate).getTime()
       // console.log('startCheck', startCheck)
       setErrors(newErrors)
