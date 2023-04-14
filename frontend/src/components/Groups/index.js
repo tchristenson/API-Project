@@ -10,32 +10,32 @@ function Groups() {
   // console.log('groups inside of Groups component', groups)
 
   // // original
-  // useEffect(() => {
-  //   dispatch(getAllGroupsThunk())
-  // }, [dispatch])
+  useEffect(() => {
+    dispatch(getAllGroupsThunk())
+  }, [dispatch])
 
-  // const groups = useSelector(state => state.groups)
+  const groups = useSelector(state => state.groups)
 
   // // original stop
 
   // new approach - getting groups using thunk instead of useSelector
-  const [groups, setGroups] = useState('')
+  // const [groups, setGroups] = useState('')
 
-  useEffect(() => {
-    dispatch(getAllGroupsThunk())
-    .then((data) => setGroups(data))
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(getAllGroupsThunk())
+  //   .then((data) => setGroups(data))
+  // }, [dispatch])
 
-  console.log('groups inside All Groups', groups)
-  console.log('groups.Groups inside All Groups', groups.Groups)
+  // console.log('groups inside All Groups', groups)
+  // console.log('groups.Groups inside All Groups', groups.Groups)
 
   if (!groups) return null
 
 // Change const groupList to equal groupsArr.map if going back to original
 // also now returning from the getAllGroupsThunk whereas I wasn't prior
-  // const groupsArr = Object.values(groups)
+  const groupsArr = Object.values(groups)
 
-  const groupList = groups.Groups.map(group => (
+  const groupList = groupsArr.map(group => (
     <NavLink className="nav-link" to={`/groups/${group.id}`}>
       <div className="single-group" key={group.id}>
         <div className="group-image">
