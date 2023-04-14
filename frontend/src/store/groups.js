@@ -189,7 +189,7 @@ const groupReducer = (state = {}, action) => {
       // // filter over the array of objects, removing the group who's id matches the action.groupId that was deleted
       // const filteredGroupsArr = groupsArr.filter((group) => group.id !== action.groupId)
 
-      // // filter over the array of objects, removing the group who's id matches the action.groupId that was deleted
+      // // filter over the array of objects, removing the event who's id matches the action.groupId that was deleted
       // const filteredEventsArr = eventsArr.filter((event) => event.groupId !== action.groupId)
 
       // // Normalize the both arrays to get them back into an objects - had issues with forEach, so used a regular for loop
