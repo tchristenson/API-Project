@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
+import { useState } from "react"
 import { getAllEventsThunk } from "../../store/events"
 import "./Events.css"
 
@@ -31,22 +32,39 @@ import "./Events.css"
 
 function Events() {
   const dispatch = useDispatch()
-  const events = useSelector(state => state.events)
-  const eventsArr = Object.values(events)
-  // console.log('events inside of Events component', events)
 
-  useEffect(() => {
-    dispatch(getAllEventsThunk())
-  }, [dispatch])
+  // // original
+  // const events = useSelector(state => state.events)
+  // const eventsArr = Object.values(events)
+  // // console.log('events inside of Events component', events)
+
+  // useEffect(() => {
+  //   dispatch(getAllEventsThunk())
+  // }, [dispatch])
+  // // original end
 
 
+    // new approach - now using thunk instead of useSelector
+    const [events, setEvents] = useState('')
 
-  const eventList = eventsArr.map(event => (
+    useEffect(() => {
+      dispatch(getAllEventsThunk())
+      .then((data) => setEvents(data))
+    }, [dispatch])
+
+    console.log('events inside All Events', events)
+    // console.log('events.Events inside All Events', events.Events)
+
+    if (!events) return null
+
+
+// I was mapping over eventsArr in the original approach
+  const eventList = events.Events.map(event => (
     <NavLink className="nav-link" to={`/events/${event.id}`}>
       <div className="single-event" key={event.id}>
         <div className="image-event-wrapper">
           <div className="event-image">
-            {event.previewImage}
+           <img src={event.previewImage} alt="Group Image" />
           </div>
           <div className="event-info">
             <div className="date-time-wrapper">

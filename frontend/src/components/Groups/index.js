@@ -2,24 +2,44 @@ import { NavLink } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
 import { getAllGroupsThunk } from "../../store/groups"
+import { useState } from "react"
 import "./Groups.css"
 
 function Groups() {
   const dispatch = useDispatch()
   // console.log('groups inside of Groups component', groups)
 
+  // // original
+  // useEffect(() => {
+  //   dispatch(getAllGroupsThunk())
+  // }, [dispatch])
+
+  // const groups = useSelector(state => state.groups)
+
+  // // original stop
+
+  // new approach - getting groups using thunk instead of useSelector
+  const [groups, setGroups] = useState('')
+
   useEffect(() => {
     dispatch(getAllGroupsThunk())
+    .then((data) => setGroups(data))
   }, [dispatch])
 
-  const groups = useSelector(state => state.groups)
-  const groupsArr = Object.values(groups)
+  console.log('groups inside All Groups', groups)
+  console.log('groups.Groups inside All Groups', groups.Groups)
 
-  const groupList = groupsArr.map(group => (
+  if (!groups) return null
+
+// Change const groupList to equal groupsArr.map if going back to original
+// also now returning from the getAllGroupsThunk whereas I wasn't prior
+  // const groupsArr = Object.values(groups)
+
+  const groupList = groups.Groups.map(group => (
     <NavLink className="nav-link" to={`/groups/${group.id}`}>
       <div className="single-group" key={group.id}>
         <div className="group-image">
-          {group.previewImage}
+          <img src={group.previewImage} alt="Group Image" />
         </div>
         <div className="group-info">
           <div className="group-name"><h3>{group.name}</h3></div>

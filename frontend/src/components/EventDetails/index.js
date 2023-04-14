@@ -17,12 +17,12 @@ function EventDetails() {
   }, [dispatch, eventId])
 
   const currUser = useSelector(state => state.session.user)
-  console.log('currUser inside GroupDetails', currUser)
+  // console.log('currUser inside GroupDetails', currUser)
   const event = useSelector(state => state.events[eventId])
   if (!event ||  !event.Group || !event.Group.User) return null
 
   const organizerId = event.Group.User.id
-  console.log('organizerId inside GroupDetails', organizerId)
+  // console.log('organizerId inside GroupDetails', organizerId)
 
   console.log('event inside of EventDetail', event)
 
@@ -40,8 +40,7 @@ function EventDetails() {
         <div className="group-event-info-container">
           <div className="group-image-detail">
             <div className="group-image">
-              {event.Group.previewImage}
-              Group Image
+              <img src={event.Group.GroupImages[0].url} alt="Group Image" />
             </div>
             <div className="group-detail-container">
               <div>{event.Group.name}</div>

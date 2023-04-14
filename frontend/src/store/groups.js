@@ -51,6 +51,7 @@ export const getAllGroupsThunk = () => async (dispatch) => {
     const groups = await response.json()
     // console.log('groups inside of getAllGroupsThunk', groups)
     dispatch(getAllGroupsAction(groups))
+    return groups
   }
 }
 
