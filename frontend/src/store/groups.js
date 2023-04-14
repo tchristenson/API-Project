@@ -155,11 +155,8 @@ const groupReducer = (state = {}, action) => {
       action.groups.Groups.forEach(group => newState[group.id] = group)
       return newState
     case GET_SINGLE_GROUP:
-      // console.log('action inside of reducer', action)
       newState = {...state}
-      // console.log('newState inside of reducer before edits', newState)
       newState[action.group.id] = action.group
-      // console.log('newState inside of reducer after edits', newState)
       return newState
     case MAKE_NEW_GROUP:
       newState = {...state}
@@ -170,11 +167,8 @@ const groupReducer = (state = {}, action) => {
       newState[action.group.id] = action.group
       return newState
     case DELETE_GROUP:
-      // console.log('newState inside Delete Reducer - AS RECEIVED', newState)
       newState = {...state}
-      console.log('newState inside Delete Reducer - SPREAD', newState)
       delete newState[action.groupId]
-      console.log('newState inside Delete Reducer - DELETION', newState)
       return newState
     default:
       return state
