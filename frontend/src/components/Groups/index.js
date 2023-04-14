@@ -18,7 +18,7 @@ function Groups() {
 
   // // original stop
 
-  // attempt
+  // new approach - getting groups using thunk instead of useSelector
   const [groups, setGroups] = useState('')
 
   useEffect(() => {
@@ -31,17 +31,9 @@ function Groups() {
 
   if (!groups) return null
 
-
-
-
-
-
-
-
-
 // Change const groupList to equal groupsArr.map if going back to original
 // also now returning from the getAllGroupsThunk whereas I wasn't prior
-  const groupsArr = Object.values(groups)
+  // const groupsArr = Object.values(groups)
 
   const groupList = groups.Groups.map(group => (
     <NavLink className="nav-link" to={`/groups/${group.id}`}>
