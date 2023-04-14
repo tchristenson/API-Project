@@ -42,6 +42,7 @@ export const getAllEventsThunk = () => async (dispatch) => {
     const events = await response.json()
     // console.log('events inside of getAllEventsThunk', events)
     dispatch(getAllEventsAction(events))
+    return events
   }
 }
 
