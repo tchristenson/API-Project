@@ -34,9 +34,15 @@ const dateTimeFix = str => {
   return [date, time]
 }
 
-console.log(dateTimeFix('2023-04-10T07:00:00.000Z'))
-console.log(dateTimeFix('2023-04-10T14:30:00.000Z'))
-console.log(dateTimeFix('2023-04-10T01:30:00.000Z'))
-console.log(dateTimeFix('2023-04-10T13:50:00.000Z'))
-console.log(dateTimeFix('2023-04-10T18:00:00.000Z'))
-console.log(dateTimeFix('2023-04-10T17:13:00.000Z'))
+// console.log(dateTimeFix('2023-04-10T07:00:00.000Z'))
+// console.log(dateTimeFix('2023-04-10T14:30:00.000Z'))
+// console.log(dateTimeFix('2023-04-10T01:30:00.000Z'))
+// console.log(dateTimeFix('2023-04-10T13:50:00.000Z'))
+// console.log(dateTimeFix('2023-04-10T18:00:00.000Z'))
+// console.log(dateTimeFix('2023-04-10T17:13:00.000Z'))
+
+// typeof true !== bool
+console.log(typeof false === 'boolean')
+console.log(typeof true === 'boolean')
+console.log(typeof 2 === 'boolean')
+console.log(typeof 'sfesf' === 'boolean')

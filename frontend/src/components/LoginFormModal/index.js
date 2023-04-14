@@ -31,6 +31,11 @@ function LoginFormModal() {
       });
   };
 
+  const handleDemoUser = () => {
+    setCredential('DemoUser')
+    setPassword('password')
+  }
+
   return (
     <div className="login-container">
       <h1>Log In</h1>
@@ -57,8 +62,8 @@ function LoginFormModal() {
         <button type="submit" disabled={credential.length < 4 || password.length < 6}>
           Log In
         </button>
-        <button className="placeholder">
-          Demo User - PLACEHOLDER
+        <button className='demo-user-button' type="submit" onClick={handleDemoUser}>
+          Demo User
         </button>
       </form>
     </div>
