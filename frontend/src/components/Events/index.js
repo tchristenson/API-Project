@@ -33,24 +33,23 @@ import "./Events.css"
 function Events() {
   const dispatch = useDispatch()
 
-  // // original
-  // const events = useSelector(state => state.events)
-  // const eventsArr = Object.values(events)
-  // // console.log('events inside of Events component', events)
+  // // ORIGINAL METHOD
+  const events = useSelector(state => state.events)
+  const eventsArr = Object.values(events)
 
-  // useEffect(() => {
-  //   dispatch(getAllEventsThunk())
-  // }, [dispatch])
-  // // original end
+  useEffect(() => {
+    dispatch(getAllEventsThunk())
+  }, [dispatch])
+  // // ORIGINAL END
 
 
-    // new approach - now using thunk instead of useSelector
-    const [events, setEvents] = useState('')
+    // // NEW APPROACH - now using thunk instead of useSelector
+    // const [events, setEvents] = useState('')
 
-    useEffect(() => {
-      dispatch(getAllEventsThunk())
-      .then((data) => setEvents(data))
-    }, [dispatch])
+    // useEffect(() => {
+    //   dispatch(getAllEventsThunk())
+    //   .then((data) => setEvents(data))
+    // }, [dispatch])
 
     console.log('events inside All Events', events)
     // console.log('events.Events inside All Events', events.Events)
@@ -59,7 +58,7 @@ function Events() {
 
 
 // I was mapping over eventsArr in the original approach
-  const eventList = events.Events.map(event => (
+  const eventList = eventsArr.map(event => (
     <NavLink className="nav-link" to={`/events/${event.id}`}>
       <div className="single-event" key={event.id}>
         <div className="image-event-wrapper">
