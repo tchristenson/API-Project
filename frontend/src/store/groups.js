@@ -169,58 +169,58 @@ const groupReducer = (state = {}, action) => {
     case DELETE_GROUP:
       newState = {...state}
 
-      // START - scratch work to fix cascade issue
-      // Get the keys from the current state and place them into an array
-      const keys = Object.keys(newState)
-      // map over the keys, and each group will be an object with its properties, all held in an array. An array of objects
-      const groupsArr = Object.keys(newState).map(group => {
-        return {...newState[group]}
-      })
+      // // START - scratch work to fix cascade issue
+      // // Get the keys from the current state and place them into an array
+      // const keys = Object.keys(newState)
+      // // map over the keys, and each group will be an object with its properties, all held in an array. An array of objects
+      // const groupsArr = Object.keys(newState).map(group => {
+      //   return {...newState[group]}
+      // })
 
-      // iterate over the groupArr and access the nested Events objects. Put those into their own events Array
-      const eventsArr = [];
-      for (let i = 0; i < groupsArr.length; i++) {
-        let currEvents = groupsArr[i].Events
-        currEvents.forEach(event => {
-          eventsArr.push(event)
-        })
-      }
+      // // iterate over the groupArr and access the nested Events objects. Put those into their own events Array
+      // const eventsArr = [];
+      // for (let i = 0; i < groupsArr.length; i++) {
+      //   let currEvents = groupsArr[i].Events
+      //   currEvents.forEach(event => {
+      //     eventsArr.push(event)
+      //   })
+      // }
 
-      // filter over the array of objects, removing the group who's id matches the action.groupId that was deleted
-      const filteredGroupsArr = groupsArr.filter((group) => group.id !== action.groupId)
+      // // filter over the array of objects, removing the group who's id matches the action.groupId that was deleted
+      // const filteredGroupsArr = groupsArr.filter((group) => group.id !== action.groupId)
 
-      // filter over the array of objects, removing the event who's id matches the action.groupId that was deleted
-      const filteredEventsArr = eventsArr.filter((event) => event.groupId !== action.groupId)
+      // // filter over the array of objects, removing the event who's id matches the action.groupId that was deleted
+      // const filteredEventsArr = eventsArr.filter((event) => event.groupId !== action.groupId)
 
-      // Normalize the both arrays to get them back into an objects - had issues with forEach, so used a regular for loop
-      const filteredGroupsObj = {}
-      for (let i = 0; i < filteredGroupsArr.length; i++) {
-        let currGroup = filteredGroupsArr[i]
-        filteredGroupsObj[currGroup.id] = currGroup
-      }
+      // // Normalize the both arrays to get them back into an objects - had issues with forEach, so used a regular for loop
+      // const filteredGroupsObj = {}
+      // for (let i = 0; i < filteredGroupsArr.length; i++) {
+      //   let currGroup = filteredGroupsArr[i]
+      //   filteredGroupsObj[currGroup.id] = currGroup
+      // }
 
-      const filteredEventsObj = {}
-      for (let i = 0; i < filteredEventsArr.length; i++) {
-        let currEvent = filteredEventsArr[i]
-        filteredEventsObj[currEvent.id] = currEvent
-      }
+      // const filteredEventsObj = {}
+      // for (let i = 0; i < filteredEventsArr.length; i++) {
+      //   let currEvent = filteredEventsArr[i]
+      //   filteredEventsObj[currEvent.id] = currEvent
+      // }
 
-      console.log('keys inside reducer', keys)
-      console.log('groupsArr inside reducer', groupsArr)
-      console.log('eventsArr inside reducer', eventsArr)
-      console.log('filteredGroupsArr inside reducer', filteredGroupsArr)
-      console.log('filteredEventsArr inside reducer', filteredEventsArr)
-      console.log('filteredGroupsObj inside reducer', filteredGroupsObj)
-      console.log('filteredEventsObj inside reducer', filteredEventsObj)
+      // console.log('keys inside reducer', keys)
+      // console.log('groupsArr inside reducer', groupsArr)
+      // console.log('eventsArr inside reducer', eventsArr)
+      // console.log('filteredGroupsArr inside reducer', filteredGroupsArr)
+      // console.log('filteredEventsArr inside reducer', filteredEventsArr)
+      // console.log('filteredGroupsObj inside reducer', filteredGroupsObj)
+      // console.log('filteredEventsObj inside reducer', filteredEventsObj)
 
-      newState.groups = filteredGroupsObj
-      newState.events = filteredEventsObj
-      return newState
-
-      // END - scratch work to fix cascade issue
-
-      // delete newState[action.groupId]
+      // newState.groups = filteredGroupsObj
+      // newState.events = filteredEventsObj
       // return newState
+
+      // // END - scratch work to fix cascade issue
+
+      delete newState[action.groupId]
+      return newState
     default:
       return state
   }
