@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import './GroupNew.css'
 import { makeNewGroupThunk, editGroupThunk } from '../../store/groups';
+import { bool } from 'prop-types';
 
   // HELPER FUNCTIONS FOR DATA VALIDATION / SANITIZING
   export const fileTypeCheck = (str) => {
@@ -44,7 +45,7 @@ function GroupForm({ group, formType }) {
       if (!groupName) newErrors['groupName'] = 'Name is required'
       if (description.length < 30) newErrors['description'] = 'Description must be at least 30 characters long'
       if (!groupType) newErrors['groupType'] = 'Group Type is required'
-      if (isPrivate !== true || isPrivate !== false) newErrors['isPrivate'] = 'Visibility type is required'
+      if (typeof isPrivate !== 'boolean') newErrors['isPrivate'] = 'Visibility type is required'
       if (!['png', 'jpg', 'jpeg'].includes(fileTypeCheck(imageUrl))) newErrors['imageUrl'] = 'Image URL must end in .png, .jpg, or .jpeg'
       setErrors(newErrors);
     }
