@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react'
 import { useHistory } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import './GroupNew.css'
 import { makeNewGroupThunk, editGroupThunk } from '../../store/groups';
 
@@ -31,29 +31,31 @@ function GroupForm({ group, formType }) {
 
   const history = useHistory();
   const [location, setLocation] = useState(group.city ? `${group.city}, ${group.state}` : '');
-  const [groupName, setGroupName] = useState(group? group.name : '')
-  const [description, setDescription] = useState(group? group.about : '')
-  const [groupType, setGroupType] = useState(group? group.type : '')
-  const [isPrivate, setIsPrivate] = useState(group? group.private : 'false')
+  const [groupName, setGroupName] = useState(group.name? group.name : '')
+  const [description, setDescription] = useState(group.about? group.about : '')
+  const [groupType, setGroupType] = useState(group.type? group.type : '')
+  const [isPrivate, setIsPrivate] = useState(group.private? group.private : 'false')
   const [imageUrl, setImageUrl] = useState(group.GroupImages? group.GroupImages[0].url : '')
 
   useEffect(() => {
-    if (hasSubmitted) {
+
       const newErrors = {};
       if (!location) newErrors['location'] = 'Location is required'
       if (!groupName) newErrors['groupName'] = 'Name is required'
+      // console.log('description inside useEffect', description)
       if (description.length < 30) newErrors['description'] = 'Description must be at least 30 characters long'
       if (!groupType) newErrors['groupType'] = 'Group Type is required'
-      console.log('this is type of bool', typeof isPrivate, isPrivate)
       if (isPrivate !== 'true' && isPrivate !== 'false') newErrors['isPrivate'] = 'Visibility type is required'
       if (!['png', 'jpg', 'jpeg'].includes(fileTypeCheck(imageUrl))) newErrors['imageUrl'] = 'Image URL must end in .png, .jpg, or .jpeg'
       setErrors(newErrors);
-    }
+
   }, [location, groupName, description, groupType, isPrivate, imageUrl, hasSubmitted])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setHasSubmitted(true);
+    const errorArr = Object.values(errors)
+    if (errorArr.length) return
 
     if (location !== '') {
       const payload = {
@@ -120,7 +122,7 @@ function GroupForm({ group, formType }) {
           value={location}
           onChange={e => setLocation(e.target.value)}
         />
-        {errors.location && (<p className='errors'>{errors.location}</p>)}
+        {hasSubmitted && errors.location && (<p className='errors'>{errors.location}</p>)}
       </div>
 
       <div className='name-container'>
@@ -136,7 +138,7 @@ function GroupForm({ group, formType }) {
           value={groupName}
           onChange={e => setGroupName(e.target.value)}
         />
-        {errors.groupName && (<p className='errors'>{errors.groupName}</p>)}
+        {hasSubmitted && errors.groupName && (<p className='errors'>{errors.groupName}</p>)}
       </div>
 
       <div className='about-container'>
@@ -156,7 +158,7 @@ function GroupForm({ group, formType }) {
           value={description}
           onChange={e => setDescription(e.target.value)}
         />
-        {errors.description && (<p className='errors'>{errors.description}</p>)}
+        {hasSubmitted && errors.description && (<p className='errors'>{errors.description}</p>)}
       </div>
 
       <div className='final-steps-container'>
@@ -168,7 +170,7 @@ function GroupForm({ group, formType }) {
           <option value={'Online'}>Online</option>
           <option value={'In Person'}>In Person</option>
         </select>
-        {errors.groupType && (<p className='errors'>{errors.groupType}</p>)}
+        {hasSubmitted && errors.groupType && (<p className='errors'>{errors.groupType}</p>)}
 
         <p>Is this group private or public?</p>
         <select required value={isPrivate} onChange={e => setIsPrivate(e.target.value)}>
@@ -176,7 +178,7 @@ function GroupForm({ group, formType }) {
           <option value={true}>Private</option>
           <option value={false}>Public</option>
         </select>
-        {errors.isPrivate && (<p className='errors'>{errors.isPrivate}</p>)}
+        {hasSubmitted && errors.isPrivate && (<p className='errors'>{errors.isPrivate}</p>)}
 
         <p>
           Please add an image url for your group below:
@@ -188,7 +190,7 @@ function GroupForm({ group, formType }) {
           value={imageUrl}
           onChange={e => setImageUrl(e.target.value)}
         />
-        {errors.imageUrl && (<p className='errors'>{errors.imageUrl}</p>)}
+        {hasSubmitted && errors.imageUrl && (<p className='errors'>{errors.imageUrl}</p>)}
       </div>
       <div className='submit-button'>
         <button type="submit">{formType === 'Create Group' ? 'Create Group' : 'Update Group' }</button>
