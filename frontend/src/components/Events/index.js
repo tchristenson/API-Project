@@ -44,7 +44,7 @@ function Events() {
   // // original end
 
 
-    // new
+    // new approach - now using thunk instead of useSelector
     const [events, setEvents] = useState('')
 
     useEffect(() => {
