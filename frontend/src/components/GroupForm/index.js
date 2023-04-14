@@ -34,7 +34,7 @@ function GroupForm({ group, formType }) {
   const [groupName, setGroupName] = useState(group.name? group.name : '')
   const [description, setDescription] = useState(group.about? group.about : '')
   const [groupType, setGroupType] = useState(group.type? group.type : '')
-  const [isPrivate, setIsPrivate] = useState(group.private? group.private : 'false')
+  const [isPrivate, setIsPrivate] = useState(group.private? group.private : '')
   const [imageUrl, setImageUrl] = useState(group.GroupImages? group.GroupImages[0].url : '')
 
   useEffect(() => {
