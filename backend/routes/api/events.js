@@ -126,7 +126,7 @@ router.get('/', queryValidator, async (req, res, next) => {
   let events = await Event.findAll({
     where,
     attributes: {
-      exclude: ['description', 'capacity', 'price', 'createdAt', 'updatedAt']
+      exclude: ['capacity', 'createdAt', 'updatedAt']
     },
     include: [
       {
@@ -191,7 +191,12 @@ router.get('/:eventId', async (req, res, next) => {
     include: [
       {
         model: Group,
-        attributes: ['id', 'name', 'private', 'city', 'state']
+        attributes: ['id', 'name', 'private', 'city', 'state'],
+        include: [
+          {
+            model: User
+          }
+        ]
       },
       {
         model: Venue,

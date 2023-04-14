@@ -1,13 +1,29 @@
 import "./EventDetails.css"
-import { useParams, NavLink } from "react-router-dom"
-import { useSelector } from "react-redux"
+import { useParams, NavLink, Link } from "react-router-dom"
+import { useSelector, useDispatch } from "react-redux"
+import { getSingleEventThunk } from "../../store/events"
+import { useEffect } from "react"
+import { dateTimeFix } from "../Events"
+import OpenModalButton from "../OpenModalButton"
+import DeleteEventModal from "../EventDeleteModal"
 
 function EventDetails() {
+  const dispatch = useDispatch()
+  let {eventId} = useParams()
+  eventId = parseInt(eventId)
 
-  const {eventId} = useParams()
+  useEffect(() => {
+    dispatch(getSingleEventThunk(eventId))
+  }, [dispatch, eventId])
 
+  const currUser = useSelector(state => state.session.user)
+  console.log('currUser inside GroupDetails', currUser)
   const event = useSelector(state => state.events[eventId])
-  console.log('event price', event.price)
+  if (!event ||  !event.Group || !event.Group.User) return null
+
+  const organizerId = event.Group.User.id
+  console.log('organizerId inside GroupDetails', organizerId)
+
   console.log('event inside of EventDetail', event)
 
   return (
@@ -16,7 +32,7 @@ function EventDetails() {
         <span>{'< '}<NavLink to='/events'>Events</NavLink></span>
       </div>
       <h2>{event.name}</h2>
-      <h5 className="placeholder">PLACEHOLDER FOR ORGANIZER'S NAME</h5>
+      <h5 className="event-organizer">{`Hosted by ${event.Group.User.firstName} ${event.Group.User.lastName}`}</h5>
       <div className="event-container">
         <div className="event-image">
           {event.previewImage}
@@ -33,15 +49,32 @@ function EventDetails() {
             </div>
           </div>
           <div className="event-details">
-            <div>Start {event.startDate}</div>
-            <div>End {event.endDate}</div>
-            <div className="placeholder">{event.price}Event Price</div>
-            <div>{event.type}</div>
+            <div className="start-container">
+              <div className="start-date">Start {dateTimeFix(event.startDate)[0]}</div>
+              <div className="start-time">{dateTimeFix(event.startDate)[1]}</div>
+            </div>
+            <div className="end-container">
+              <div className="end-date">End {dateTimeFix(event.endDate)[0]}</div>
+              <div className="end-time">{dateTimeFix(event.endDate)[1]}</div>
+            </div>
+            <div className="event-price">{`$${event.price}`}</div>
+            <div className="event-type-buttons-container">
+              <div>{event.type}</div>
+              {currUser && currUser.id === organizerId && (
+                <>
+                  <button>Update</button>
+                  <OpenModalButton
+                    buttonText="Delete"
+                    modalComponent={<DeleteEventModal event={event} eventId={eventId}/>}
+                  />
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>
       <h2>Details</h2>
-      <p className="placeholder">PLACEHOLDER TEXT ABOUT THE EVENT</p>
+      <p className="event-description">{event.description}</p>
     </body>
   )
 }

@@ -31,7 +31,7 @@ module.exports = {
       },
       {
         organizerId: 4,
-        name: 'Millenium Party',
+        name: "Kramer's New Year's Eve Party",
         about: 'Come celebrate Y2K',
         type: 'In person',
         private: true,

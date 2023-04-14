@@ -1,3 +1,7 @@
 .hidden {
   display: none
 }
+
+.sessionUser-nav-links {
+  display: flex;
+}

@@ -55,12 +55,16 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [0, 250]
+        len: [30, 250]
       }
     },
     type: {
       allowNull: false,
       type: DataTypes.ENUM('Online', 'In Person', 'In person')
+    },
+    private: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false
     },
     capacity: {
       type: DataTypes.INTEGER,
@@ -81,7 +85,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       allowNull: false,
       validate: {
-        isAfter: '2023-03-20'
+        isAfter: '2020-03-20'
       }
     },
     endDate: {

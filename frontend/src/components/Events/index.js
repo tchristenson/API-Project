@@ -4,16 +4,44 @@ import { useEffect } from "react"
 import { getAllEventsThunk } from "../../store/events"
 import "./Events.css"
 
+  // Helper function to format date/time received from backend
+  export const dateTimeFix = str => {
+    const stringArr = str.split('T')
+    const date = stringArr[0]
+    let time = stringArr[1]
+    time = [time.split(':')[0], time.split(':')[1]]
+    let hours = time[0]
+    let minutes = time[1]
+
+    if (hours > 12) {
+      hours -= 12
+      hours = hours.toString()
+      time = hours.concat(':').concat(minutes).concat('pm')
+    }
+    else if (hours === 12) {
+      hours = hours.toString()
+      time = hours.concat(':').concat(minutes).concat('pm')
+    }
+    else {
+      hours = hours.toString()
+      time = hours.concat(':').concat(minutes).concat('am')
+    }
+    return [date, time]
+  }
+
 function Events() {
   const dispatch = useDispatch()
-  const events = useSelector(state => Object.values(state.events))
+  const events = useSelector(state => state.events)
+  const eventsArr = Object.values(events)
   // console.log('events inside of Events component', events)
 
   useEffect(() => {
     dispatch(getAllEventsThunk())
   }, [dispatch])
 
-  const eventList = events.map(event => (
+
+
+  const eventList = eventsArr.map(event => (
     <NavLink className="nav-link" to={`/events/${event.id}`}>
       <div className="single-event" key={event.id}>
         <div className="image-event-wrapper">
@@ -21,12 +49,15 @@ function Events() {
             {event.previewImage}
           </div>
           <div className="event-info">
-            <div className="event-date-time">{event.startDate}</div>
+            <div className="date-time-wrapper">
+              <div className="event-date">{dateTimeFix(event.startDate)[0]}</div>
+              <div className="event-time">{dateTimeFix(event.startDate)[1]}</div>
+            </div>
             <div className="event-name"><h3>{event.name}</h3></div>
             <div className="event-city-state">{event.Group.city}, {event.Group.state}</div>
           </div>
         </div>
-        <div className="event-about placeholder">PLACEHOLDER FOR EVENT DESCRIPTION</div>
+        <div className="event-about">{event.description}</div>
       </div>
     </NavLink>
   ))

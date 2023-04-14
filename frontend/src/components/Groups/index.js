@@ -6,14 +6,16 @@ import "./Groups.css"
 
 function Groups() {
   const dispatch = useDispatch()
-  const groups = useSelector(state => Object.values(state.groups))
   // console.log('groups inside of Groups component', groups)
 
   useEffect(() => {
     dispatch(getAllGroupsThunk())
   }, [dispatch])
 
-  const groupList = groups.map(group => (
+  const groups = useSelector(state => state.groups)
+  const groupsArr = Object.values(groups)
+
+  const groupList = groupsArr.map(group => (
     <NavLink className="nav-link" to={`/groups/${group.id}`}>
       <div className="single-group" key={group.id}>
         <div className="group-image">
@@ -23,8 +25,14 @@ function Groups() {
           <div className="group-name"><h3>{group.name}</h3></div>
           <div className="group-city-state">{group.city}, {group.state}</div>
           <div className="group-about">{group.about}</div>
-          <div className="group-private-status">{group.private ? "Private" : "Public"}</div>
-          <div className="placeholder">PLACEHOLDER - must add # of events</div>
+          <div className="event-private-container">
+            {(group.Events === undefined || group.Events.length === 0) ? (
+                <div className="group-event-count">No events</div>
+              ) : (
+                <div className="group-event-count">{group.Events.length === 1 ? `${group.Events.length} Event` : `${group.Events.length} Events`}</div>
+            )}
+            <div className="group-private-status">{group.private ? "Private" : "Public"}</div>
+          </div>
         </div>
       </div>
     </NavLink>

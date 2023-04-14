@@ -2,14 +2,22 @@
   justify-content: center;
 }
 
+.event-info {
+  display: flex;
+}
+
+.event-about {
+  display: inline-block;
+}
+
+.event-container {
+  display: flex;
+  flex-direction: column;
+}
 .group-and-image-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.group-organizer {
-  color: red
 }
 
 .placeholder {
@@ -17,6 +25,15 @@
 }
 
 .organizer-info {
-  color: red;
   justify-content: center;
+}
+
+.image-and-details {
+  display: flex;
+
+}
+
+.upcoming-event-wrapper {
+  display: flex;
+  flex-direction: column;
 }

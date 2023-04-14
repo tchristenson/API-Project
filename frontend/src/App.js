@@ -5,9 +5,12 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage";
 import Groups from "./components/Groups"
-import Events from "./components/Events"
 import GroupDetails from "./components/GroupDetails"
+import Events from "./components/Events"
 import EventDetails from "./components/EventDetails";
+import CreateGroupForm from "./components/GroupNewForm";
+import EditGroupForm from "./components/GroupEditForm";
+import CreateEventForm from "./components/EventNewForm";
 
 function App() {
   const dispatch = useDispatch();
@@ -26,6 +29,15 @@ function App() {
           </Route>
           <Route exact path='/groups'>
             <Groups />
+          </Route>
+          <Route exact path='/groups/new'>
+            <CreateGroupForm />
+          </Route>
+          <Route exact path='/groups/:groupId/events/new'>
+            <CreateEventForm />
+          </Route>
+          <Route exact path='/groups/:groupId/edit'>
+            <EditGroupForm />
           </Route>
           <Route exact path='/groups/:groupId'>
             <GroupDetails />

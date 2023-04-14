@@ -2,11 +2,45 @@ import { csrfFetch } from "./csrf";
 
 // ACTIONS
 const GET_ALL_GROUPS = 'groups/getAllGroups'
+const GET_SINGLE_GROUP = 'groups/getSingleGroup'
+const MAKE_NEW_GROUP = 'groups/makeNewGroup'
+const EDIT_GROUP = 'groups/editGroup'
+const DELETE_GROUP = 'groups/deleteGroup'
 
-const getAllGroupsAction = (payload) => {
+// const history = useHistory()
+
+const getAllGroupsAction = (groups) => {
   return {
     type: GET_ALL_GROUPS,
-    payload
+    groups
+  }
+}
+
+const getSingleGroupAction = (group) => {
+  return {
+    type: GET_SINGLE_GROUP,
+    group
+  }
+}
+
+const makeNewGroupAction = (group) => {
+  return {
+    type: MAKE_NEW_GROUP,
+    group
+  }
+}
+
+const editGroupAction = (group) => {
+  return {
+    type: EDIT_GROUP,
+    group
+  }
+}
+
+const deleteGroupAction = (groupId) => {
+  return {
+    type: DELETE_GROUP,
+    groupId
   }
 }
 
@@ -20,14 +54,126 @@ export const getAllGroupsThunk = () => async (dispatch) => {
   }
 }
 
+export const getSingleGroupThunk = (groupId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/groups/${groupId}`)
+  if (response.ok) {
+    const group = await response.json()
+    // console.log('group inside of getSingleGroupThunk', group)
+    dispatch(getSingleGroupAction(group))
+    return group
+  }
+}
+
+export const makeNewGroupThunk = (group) => async (dispatch) => {
+  // console.log('group inside of makeNewGroupThunk', group)
+  const response = await csrfFetch("/api/groups", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: group.groupName,
+      about: group.description,
+      type: group.groupType,
+      private: group.isPrivate,
+      city: group.city,
+      state: group.state,
+    }),
+  });
+  if (response.ok) {
+    // console.log('response inside of makeNewGroupThunk', response)
+    const newGroup = await response.json();
+    // console.log('group inside of makeNewGroupThunk', group)
+
+    const imageResponse = await csrfFetch(`/api/groups/${newGroup.id}/images`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        url: group.imageUrl,
+        preview: true
+      }),
+    })
+    if (imageResponse.ok) {
+      // history.push(`/groups/${newGroup.id}`)
+      dispatch(makeNewGroupAction(newGroup));
+      return newGroup
+    }
+  }
+}
+
+export const editGroupThunk = (editedGroup) => async (dispatch) => {
+  console.log('editedGroup inside editGroup thunk', editedGroup)
+  console.log('editedGroup.isPrivate', editedGroup.isPrivate)
+  const response = await csrfFetch(`/api/groups/${editedGroup.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: editedGroup.groupName,
+      about: editedGroup.description,
+      type: editedGroup.groupType,
+      private: editedGroup.isPrivate,
+      city: editedGroup.city,
+      state: editedGroup.state,
+      id: editedGroup.id
+    }),
+  });
+  if (response.ok) {
+    // console.log('response inside of editGroupThunk', response)
+    const group = await response.json();
+    console.log('response.json inside of editGroupThunk', group)
+    // history.push(`/groups/${group.id}`)
+    dispatch(editGroupAction(group));
+    return group
+  }
+}
+
+export const deleteGroupThunk = (groupId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/groups/${groupId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  if (response.ok) {
+    dispatch(deleteGroupAction(groupId))
+    return {'message': 'delete successful'}
+  }
+
+}
+
 //REDUCER
 const groupReducer = (state = {}, action) => {
   let newState;
   switch (action.type) {
     case GET_ALL_GROUPS:
       newState = {...state}
-      // console.log('action.payload inside of groupReducer', action.payload)
-      action.payload.Groups.forEach(group => newState[group.id] = group)
+      action.groups.Groups.forEach(group => newState[group.id] = group)
+      return newState
+    case GET_SINGLE_GROUP:
+      // console.log('action inside of reducer', action)
+      newState = {...state}
+      // console.log('newState inside of reducer before edits', newState)
+      newState[action.group.id] = action.group
+      // console.log('newState inside of reducer after edits', newState)
+      return newState
+    case MAKE_NEW_GROUP:
+      newState = {...state}
+      newState[action.group.id] = action.group
+      return newState
+    case EDIT_GROUP:
+      newState = {...state}
+      newState[action.group.id] = action.group
+      return newState
+    case DELETE_GROUP:
+      // console.log('newState inside Delete Reducer - AS RECEIVED', newState)
+      newState = {...state}
+      console.log('newState inside Delete Reducer - SPREAD', newState)
+      delete newState[action.groupId]
+      console.log('newState inside Delete Reducer - DELETION', newState)
       return newState
     default:
       return state
