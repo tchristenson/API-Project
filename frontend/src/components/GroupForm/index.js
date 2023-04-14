@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import './GroupNew.css'
 import { makeNewGroupThunk, editGroupThunk } from '../../store/groups';
-import { bool } from 'prop-types';
 
   // HELPER FUNCTIONS FOR DATA VALIDATION / SANITIZING
   export const fileTypeCheck = (str) => {
