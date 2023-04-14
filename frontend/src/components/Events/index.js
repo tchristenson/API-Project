@@ -44,7 +44,7 @@ function Events() {
   // // original end
 
 
-    // attempt
+    // new
     const [events, setEvents] = useState('')
 
     useEffect(() => {
