@@ -39,7 +39,7 @@ function Groups() {
     <NavLink className="nav-link" to={`/groups/${group.id}`}>
       <div className="single-group" key={group.id}>
         <div className="group-image">
-          {group.previewImage}
+          <img src={group.previewImage} alt="Group Image" />
         </div>
         <div className="group-info">
           <div className="group-name"><h3>{group.name}</h3></div>
