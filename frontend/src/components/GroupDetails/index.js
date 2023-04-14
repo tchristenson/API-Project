@@ -24,6 +24,8 @@ function GroupDetails() {
 
   const currentDate = new Date()
 
+  console.log('group.Events inside of Group Detail Page', group.Events)
+
   const upcomingEventsList = group.Events.filter(event =>
     new Date(event.startDate).getTime() > currentDate.getTime())
     .sort((event1, event2) => new Date(event1.startDate).getTime() - new Date(event2.startDate).getTime())
@@ -32,7 +34,7 @@ function GroupDetails() {
         <div className="event-container">
             <div className="image-and-details">
               <div className="event-image" key={event.id}>
-                <img src={event.EventImages.url} alt="event image"/>
+                <img src={event.EventImages[0].url} alt="event image"/>
               </div>
               <div className="event-info">
                 <div className="date-time-wrapper">
@@ -56,7 +58,7 @@ function GroupDetails() {
         <div className="event-container">
             <div className="image-and-details">
               <div className="event-image" key={event.id}>
-                <img src={event.EventImages.url} alt="event image"/>
+                <img src={event.EventImages[0].url} alt="event image"/>
               </div>
               <div className="event-info">
                 <div className="date-time-wrapper">
@@ -75,7 +77,7 @@ function GroupDetails() {
   // console.log('typeof groupId inside GroupDetail component', typeof (groupId))
   // console.log('currUserId inside GroupDetail component', currUserId)
   // console.log('typeof currUserId inside GroupDetail component', typeof currUserId)
-  console.log('group inside of GroupDetail component', group)
+  // console.log('group inside of GroupDetail component', group)
   const organizerId = group.Organizer.id
   // console.log('organizerId inside of GroupDetail component', organizerId)
 
@@ -93,7 +95,7 @@ function GroupDetails() {
       <div className="group-and-image-wrapper">
         {group.GroupImages.length ? (
           <div className="group-image">
-            {group.GroupImages[0].url}
+            <img src={group.GroupImages[0].url} alt="Group Image" />
           </div>
           ) : (
           <div className="group-image">
