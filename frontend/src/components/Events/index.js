@@ -53,7 +53,7 @@ function Events() {
     }, [dispatch])
 
     console.log('events inside All Events', events)
-    console.log('events.Events inside All Events', events.Events)
+    // console.log('events.Events inside All Events', events.Events)
 
     if (!events) return null
 
