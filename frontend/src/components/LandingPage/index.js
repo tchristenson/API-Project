@@ -31,17 +31,17 @@ function LandingPage () {
       <div className="landing-page-actions">
           <img className="see-all-groups-img" src="https://i.imgur.com/mtVPQro.jpg" alt="See all groups" />
           <h4 className="see-all-groups-text"><NavLink exact to="/groups">See all groups</NavLink></h4>
-          <h5 className="see-all-groups-description">Do what you love, meet others who love it, find your community. The rest is history!</h5>
+          <h5 className="normal see-all-groups-description">Do what you love, meet others who love it, find your community. The rest is history!</h5>
           <img className="find-an-event-img" src="https://i.imgur.com/LttnHvP.jpg" alt="Find an event" />
           <h4 className="find-an-event-text"><NavLink exact to="/events">Find an event</NavLink></h4>
-          <h5 className="find-an-event-description">Events are happening on just about any topic you can think of, from online gaming and photography to yoga and hiking.</h5>
+          <h5 className="normal find-an-event-description">Events are happening on just about any topic you can think of, from online gaming and photography to yoga and hiking.</h5>
           <img className="start-a-new-group-img" src="https://i.imgur.com/SH7gNPE.jpg" alt="Start a new group" />
           {sessionUser? (
             <h4 className="start-a-group-text"><NavLink exact to="/groups/new">Start a new group</NavLink></h4>
           ) : (
-            <h4 className="start-a-group-text-inactive">Start a new group</h4>
+            <h4 className="start-a-group-text inactive-link">Start a new group</h4>
           )}
-          <h5 className="start-a-group-description">You don’t have to be an expert to gather people together and explore shared interests.</h5>
+          <h5 className="normal start-a-group-description">You don’t have to be an expert to gather people together and explore shared interests.</h5>
       </div>
       {!sessionUser &&
       <div className="sign-up-button">

@@ -2,5 +2,6 @@ button {
   font-weight: bold;
   background-color: transparent;
   border: none;
-  padding: 10px
+  padding: 10px;
+  cursor: pointer
 }
