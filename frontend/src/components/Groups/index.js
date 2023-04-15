@@ -59,18 +59,18 @@ function Groups() {
   ))
 
   return (
-    <body>
+    <div className="content">
       <div className="event-and-group-links">
         <NavLink exact to="/events">Events</NavLink>
-        <NavLink exact to="/groups">Groups</NavLink>
+        <NavLink className="current-page" exact to="/groups">Groups</NavLink>
       </div>
-      <div className="subheader">
+      <div className="subheading">
         <h5>Groups in Meetup</h5>
       </div>
       <div className="full-group-list">
         {groupList}
       </div>
-    </body>
+    </div>
   )
 }
 

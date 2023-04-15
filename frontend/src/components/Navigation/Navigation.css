@@ -16,3 +16,17 @@
 .sessionUser-nav-links {
   display: flex;
 }
+
+.sessionUser-nav-links li {
+  list-style: none;
+}
+
+.sessionUser-nav-links a {
+  display: flex;
+  text-decoration: none;
+  color: teal;
+  font-size: 14px;
+  align-items: center;
+  padding: 10px;
+  font-weight: bold;
+}
