@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { useHistory } from "react-router-dom";
 import { deleteGroupThunk } from "../../store/groups";
+import { deleteEventAction } from "../../store/events";
 import "./DeleteGroup.css";
 
 function DeleteGroupModal({groupId}) {
@@ -20,6 +21,10 @@ function DeleteGroupModal({groupId}) {
     if (deletedResult.message === 'delete successful') {
       console.log('if deletedResult running')
       console.log('deletedResult', deletedResult)
+      // console.log('deletedResult.Events', deletedResult.deletedGroup.Events)
+      // if (deletedResult.Events) {
+      //   deletedResult.Events.forEach(event => dispatch(deleteEventAction(event.id)))
+      // }
       history.push('/groups')
 
       closeModal()
