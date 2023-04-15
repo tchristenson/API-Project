@@ -133,8 +133,8 @@ export const editGroupThunk = (editedGroup) => async (dispatch) => {
 }
 
 export const deleteGroupThunk = (groupId) => async (dispatch) => {
-  // const groupResponse = await csrfFetch(`/api/groups/${groupId}`);
-  // const deletedGroup = await groupResponse.json()
+  const groupResponse = await csrfFetch(`/api/groups/${groupId}`);
+  const deletedGroup = await groupResponse.json()
   const response = await csrfFetch(`/api/groups/${groupId}`, {
     method: "DELETE",
     headers: {
@@ -144,7 +144,7 @@ export const deleteGroupThunk = (groupId) => async (dispatch) => {
   if (response.ok) {
     dispatch(deleteGroupAction(groupId))
     return {'message': 'delete successful',
-    // 'deletedGroup': deletedGroup
+    'deletedGroup': deletedGroup
   }
   }
 

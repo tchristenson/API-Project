@@ -21,10 +21,10 @@ function DeleteGroupModal({groupId}) {
     if (deletedResult.message === 'delete successful') {
       console.log('if deletedResult running')
       console.log('deletedResult', deletedResult)
-      // console.log('deletedResult.Events', deletedResult.deletedGroup.Events)
-      // if (deletedResult.Events) {
-      //   deletedResult.Events.forEach(event => dispatch(deleteEventAction(event.id)))
-      // }
+      console.log('deletedResult.deletedGroup.Events', deletedResult.deletedGroup.Events)
+      if (deletedResult.deletedGroup.Events) {
+        deletedResult.deletedGroup.Events.forEach(event => dispatch(deleteEventAction(event.id)))
+      }
       history.push('/groups')
 
       closeModal()
