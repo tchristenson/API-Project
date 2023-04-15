@@ -28,7 +28,7 @@ const makeNewEventAction = (event) => {
   }
 }
 
-const deleteEventAction = (eventId) => {
+export const deleteEventAction = (eventId) => {
   return {
     type: DELETE_EVENT,
     eventId
