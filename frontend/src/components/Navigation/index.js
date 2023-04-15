@@ -25,12 +25,14 @@ function Navigation({ isLoaded }) {
     );
   } else {
     sessionLinks = (
-      <li>
+      <li className="login-signup-buttons">
         <OpenModalButton
+          className="login-button"
           buttonText="Log In"
           modalComponent={<LoginFormModal />}
         />
         <OpenModalButton
+          className="signup-button"
           buttonText="Sign Up"
           modalComponent={<SignupFormModal />}
         />
@@ -39,23 +41,22 @@ function Navigation({ isLoaded }) {
   }
 
   return (
-    <body>
+
       <header>
         <div className="masthead">
-          <div className="masthead__home-button">
-            <h2>
-              <NavLink exact to="/">
+
+          <h2>
+            <NavLink className="masthead__home-button" exact to="/">
               Meetup
             </NavLink>
+          </h2>
 
-              </h2>
-          </div>
           <div className="masthead__actions">
             {isLoaded && sessionLinks}
           </div>
         </div>
       </header>
-    </body>
+
   );
 }
 

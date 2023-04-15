@@ -6,13 +6,14 @@ function LandingPage () {
   const sessionUser = useSelector(state => state.session.user)
 
   return (
-    <>
+
+    <div className="content">
       <div className="main-row">
         <div className="main-row-text">
-          <h1>
+          <h1 className="header">
             The people platform—Where interests become friendships
           </h1>
-          <h3>
+          <h3 className="normal">
             Whatever your interest, from hiking and reading to networking and skill sharing,
             there are thousands of people who share it on Meetup. Events are happening every
             day—log in to join the fun.
@@ -24,8 +25,8 @@ function LandingPage () {
       </div>
 
       <div className="secondary-row">
-        <h2> How Meetup works </h2>
-        <h3>Meet new people who share your interests through online and in-person events. It’s free to create an account.</h3>
+        <h2 className="subheading"> How Meetup works </h2>
+        <h3 className="normal">Meet new people who share your interests through online and in-person events. It’s free to create an account.</h3>
       </div>
       <div className="landing-page-actions">
           <img className="see-all-groups-img" src="https://i.imgur.com/mtVPQro.jpg" alt="See all groups" />
@@ -43,7 +44,9 @@ function LandingPage () {
         <button >Join Meetup</button>
       </div>}
 
-    </>
+    </div>
+
+
   )
 }
 
