@@ -33,9 +33,10 @@ function EventDetails() {
       </div>
       <h2>{event.name}</h2>
       <h5 className="event-organizer">{`Hosted by ${event.Group.User.firstName} ${event.Group.User.lastName}`}</h5>
-      <div className="event-container">
+      <div className="container">
         <div className="event-image">
           {event.previewImage}
+          <img src={event.EventImages[0].url} alt="Event Image" />
         </div>
         <div className="group-event-info-container">
           <div className="group-image-detail">
