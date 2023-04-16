@@ -62,7 +62,6 @@ function EventForm({event, group, formType}) {
       groupId: group.id
     }
 
-    console.log('payload inside of EventForm', payload)
 
     setName('')
     setType('')
@@ -78,6 +77,9 @@ function EventForm({event, group, formType}) {
     if (formType === 'Create Event') {
       // this is where you'll dispatch the makeNewEventThunk with the payload. Remember to await the dispatch
       // Then you'll probably have to history.push the user to that event page
+      console.log('payload.price', payload.price)
+      console.log('typeof payload.price', typeof payload.price)
+      console.log('payload inside of EventForm', payload)
       const newEvent = await dispatch(makeNewEventThunk(payload))
       history.push(`/events/${newEvent.id}`)
     }
