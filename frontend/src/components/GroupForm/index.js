@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react'
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import './GroupNew.css'
 import { makeNewGroupThunk, editGroupThunk } from '../../store/groups';
 
@@ -23,14 +23,21 @@ import { makeNewGroupThunk, editGroupThunk } from '../../store/groups';
 
 function GroupForm({ group, formType }) {
 
-  // console.log('group inside of group form', group)
+  const sessionUser = useSelector(state => state.session.user)
+  console.log('sessionUser inside group form', sessionUser)
 
+  console.log('group inside of group form', group)
+
+  const history = useHistory()
+
+  if (!sessionUser || sessionUser.id !== group.organizerId) {
+    history.push('/')
+  }
 
   const dispatch = useDispatch()
   const [errors, setErrors] = useState({})
   const [hasSubmitted, setHasSubmitted] = useState(false)
 
-  const history = useHistory();
   const [location, setLocation] = useState(group.city ? `${group.city}, ${group.state}` : '');
   const [groupName, setGroupName] = useState(group.name? group.name : '')
   const [description, setDescription] = useState(group.about? group.about : '')
