@@ -41,7 +41,7 @@ function Events() {
   }, [dispatch])
 
     // console.log('events inside All Events', events)
-    // console.log('eventsArr inside of All Events', eventsArr)
+    console.log('eventsArr inside of All Events', eventsArr)
     // console.log('events.Events inside All Events', events.Events)
 
     if (!events) return null
@@ -69,7 +69,7 @@ function Events() {
               <div className="event-time">{dateTimeFix(event.startDate)[1]}</div>
             </div>
             <div className="event-name"><h3>{event.name}</h3></div>
-            <div className="event-city-state">{event.Group.city}, {event.Group.state}</div>
+            <div className="event-city-state">{event.Venue.address},  {event.Venue.city}, {event.Venue.state}</div>
           </div>
         </div>
         <div className="event-about">{event.description}</div>

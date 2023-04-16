@@ -135,7 +135,7 @@ router.get('/', queryValidator, async (req, res, next) => {
       },
       {
         model: Venue,
-        attributes: ['id', 'city', 'state']
+        attributes: ['id', 'city', 'state', 'address']
       }
     ],
     limit: pagination.limit,

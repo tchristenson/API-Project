@@ -45,27 +45,7 @@ function SignupFormModal() {
   return (
     <div className="signup-container">
       <h1>Sign Up</h1>
-      <form className="signup-form" onSubmit={handleSubmit}>
-
-          <input
-            type="text"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-
-        {errors.email && <p>{errors.email}</p>}
-
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-
-        {errors.username && <p>{errors.username}</p>}
+      <form className="signup-form"onSubmit={handleSubmit}>
 
           <input
             type="text"
@@ -86,6 +66,26 @@ function SignupFormModal() {
           />
 
         {errors.lastName && <p>{errors.lastName}</p>}
+
+          <input
+            type="text"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+
+        {errors.email && <p>{errors.email}</p>}
+
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+
+        {errors.username && <p>{errors.username}</p>}
 
           <input
             type="password"

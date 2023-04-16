@@ -38,12 +38,18 @@
 }
 /* GRID LAYOUT END*/
 
-/* .landing-page-actions .link h4:hover {
+.landing-page-actions h4 {
   font-weight: bold;
-  text-decoration: underline;
+  text-decoration: none;
   cursor: pointer;
   color: #00525E;
-} */
+  margin: 5px;
+}
+
+.landing-page-actions h4:visited {
+  color: #00525E;
+  text-decoration: none;
+}
 
 
 

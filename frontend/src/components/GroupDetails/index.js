@@ -43,7 +43,7 @@ function GroupDetails() {
                   <div className="event-time">{dateTimeFix(event.startDate)[1]}</div>
                 </div>
                 <div className="event-name"><h4>{event.name}</h4></div>
-                <div className="event-location">{event.Venue.address}</div>
+                <div className="event-location">{event.Venue.address}, {event.Venue.city}, {event.Venue.state}</div>
               </div>
             </div>
             <div className="event-about">{event.description}</div>
@@ -68,7 +68,7 @@ function GroupDetails() {
                   <div className="event-time">{dateTimeFix(event.startDate)[1]}</div>
                 </div>
                 <div className="event-name"><h4>{event.name}</h4></div>
-                <div className="event-location">{event.Venue.address}</div>
+                <div className="event-location">{event.Venue.address}, {event.Venue.city}, {event.Venue.state}</div>
               </div>
             </div>
             <div className="event-about">{event.description}</div>

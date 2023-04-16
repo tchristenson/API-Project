@@ -72,7 +72,7 @@ function EventDetails() {
               </div>
             <div className="event-price-container-event-details">
               <i id="font-awesome-dollar-sign" class="fa-sharp fa-solid fa-dollar-sign"></i>
-              <div className="event-price">{event.price}</div>
+              <div className="event-price">{event.price === 0 ? 'FREE' : `$${event.price}`}</div>
             </div>
             <div className="event-type-buttons-container">
               <div className="event-type-container-event-details">
