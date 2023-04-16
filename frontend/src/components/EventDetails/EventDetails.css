@@ -1,18 +1,69 @@
+
+
+.dot-in-event-details-page {
+  height: 3px;
+  width: 3px;
+  background-color:teal;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  color: white;
+}
+
 .end-container {
   display: flex
 }
 
-.container {
+.end-date {
+  padding-right: 10px;
+  color: teal;
+}
+
+.end-time {
+  padding-left: 10px;
+  color: teal;
+}
+
+.end-date span {
+  padding-right: 10px;
+  color: gray
+}
+
+.event-price {
+  color: gray;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.whole-event-container {
   display: flex;
+  padding-top: 20px;
 }
 
 .event-details {
   display: flex;
   flex-direction: column;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  flex-grow: 1;
+}
+
+.event-organizer {
+  color: gray;
 }
 
 .event-type-buttons-container {
   display: flex;
+}
+
+.group-image {
+  /* flex-shrink: 1; */
+}
+
+.group-image img {
+  max-width: 30%;
+  height: auto;
+
 }
 
 .group-image-detail {
@@ -29,10 +80,33 @@
   flex-direction: column;
 }
 
-.placeholder {
-  color: red
+.online-in-person-in-event-detail {
+  color: gray;
+}
+
+.private-public-in-event-detail {
+  color: gray;
+  padding-top: 5px ;
 }
 
 .start-container {
-  display: flex
+  display: flex;
+  padding-top: 10px;
+  padding-bottom: 3px;
+
+}
+
+.start-date {
+  padding-right: 10px;
+  color: teal;
+}
+
+.start-date span {
+  padding-right: 10px;
+  color: gray
+}
+
+.start-time {
+  padding-left: 10px;
+  color: teal;
 }

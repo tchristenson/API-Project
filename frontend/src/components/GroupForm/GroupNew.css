@@ -1,3 +1,61 @@
 .errors {
   color: red
 }
+
+.new-group-form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.about-container {
+  border-top: solid gray 2px;
+  padding-bottom: 5px;
+}
+
+
+.header-container h4 {
+  color: teal;
+}
+
+.location-container {
+  border-top: solid gray 2px;
+  padding-bottom: 5px;
+}
+
+.name-container {
+  border-top: solid gray 2px;
+  padding-bottom: 5px;
+}
+
+.final-steps-container {
+  border-top: solid gray 2px;
+  padding-bottom: 5px;
+}
+
+.submit-button {
+  border-top: solid gray 2px;
+}
+
+input[type="text"],
+textarea,
+select {
+  background-color: rgb(228, 237, 240);
+  border: 2px solid black;
+  padding: 10px;
+  margin-bottom: 10px;
+  width: 30%;
+  font-family: Arial, sans-serif;
+}
+
+.submit-button button {
+  background-color: red;
+  text-align: center;
+  color: white;
+  border: solid black 2px;
+  padding: 12px 24px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  margin-top: 15px;
+  margin-bottom: 30px;
+}

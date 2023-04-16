@@ -27,13 +27,13 @@ function EventDetails() {
   console.log('event inside of EventDetail', event)
 
   return (
-    <body>
+    <div className="content">
       <div className="breadcrumb-link">
         <span>{'< '}<NavLink to='/events'>Events</NavLink></span>
       </div>
       <h2>{event.name}</h2>
       <h5 className="event-organizer">{`Hosted by ${event.Group.User.firstName} ${event.Group.User.lastName}`}</h5>
-      <div className="container">
+      <div className="whole-event-container">
         <div className="event-image">
           {event.previewImage}
           <img src={event.EventImages[0].url} alt="Event Image" />
@@ -45,21 +45,23 @@ function EventDetails() {
             </div>
             <div className="group-detail-container">
               <div>{event.Group.name}</div>
-              <div>{event.Group.private ? "Private" : "Public"}</div>
+              <div className="private-public-in-event-detail">{event.Group.private ? "Private" : "Public"}</div>
             </div>
           </div>
           <div className="event-details">
             <div className="start-container">
-              <div className="start-date">Start {dateTimeFix(event.startDate)[0]}</div>
+              <div className="start-date"><span>START</span> {dateTimeFix(event.startDate)[0]}</div>
+              <div><span className="dot-in-event-details-page">.</span></div>
               <div className="start-time">{dateTimeFix(event.startDate)[1]}</div>
             </div>
             <div className="end-container">
-              <div className="end-date">End {dateTimeFix(event.endDate)[0]}</div>
+              <div className="end-date"><span>END</span> {dateTimeFix(event.endDate)[0]}</div>
+              <div><span className="dot-in-event-details-page">.</span></div>
               <div className="end-time">{dateTimeFix(event.endDate)[1]}</div>
             </div>
             <div className="event-price">{`$${event.price}`}</div>
             <div className="event-type-buttons-container">
-              <div>{event.type}</div>
+              <div className="online-in-person-in-event-detail">{event.type}</div>
               {currUser && currUser.id === organizerId && (
                 <>
                   <button>Update</button>
@@ -75,7 +77,7 @@ function EventDetails() {
       </div>
       <h2>Details</h2>
       <p className="event-description">{event.description}</p>
-    </body>
+    </div>
   )
 }
 
