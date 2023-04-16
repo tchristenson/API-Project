@@ -30,9 +30,12 @@ function GroupForm({ group, formType }) {
 
   const history = useHistory()
 
-  // if (!sessionUser || sessionUser.id !== group.organizerId) {
-  //   history.push('/')
-  // }
+  if (formType === 'Edit Group') {
+    if (!sessionUser || sessionUser.id !== group.organizerId) {
+      history.push('/')
+    }
+  }
+
 
   const dispatch = useDispatch()
   const [errors, setErrors] = useState({})
