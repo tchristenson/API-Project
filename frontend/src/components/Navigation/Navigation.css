@@ -78,7 +78,5 @@
 .dropdown ul {
   position: absolute;
   top: 100%;
-
-  z-index: 1;
   right: 0
 }
