@@ -47,6 +47,7 @@ function LoginFormModal() {
         </div>
         <input
           type="text"
+          className="credentials-on-login-form"
           value={credential}
           onChange={(e) => setCredential(e.target.value)}
           required

@@ -120,20 +120,22 @@ function GroupDetails() {
 
           <div className="group-buttons">
             {currUser && currUser.id !== organizerId && (
-              <button className="join-group-button" onClick={handleClick}>Join this group</button>
+              <button className="join-group-button-in-group-details" onClick={handleClick}>Join this group</button>
             )}
             {currUser && currUser.id === organizerId && (
               <>
                 <Link to={`/groups/${groupId}/events/new`}>
-                  <button className="create-event-button">Create event</button>
+                  <button className="organizer-buttons-in-group-details">Create event</button>
                 </Link>
 
                 <Link to={`/groups/${group.id}/edit`}>
-                  <button className="update-group-button">Update</button>
+                  <button className="organizer-buttons-in-group-details">Update</button>
                 </Link>
+
 
                 <OpenModalButton
                   buttonText="Delete"
+                  className="organizer-buttons-in-group-details"
                   modalComponent={<DeleteGroupModal groupId={groupId}/>}
                 />
               </>

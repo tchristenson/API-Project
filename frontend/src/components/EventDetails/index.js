@@ -40,7 +40,7 @@ function EventDetails() {
         </div>
         <div className="group-event-info-container">
           <div className="group-image-detail">
-            <div className="group-image">
+            <div className="group-image-inside-event-details">
               <img src={event.Group.GroupImages[0].url} alt="Group Image" />
             </div>
             <div className="group-detail-container">

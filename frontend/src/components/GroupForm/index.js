@@ -118,6 +118,7 @@ function GroupForm({ group, formType }) {
           </p>
           <input
             type="text"
+            className='user-input-on-group-form'
             required={true}
             placeholder="City, STATE"
             value={location}
@@ -134,6 +135,7 @@ function GroupForm({ group, formType }) {
           </p>
           <input
             type="text"
+            className='user-input-on-group-form'
             required={true}
             placeholder="What is your group name?"
             value={groupName}
@@ -155,6 +157,7 @@ function GroupForm({ group, formType }) {
           </ol>
           <textarea
             placeholder="Please write at least 30 characters"
+            className='user-input-on-group-form'
             required={true}
             value={description}
             onChange={e => setDescription(e.target.value)}
@@ -166,7 +169,7 @@ function GroupForm({ group, formType }) {
           <h2>Final steps...</h2>
 
           <p>Is this an in person or online group?</p>
-          <select required value={groupType} onChange={e => setGroupType(e.target.value)}>
+          <select className='user-input-on-group-form' required value={groupType} onChange={e => setGroupType(e.target.value)}>
             <option value="">{'(select one)'}</option>
             <option value={'Online'}>Online</option>
             <option value={'In Person'}>In Person</option>
@@ -174,7 +177,7 @@ function GroupForm({ group, formType }) {
           {hasSubmitted && errors.groupType && (<p className='errors'>{errors.groupType}</p>)}
 
           <p>Is this group private or public?</p>
-          <select required value={isPrivate} onChange={e => setIsPrivate(e.target.value)}>
+          <select className='user-input-on-group-form' required value={isPrivate} onChange={e => setIsPrivate(e.target.value)}>
             <option value="">{'(select one)'}</option>
             <option value={true}>Private</option>
             <option value={false}>Public</option>
@@ -186,6 +189,7 @@ function GroupForm({ group, formType }) {
           </p>
           <input
             type="text"
+            className='user-input-on-group-form'
             required={true}
             placeholder="https://somewhere/com/image.gif"
             value={imageUrl}

@@ -41,7 +41,18 @@
   gap: 10px;
 }
 
-.group-buttons button {
+.group-buttons button:not(.join-group-button-in-group-details)  {
+  margin-top: 115px;
+  background-color: gray;
+  text-align: center;
+  color: white;
+  border: solid black 2px;
+  padding: 12px 24px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.join-group-button-in-group-details {
   margin-top: 115px;
   background-color: red;
   text-align: center;
