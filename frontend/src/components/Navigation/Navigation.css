@@ -15,6 +15,7 @@
 
 .sessionUser-nav-links {
   display: flex;
+  align-items: center;
 }
 
 .sessionUser-nav-links li {
@@ -41,4 +42,43 @@
   font-weight: bold;
   cursor: pointer;
   margin: 10px;
+}
+
+.profile-dropdown ul  {
+  border: solid black 2px;
+}
+
+.profile-dropdown {
+  padding: 5px;
+  font-size: 14px;
+  border: solid black 2px;
+  background-color: white;
+}
+
+.profile-dropdown li {
+  padding: 3px 0 3px 0;
+}
+
+.profile-dropdown button {
+  cursor: pointer;
+  background-color: transparent;
+  color: black;
+  border: none;
+  padding: 0;
+}
+
+.logout-in-profile-dropdown {
+  border-top: solid black 2px;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown ul {
+  position: absolute;
+  top: 100%;
+
+  z-index: 1;
+  right: 0
 }
