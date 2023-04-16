@@ -17,6 +17,17 @@
   color: white;
 }
 
+.dot-in-event-details-of-group-page {
+  height: 3px;
+  width: 3px;
+  background-color:teal;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  color: white;
+
+}
+
 .event-info {
   display: flex;
 }
@@ -123,11 +134,62 @@
 
 .upcoming-event-wrapper .event-about {
   color: black;
-  padding-top: 10px
+  padding-top: 10px;
+  padding-bottom: 30px;
+  font-weight: bold;
+}
 
+.upcoming-event-wrapper .event-date {
+    padding-right: 10px
+}
+
+.upcoming-event-wrapper .event-time {
+  padding-left: 10px
 }
 
 .upcoming-event-wrapper img {
+  max-width: 70%;
+  height: auto;
+}
+
+.past-event-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 75%
+}
+
+.past-event-wrapper a {
+  text-decoration: none;
+}
+
+.past-event-wrapper .date-time-wrapper {
+  color: teal;
+}
+
+.past-event-wrapper .event-name {
+  color: black;
+}
+
+.past-event-wrapper .event-location {
+  color: gray
+}
+
+.past-event-wrapper .event-about {
+  color: black;
+  padding-top: 10px;
+  padding-bottom: 30px;
+  font-weight: bold;
+}
+
+.past-event-wrapper .event-date {
+    padding-right: 10px
+}
+
+.past-event-wrapper .event-time {
+  padding-left: 10px
+}
+
+.past-event-wrapper img {
   max-width: 70%;
   height: auto;
 }
