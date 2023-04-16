@@ -53,6 +53,8 @@
   padding-top: 10px;
   font-weight: bold;
   font-size: 14px;
+  max-width: 1024px;
+  word-wrap: break-word;
 }
 
 .group-event-count {
@@ -88,7 +90,10 @@
   align-items: top;
   border-top: 2px solid lightgrey;
   padding: 15px;
-  min-width: 800px;
+  width: 100%;
+  max-width: 1024px;
+  min-width: 1024px;
+  word-wrap: break-word;
 }
 
 .subheading h5 {
