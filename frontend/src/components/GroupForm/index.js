@@ -25,6 +25,7 @@ function GroupForm({ group, formType }) {
 
   // console.log('group inside of group form', group)
 
+
   const dispatch = useDispatch()
   const [errors, setErrors] = useState({})
   const [hasSubmitted, setHasSubmitted] = useState(false)
@@ -99,7 +100,7 @@ function GroupForm({ group, formType }) {
         <div className='header-container'>
           {formType === 'Create Group' ? (
             <>
-              <h4>BECOME AN ORGANIZER</h4>
+              <h4>START A NEW GROUP</h4>
               <h2>We'll walk you through a few steps to build your local community</h2>
             </>
           ) : (
@@ -192,7 +193,7 @@ function GroupForm({ group, formType }) {
             type="text"
             className='user-input-on-group-form'
             required={true}
-            placeholder="https://somewhere/com/image.gif"
+            placeholder="Image Url"
             value={imageUrl}
             onChange={e => setImageUrl(e.target.value)}
           />

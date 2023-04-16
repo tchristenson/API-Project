@@ -92,7 +92,7 @@ function EventForm({event, group, formType}) {
   return (
     <div className="content">
       <form className="new-event-form" onSubmit={handleSubmit}>
-        <h2>{`Create an event for ${group.name}`}</h2>
+        <h2>{`Create a new event for ${group.name}`}</h2>
 
         <div className="event-name-wrapper">
           <h4>What is the name of your event?</h4>

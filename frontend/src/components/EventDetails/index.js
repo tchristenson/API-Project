@@ -94,7 +94,7 @@ function EventDetails() {
           </div>
         </div>
       </div>
-      <h2>Details</h2>
+      <h2>Description</h2>
       <p className="event-description">{event.description}</p>
     </div>
   )
