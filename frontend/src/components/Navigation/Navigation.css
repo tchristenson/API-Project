@@ -75,8 +75,35 @@
   position: relative;
 }
 
+.dropdown button {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+}
+
 .dropdown ul {
   position: absolute;
   top: 100%;
   right: 0
 }
+
+#font-awesome-profile-button {
+  color: #FF5A5F;
+  cursor: pointer;
+  font-size: 28px;
+  padding: 3px;
+}
+
+#font-awesome-angle-down-button {
+  color: gray;
+  padding: 3px;
+}
+
+#font-awesome-angle-up-button {
+  color: gray;
+  padding: 3px;
+}
+
+/* .dropdown i {
+  size: 20px;
+} */

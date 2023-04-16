@@ -7,6 +7,7 @@ import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import "./Navigation.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
@@ -21,6 +22,7 @@ function Navigation({ isLoaded }) {
         <li>
           <ProfileButton user={sessionUser} />
         </li>
+
       </div>
     );
   } else {
