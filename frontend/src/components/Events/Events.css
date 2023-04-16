@@ -1,29 +1,67 @@
 .date-time-wrapper {
   display: flex;
 }
+
+.past-event-wrapper .event-about {
+  color: black;
+  padding-top: 10px;
+  padding-bottom: 30px;
+  font-weight: bold;
+}
+
 .event-and-group-links {
   text-align: center;
 }
 
+.event-and-group-links a {
+  padding: 10px 10px 10px 0;
+  color: gray;
+  text-decoration: none;
+}
+
+.event-and-group-links a:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.event-and-group-links .current-page {
+  color: teal;
+  text-decoration: underline;
+}
+
 .event-about {
-  display: inline-block;
+  color: black;
+  padding-top: 10px;
+  font-weight: bold;
+}
+
+.event-date {
+  padding-right: 10px
+}
+
+.event-time {
+  padding-left: 10px
 }
 
 .full-event-list {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   flex-direction: column;
 }
 
 .event-info {
   display: flex;
   flex-direction: column;
+  padding-left: 15px;
+}
+
+.event-image {
+  padding-right: 25px;
 }
 
 .image-event-wrapper {
   display: flex;
-  align-items: center;
-  border-top: 2px solid gray;
+  align-items: flex-start;
 }
 
 .nav-link {
@@ -31,6 +69,28 @@
   color: black
 }
 
-.placeholder {
-  color: red
+.single-event {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: top;
+  border-top: 2px solid lightgrey;
+  padding: 15px;
+  min-width: 800px;
+}
+
+.date-time-wrapper {
+  color: teal;
+}
+
+.event-name {
+  color: black;
+}
+
+.event-location {
+  color: gray
+}
+
+.subheading h5 {
+  color: gray;
 }

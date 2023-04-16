@@ -88,6 +88,7 @@
   align-items: top;
   border-top: 2px solid lightgrey;
   padding: 15px;
+  min-width: 800px;
 }
 
 .subheading h5 {

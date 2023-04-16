@@ -68,6 +68,7 @@ function Events() {
           <div className="event-info">
             <div className="date-time-wrapper">
               <div className="event-date">{dateTimeFix(event.startDate)[0]}</div>
+              <div><span className="dot-in-event-details-of-group-page">.</span></div>
               <div className="event-time">{dateTimeFix(event.startDate)[1]}</div>
             </div>
             <div className="event-name"><h3>{event.name}</h3></div>
@@ -80,18 +81,18 @@ function Events() {
   ))
 
   return (
-    <body>
+    <div className="content">
       <div className="event-and-group-links">
-        <NavLink exact to="/events">Events</NavLink>
+        <NavLink className="current-page" exact to="/events">Events</NavLink>
         <NavLink exact to="/groups">Groups</NavLink>
       </div>
-      <div className="subheader">
+      <div className="subheading">
         <h5>Events in Meetup</h5>
       </div>
       <div className="full-event-list">
         {eventList}
       </div>
-    </body>
+    </div>
   )
 }
 

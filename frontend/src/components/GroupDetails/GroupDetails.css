@@ -58,10 +58,6 @@
   height: 100%;
 }
 
-.event-about {
-  display: inline-block;
-}
-
 .event-container {
   display: flex;
   flex-direction: column;
