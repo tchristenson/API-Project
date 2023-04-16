@@ -125,38 +125,49 @@ function EventForm({event, group, formType}) {
           {hasSubmitted && errors.isPrivate && (<p className='errors'>{errors.isPrivate}</p>)}
 
           <h4>What is the price of your event?</h4>
-          <input
-            type="number"
-            className='user-input-on-event-form'
-            required={true}
-            placeholder="0"
-            value={price}
-            onChange={e => setPrice(e.target.value)}
-          />
+          <div>
+            <span className="dollar-sign-symbol-event-form">$</span>
+            <input
+              type="number"
+              id="price-input-on-event-form"
+              className='user-input-on-event-form'
+              required={true}
+              placeholder="0"
+              value={price}
+              onChange={e => setPrice(e.target.value)}
+            />
+          </div>
+
           {hasSubmitted && errors.price && (<p className='errors'>{errors.price}</p>)}
         </div>
 
         <div className="date-wrapper-in-event-form">
           <h4>When does your event start?</h4>
-          <input
-              type="text"
-              className='user-input-on-event-form'
-              required={true}
-              placeholder="MM/DD/YYYY HH:mm AM"
-              value={startDate}
-              onChange={e => setStartDate(e.target.value)}
-            />
+          <div className="event-start-wrapper-event-form">
+            <input
+                type="text"
+                className='user-input-on-event-form'
+                required={true}
+                placeholder="MM/DD/YYYY HH:mm AM"
+                value={startDate}
+                onChange={e => setStartDate(e.target.value)}
+              />
+            <i id="font-awesome-calendar-in-event-form" class="fa-solid fa-calendar-days"></i>
+          </div>
           {hasSubmitted && errors.startDate && (<p className='errors'>{errors.startDate}</p>)}
 
           <h4>When does your event end?</h4>
-          <input
-              type="text"
-              className='user-input-on-event-form'
-              required={true}
-              placeholder="MM/DD/YYYY HH:mm PM"
-              value={endDate}
-              onChange={e => setEndDate(e.target.value)}
-            />
+          <div className="event-end-wrapper-event-form">
+            <input
+                type="text"
+                className='user-input-on-event-form'
+                required={true}
+                placeholder="MM/DD/YYYY HH:mm PM"
+                value={endDate}
+                onChange={e => setEndDate(e.target.value)}
+              />
+            <i id="font-awesome-calendar-in-event-form" class="fa-solid fa-calendar-days"></i>
+          </div>
           {hasSubmitted && errors.endDate && (<p className='errors'>{errors.endDate}</p>)}
         </div>
 

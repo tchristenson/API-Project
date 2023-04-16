@@ -45,10 +45,23 @@
   background-color: rgb(228, 237, 240);
   border: 2px solid black;
   padding: 4px;
-  margin-bottom: 10px;
+
   width: 30%;
   font-family: Arial, sans-serif;
   box-sizing: border-box;
+}
+
+#price-input-on-event-form {
+  text-align: right;
+  position: relative; /* new */
+}
+
+.dollar-sign-symbol-event-form {
+  position: absolute;
+  top: 37%;
+  left: 11.5%;
+  z-index: 1;
+  font-size: 16px;
 }
 
 .user-input-on-event-form-description {
@@ -61,4 +74,21 @@
   margin-bottom: 10px;
   font-family: Arial, sans-serif;
   box-sizing: border-box;
+}
+
+.event-start-wrapper-event-form {
+  display: flex;
+  align-items: center;
+}
+
+.event-end-wrapper-event-form {
+  display: flex;
+  align-items: center;
+}
+
+#font-awesome-calendar-in-event-form {
+  color: black;
+  font-size: 20px;
+  padding-left: 10px;
+
 }
