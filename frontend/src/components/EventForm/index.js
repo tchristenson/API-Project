@@ -132,9 +132,9 @@ function EventForm({event, group, formType}) {
               id="price-input-on-event-form"
               className='user-input-on-event-form'
               required={true}
-              placeholder="0"
+              placeholder={0}
               value={price}
-              onChange={e => setPrice(e.target.value)}
+              onChange={e => setPrice(parseInt(e.target.value))}
             />
           </div>
 
