@@ -54,6 +54,8 @@
 
 .event-type-buttons-container {
   display: flex;
+  justify-content: space-between;
+
 }
 
 .group-image-inside-event-details img {
@@ -105,4 +107,15 @@
 .start-time {
   padding-left: 10px;
   color: teal;
+}
+
+.update-delete-buttons-on-event-detail button {
+  background-color: gray;
+  text-align: center;
+  color: white;
+  border: solid black 2px;
+  padding: 6px 24px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  margin: 5px;
 }

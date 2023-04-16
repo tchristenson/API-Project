@@ -64,15 +64,17 @@ function EventDetails() {
             <div className="event-price">{`$${event.price}`}</div>
             <div className="event-type-buttons-container">
               <div className="online-in-person-in-event-detail">{event.type}</div>
-              {currUser && currUser.id === organizerId && (
-                <>
-                  <button>Update</button>
-                  <OpenModalButton
-                    buttonText="Delete"
-                    modalComponent={<DeleteEventModal event={event} eventId={eventId}/>}
-                  />
-                </>
-              )}
+              <div className="update-delete-buttons-on-event-detail">
+                {currUser && currUser.id === organizerId && (
+                  <>
+                    <button>Update</button>
+                    <OpenModalButton
+                      buttonText="Delete"
+                      modalComponent={<DeleteEventModal event={event} eventId={eventId}/>}
+                    />
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
