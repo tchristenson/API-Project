@@ -5,6 +5,7 @@ import * as sessionActions from '../../store/session';
 import { useHistory } from "react-router";
 import './Navigation.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { NavLink } from "react-router-dom";
 
 
 function ProfileButton({ user }) {
@@ -55,6 +56,11 @@ function ProfileButton({ user }) {
       <ul className={ulClassName} ref={ulRef}>
         <li>Hello, {user.firstName}</li>
         <li>{user.email}</li>
+        <li>
+          <NavLink exact to="/events">
+            View events
+          </NavLink>
+        </li>
         <li className="logout-in-profile-dropdown">
           <button onClick={logout}>Log Out</button>
         </li>
