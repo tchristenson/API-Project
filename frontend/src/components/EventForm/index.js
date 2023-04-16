@@ -90,99 +90,108 @@ function EventForm({event, group, formType}) {
 
 
   return (
-    <form className="new-event-form" onSubmit={handleSubmit}>
-      <h2>{`Create an event for ${group.name}`}</h2>
+    <div className="content">
+      <form className="new-event-form" onSubmit={handleSubmit}>
+        <h2>{`Create an event for ${group.name}`}</h2>
 
-      <div className="event-name-wrapper">
-        <h4>What is the name of your event?</h4>
-        <input
-            type="text"
+        <div className="event-name-wrapper">
+          <h4>What is the name of your event?</h4>
+          <input
+              type="text"
+              className='user-input-on-event-form'
+              required={true}
+              placeholder="Event Name"
+              value={name}
+              onChange={e => setName(e.target.value)}
+            />
+            {hasSubmitted && errors.name && (<p className='errors'>{errors.name}</p>)}
+        </div>
+
+        <div className="type-private-price-wrapper">
+          <h4>Is this an in person or online event?</h4>
+          <select className='user-input-on-event-form' required value={type} onChange={e => setType(e.target.value)}>
+            <option value="">{'(select one)'}</option>
+            <option value={'Online'}>Online</option>
+            <option value={'In Person'}>In Person</option>
+          </select>
+          {hasSubmitted && errors.type && (<p className='errors'>{errors.type}</p>)}
+
+          <h4>Is this event private or public?</h4>
+          <select className='user-input-on-event-form' required value={isPrivate} onChange={e => setIsPrivate(e.target.value)}>
+            <option value="">{'(select one)'}</option>
+            <option value={true}>Private</option>
+            <option value={false}>Public</option>
+          </select>
+          {hasSubmitted && errors.isPrivate && (<p className='errors'>{errors.isPrivate}</p>)}
+
+          <h4>What is the price of your event?</h4>
+          <input
+            type="number"
+            className='user-input-on-event-form'
             required={true}
-            placeholder="Event Name"
-            value={name}
-            onChange={e => setName(e.target.value)}
+            placeholder="0"
+            value={price}
+            onChange={e => setPrice(e.target.value)}
           />
-          {hasSubmitted && errors.name && (<p className='errors'>{errors.name}</p>)}
-      </div>
+          {hasSubmitted && errors.price && (<p className='errors'>{errors.price}</p>)}
+        </div>
 
-      <div className="type-private-price-wrapper">
-        <h4>Is this an in person or online event?</h4>
-        <select required value={type} onChange={e => setType(e.target.value)}>
-          <option value="">{'(select one)'}</option>
-          <option value={'Online'}>Online</option>
-          <option value={'In Person'}>In Person</option>
-        </select>
-        {hasSubmitted && errors.type && (<p className='errors'>{errors.type}</p>)}
+        <div className="date-wrapper-in-event-form">
+          <h4>When does your event start?</h4>
+          <input
+              type="text"
+              className='user-input-on-event-form'
+              required={true}
+              placeholder="MM/DD/YYYY HH:mm AM"
+              value={startDate}
+              onChange={e => setStartDate(e.target.value)}
+            />
+          {hasSubmitted && errors.startDate && (<p className='errors'>{errors.startDate}</p>)}
 
-        <h4>Is this event private or public?</h4>
-        <select required value={isPrivate} onChange={e => setIsPrivate(e.target.value)}>
-          <option value="">{'(select one)'}</option>
-          <option value={true}>Private</option>
-          <option value={false}>Public</option>
-        </select>
-        {hasSubmitted && errors.isPrivate && (<p className='errors'>{errors.isPrivate}</p>)}
+          <h4>When does your event end?</h4>
+          <input
+              type="text"
+              className='user-input-on-event-form'
+              required={true}
+              placeholder="MM/DD/YYYY HH:mm PM"
+              value={endDate}
+              onChange={e => setEndDate(e.target.value)}
+            />
+          {hasSubmitted && errors.endDate && (<p className='errors'>{errors.endDate}</p>)}
+        </div>
 
-        <h4>What is the price of your event?</h4>
-        <input
-          type="number"
-          required={true}
-          placeholder="0"
-          value={price}
-          onChange={e => setPrice(e.target.value)}
-        />
-        {hasSubmitted && errors.price && (<p className='errors'>{errors.price}</p>)}
-      </div>
+        <div className="url-wrapper-in-event-form">
+          <h4>Please add an image url for your event below</h4>
+          <input
+              type="text"
+              className='user-input-on-event-form'
+              required={true}
+              placeholder="Image URL"
+              value={url}
+              onChange={e => setUrl(e.target.value)}
+            />
+            {hasSubmitted && errors.url && (<p className='errors'>{errors.url}</p>)}
+        </div>
 
-      <div className="date-wrapper">
-        <h4>When does your event start?</h4>
-        <input
-            type="text"
-            required={true}
-            placeholder="MM/DD/YYYY HH:mm AM"
-            value={startDate}
-            onChange={e => setStartDate(e.target.value)}
-          />
-        {hasSubmitted && errors.startDate && (<p className='errors'>{errors.startDate}</p>)}
+        <div className="event-description-wrapper-in-event-form">
+          <h4>Please describe your event</h4>
+          <input
+              type="text"
+              placeholder="Please include at least 30 characters"
+              className='user-input-on-event-form-description'
+              required={true}
+              value={description}
+              onChange={e => setDescription(e.target.value)}
+            />
+            {hasSubmitted && errors.description && (<p className='errors'>{errors.description}</p>)}
+        </div>
 
-        <h4>When does your event end?</h4>
-        <input
-            type="text"
-            required={true}
-            placeholder="MM/DD/YYYY HH:mm PM"
-            value={endDate}
-            onChange={e => setEndDate(e.target.value)}
-          />
-        {hasSubmitted && errors.endDate && (<p className='errors'>{errors.endDate}</p>)}
-      </div>
+        <div className='submit-button'>
+          <button type="submit">{formType === 'Create Event' ? 'Create Event' : 'Update Event' }</button>
+        </div>
 
-      <div className="url-wrapper">
-        <h4>Please add an image url for your event below</h4>
-        <input
-            type="text"
-            required={true}
-            placeholder="Image URL"
-            value={url}
-            onChange={e => setUrl(e.target.value)}
-          />
-          {hasSubmitted && errors.url && (<p className='errors'>{errors.url}</p>)}
-      </div>
-
-      <div>
-        <h4>Please describe your event</h4>
-        <textarea
-            placeholder="Please include at least 30 characters"
-            required={true}
-            value={description}
-            onChange={e => setDescription(e.target.value)}
-          />
-          {hasSubmitted && errors.description && (<p className='errors'>{errors.description}</p>)}
-      </div>
-
-      <div className='submit-button'>
-        <button type="submit">{formType === 'Create Event' ? 'Create Event' : 'Update Event' }</button>
-      </div>
-
-    </form>
+      </form>
+    </div>
   )
 }
 

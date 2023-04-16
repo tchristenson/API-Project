@@ -144,7 +144,7 @@ function GroupForm({ group, formType }) {
           {hasSubmitted && errors.groupName && (<p className='errors'>{errors.groupName}</p>)}
         </div>
 
-        <div className='about-container'>
+        <div className='about-container-on-group-form'>
           <h2>Now describe what your group will be about</h2>
           <p>
             People will see this when we promote your group,
@@ -155,9 +155,10 @@ function GroupForm({ group, formType }) {
             <li>Who should join?</li>
             <li>What will you do at your events?</li>
           </ol>
-          <textarea
+          <input
+            type='text'
             placeholder="Please write at least 30 characters"
-            className='user-input-on-group-form'
+            className='user-input-on-group-form-about-info'
             required={true}
             value={description}
             onChange={e => setDescription(e.target.value)}

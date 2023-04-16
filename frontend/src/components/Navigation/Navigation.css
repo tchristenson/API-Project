@@ -30,3 +30,15 @@
   padding: 10px;
   font-weight: bold;
 }
+
+.login-signup-buttons button {
+  background-color: transparent;
+  text-decoration: none;
+  border: none;
+  color: black;
+  font-size: 14px;
+  align-items: center;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 10px;
+}
