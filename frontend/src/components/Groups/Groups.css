@@ -1,3 +1,13 @@
+.dot {
+  height: 3px;
+  width: 3px;
+  background-color:gray;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  color: white;
+}
+
 .event-and-group-links {
   display: flex;
   justify-content: left;
@@ -31,6 +41,7 @@
   margin-top: auto;
 }
 
+
 .full-group-list {
   display: flex;
   align-items: center;
@@ -45,7 +56,8 @@
 }
 
 .group-event-count {
-  padding-right: 10px
+  padding-right: 10px;
+  color: gray
 }
 
 .group-info {
@@ -57,7 +69,12 @@
 .group-city-state {
   padding-bottom: 10px;
   font-size: 14px;
+  color: gray;
+}
 
+.group-private-status {
+  color: gray;
+  padding-left: 10px
 }
 
 .nav-link {

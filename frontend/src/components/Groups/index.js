@@ -51,6 +51,7 @@ function Groups() {
               ) : (
                 <div className="group-event-count">{group.Events.length === 1 ? `${group.Events.length} Event` : `${group.Events.length} Events`}</div>
             )}
+            <div><span className="dot">.</span></div>
             <div className="group-private-status">{group.private ? "Private" : "Public"}</div>
           </div>
         </div>

@@ -33,7 +33,7 @@ function GroupDetails() {
       <NavLink to={`/events/${event.id}`}>
         <div className="event-container">
             <div className="image-and-details">
-              <div className="event-image" key={event.id}>
+              <div className="event-image-in-group-detail" key={event.id}>
                 <img src={event.EventImages[0].url} alt="event image"/>
               </div>
               <div className="event-info">
@@ -57,7 +57,7 @@ function GroupDetails() {
       <NavLink to={`/events/${event.id}`}>
         <div className="event-container">
             <div className="image-and-details">
-              <div className="event-image" key={event.id}>
+              <div className="event-image-in-group-detail" key={event.id}>
                 <img src={event.EventImages[0].url} alt="event image"/>
               </div>
               <div className="event-info">
@@ -88,7 +88,7 @@ function GroupDetails() {
   }
 
   return (
-    <body>
+    <div className="content">
       <div className="breadcrumb-link">
         <span>{'< '}<NavLink to='/groups'>Groups</NavLink></span>
       </div>
@@ -102,64 +102,72 @@ function GroupDetails() {
           Preview Image Unavailable
         </div>
         )}
-        <div className="group-info">
-          <div className="group-name"><h3>{group.name}</h3></div>
-          <div className="group-city-state">{group.city}, {group.state}</div>
-          <div className="event-private-container">
-            <div className="group-event-count">{group.Events.length > 1 ? `${group.Events.length} Events` : `${group.Events.length} Event`}</div>
-            <div className="group-private-status">{group.private ? "Private" : "Public"}</div>
+        <div className="group-button-wrapper">
+          <div className="group-info-in-group-detail">
+
+              <div className="group-name"><h3>{group.name}</h3></div>
+              <div className="group-city-state">{group.city}, {group.state}</div>
+              <div className="event-private-container">
+                <div className="group-event-count">{group.Events.length > 1 ? `${group.Events.length} Events` : `${group.Events.length} Event`}</div>
+                <div><span className="dot">.</span></div>
+                <div className="group-private-status">{group.private ? "Private" : "Public"}</div>
+              </div>
+              <div className="group-organizer">Organized by {group.Organizer.firstName} {group.Organizer.lastName}</div>
+
           </div>
-          <div className="group-organizer">Organized by {group.Organizer.firstName} {group.Organizer.lastName}</div>
 
-          {currUser && currUser.id !== organizerId && (
-            <button className="join-group-button" onClick={handleClick}>Join this group</button>
-          )}
-          {currUser && currUser.id === organizerId && (
-            <>
+          <div className="group-buttons">
+            {currUser && currUser.id !== organizerId && (
+              <button className="join-group-button" onClick={handleClick}>Join this group</button>
+            )}
+            {currUser && currUser.id === organizerId && (
+              <>
+                <Link to={`/groups/${groupId}/events/new`}>
+                  <button className="create-event-button">Create event</button>
+                </Link>
 
-              <Link to={`/groups/${groupId}/events/new`}>
-                <button className="create-event-button">Create event</button>
-              </Link>
+                <Link to={`/groups/${group.id}/edit`}>
+                  <button className="update-group-button">Update</button>
+                </Link>
 
-              <Link to={`/groups/${group.id}/edit`}>
-                <button className="update-group-button">Update</button>
-              </Link>
-
-              <OpenModalButton
-                buttonText="Delete"
-                modalComponent={<DeleteGroupModal groupId={groupId}/>}
-              />
-            </>
-          )}
-
-        </div>
-      </div>
-      <div></div>
-      <div className="organizer-info">
-        <h3>Organizer</h3>
-        <h5>{group.Organizer.firstName} {group.Organizer.lastName}</h5>
-      </div>
-      <div className="about-info">
-        <h3>What we're about</h3>
-        <h5>{group.about}</h5>
-      </div>
-      {upcomingEventsList.length > 0 && (
-        <div className="upcoming-event-info">
-          <h3>Upcoming Events {`(${upcomingEventsList.length})`}</h3>
-          <div className="upcoming-event-wrapper">
-            {upcomingEventsList}
+                <OpenModalButton
+                  buttonText="Delete"
+                  modalComponent={<DeleteGroupModal groupId={groupId}/>}
+                />
+              </>
+            )}
           </div>
         </div>
-      )}
-      {pastEventsList.length > 0 && (
-        <div className="past-event-info">
-          <h3>Past Events {`(${pastEventsList.length})`}</h3>
-          <div className="past-event-wrapper">
-            {pastEventsList}
-          </div>
+
+      </div>
+      <div className="gray-wrapper">
+        <div className="organizer-info">
+          <h3>Organizer</h3>
+          <h5>{group.Organizer.firstName} {group.Organizer.lastName}</h5>
         </div>
-      )}
-    </body>
+        <div className="about-info">
+          <h3>What we're about</h3>
+          <h5>{group.about}</h5>
+        </div>
+        {upcomingEventsList.length > 0 && (
+          <div className="upcoming-event-info">
+            <h3>Upcoming Events {`(${upcomingEventsList.length})`}</h3>
+            <div className="upcoming-event-wrapper">
+              {upcomingEventsList}
+            </div>
+          </div>
+        )}
+        {pastEventsList.length > 0 && (
+          <div className="past-event-info">
+            <h3>Past Events {`(${pastEventsList.length})`}</h3>
+            <div className="past-event-wrapper">
+              {pastEventsList}
+            </div>
+          </div>
+        )}
+
+      </div>
+    </div>
   )
 }
 
