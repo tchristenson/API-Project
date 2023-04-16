@@ -92,6 +92,10 @@
 
 }
 
+.group-image-inside-event-details {
+  /* max-width: 30%; */
+}
+
 .group-image-inside-event-details img {
   max-width: 30%;
   height: auto;
@@ -105,6 +109,8 @@
 .group-detail-container {
   display: flex;
   flex-direction: column;
+  position: relative;
+  right: 200px
 }
 
 .group-event-info-container {
