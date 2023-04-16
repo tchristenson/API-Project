@@ -126,7 +126,6 @@ function EventForm({event, group, formType}) {
 
           <h4>What is the price of your event?</h4>
           <div>
-            <span className="dollar-sign-symbol-event-form">$</span>
             <input
               type="number"
               id="price-input-on-event-form"
