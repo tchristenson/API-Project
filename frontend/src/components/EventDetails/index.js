@@ -39,6 +39,7 @@ function EventDetails() {
           <img src={event.EventImages[0].url} alt="Event Image" />
         </div>
         <div className="group-event-info-container">
+        <NavLink className="nav-link" to={`/groups/${event.Group.id}`}>
           <div className="group-image-detail">
             <div className="group-image-inside-event-details">
               <img src={event.Group.GroupImages[0].url} alt="Group Image" />
@@ -48,6 +49,7 @@ function EventDetails() {
               <div className="private-public-in-event-detail">{event.Group.private ? "Private" : "Public"}</div>
             </div>
           </div>
+        </NavLink>
           <div className="event-details">
             <div className="start-container">
               <div className="start-date"><span>START</span> {dateTimeFix(event.startDate)[0]}</div>
