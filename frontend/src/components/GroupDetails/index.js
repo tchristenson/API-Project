@@ -169,6 +169,11 @@ function GroupDetails() {
             </div>
           </div>
         )}
+        {!upcomingEventsList.length && !pastEventsList.length && (
+          <div className="no-upcoming-events">
+            <h3>No Upcoming Events</h3>
+          </div>
+        )}
 
       </div>
     </div>
