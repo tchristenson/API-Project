@@ -67,6 +67,22 @@
   padding: 0;
 }
 
+#groups-navlink-in-profile-button a {
+  font-size: 14px;
+  text-decoration: none;
+  color: black;
+  padding: 0;
+  font-weight: normal;
+}
+
+#events-navlink-in-profile-button a {
+  font-size: 14px;
+  text-decoration: none;
+  color: black;
+  padding: 0;
+  font-weight: normal;
+}
+
 .logout-in-profile-dropdown {
   border-top: solid black 2px;
 }

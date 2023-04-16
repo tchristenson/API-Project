@@ -56,7 +56,12 @@ function ProfileButton({ user }) {
       <ul className={ulClassName} ref={ulRef}>
         <li>Hello, {user.firstName}</li>
         <li>{user.email}</li>
-        <li>
+        <li id="groups-navlink-in-profile-button">
+          <NavLink exact to="/groups">
+            View groups
+          </NavLink>
+        </li>
+        <li id="events-navlink-in-profile-button">
           <NavLink exact to="/events">
             View events
           </NavLink>
