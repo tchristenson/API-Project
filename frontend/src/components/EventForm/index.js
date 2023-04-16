@@ -186,11 +186,11 @@ function EventForm({event, group, formType}) {
 
         <div className="event-description-wrapper-in-event-form">
           <h4>Please describe your event</h4>
-          <input
-              type="text"
+          <textarea
               placeholder="Please include at least 30 characters"
               className='user-input-on-event-form-description'
               required={true}
+              rows={10}
               value={description}
               onChange={e => setDescription(e.target.value)}
             />
