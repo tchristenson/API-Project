@@ -31,10 +31,10 @@ function DeleteEventModal({event, eventId}) {
       <h2>Confirm Delete</h2>
       <h4>Are you sure you want to remove this event?</h4>
 
-      <button onClick={handleDelete}>
+      <button id="delete-event-button" onClick={handleDelete}>
         {'Yes (Delete Event)'}
       </button>
-      <button onClick={closeModal}>
+      <button id="cancel-delete-event-button" onClick={closeModal}>
         {'No (Keep Event)'}
       </button>
     </div>

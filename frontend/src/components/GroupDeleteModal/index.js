@@ -37,10 +37,10 @@ function DeleteGroupModal({groupId}) {
       <h2>Confirm Delete</h2>
       <h4>Are you sure you want to remove this group?</h4>
 
-      <button onClick={handleDelete}>
+      <button id="delete-group-button" onClick={handleDelete}>
         {'Yes (Delete Group)'}
       </button>
-      <button onClick={closeModal}>
+      <button id="cancel-delete-group-button" onClick={closeModal}>
         {'No (Keep Group)'}
       </button>
 

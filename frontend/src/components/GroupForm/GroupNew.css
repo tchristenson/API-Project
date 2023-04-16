@@ -68,3 +68,16 @@
   margin-top: 15px;
   margin-bottom: 30px;
 }
+
+.gray-wrapper {
+  position: relative;
+}
+
+/* .gray-wrapper {
+  content: "";
+  position: absolute;
+  left: -20%;
+  right: -20%;
+  background-color: lightgray;
+  z-index: -1;
+} */
