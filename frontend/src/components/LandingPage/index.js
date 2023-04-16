@@ -32,7 +32,7 @@ function LandingPage () {
       </div>
       <div className="landing-page-actions">
           <img className="see-all-groups-img" src="https://i.imgur.com/mtVPQro.jpg" alt="See all groups" />
-          <h4 className="see-all-groups-text"><NavLink exact to="/groups">See all groups</NavLink></h4>
+          <h4 id="see-all-groups-text-id" className="see-all-groups-text"><NavLink exact to="/groups">See all groups</NavLink></h4>
           <h5 className="normal see-all-groups-description">Do what you love, meet others who love it, find your community. The rest is history!</h5>
           <img className="find-an-event-img" src="https://i.imgur.com/LttnHvP.jpg" alt="Find an event" />
           <h4 className="find-an-event-text"><NavLink exact to="/events">Find an event</NavLink></h4>
