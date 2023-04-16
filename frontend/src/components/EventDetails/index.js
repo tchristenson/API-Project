@@ -6,6 +6,7 @@ import { useEffect } from "react"
 import { dateTimeFix } from "../Events"
 import OpenModalButton from "../OpenModalButton"
 import DeleteEventModal from "../EventDeleteModal"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 function EventDetails() {
   const dispatch = useDispatch()
@@ -51,19 +52,33 @@ function EventDetails() {
           </div>
         </NavLink>
           <div className="event-details">
-            <div className="start-container">
-              <div className="start-date"><span>START</span> {dateTimeFix(event.startDate)[0]}</div>
-              <div><span className="dot-in-event-details-page">.</span></div>
-              <div className="start-time">{dateTimeFix(event.startDate)[1]}</div>
+
+              <div className="clock-and-date-container">
+                <div className="clock-icon-event-details">
+                  <i class="fa-solid fa-clock"></i>
+                </div>
+                <div className="start-and-end-container">
+                  <div className="start-container">
+                    <div className="start-date"><span>START</span> {dateTimeFix(event.startDate)[0]}</div>
+                    <div><span className="dot-in-event-details-page">.</span></div>
+                    <div className="start-time">{dateTimeFix(event.startDate)[1]}</div>
+                  </div>
+                  <div className="end-container">
+                    <div className="end-date"><span>END</span> {dateTimeFix(event.endDate)[0]}</div>
+                    <div><span className="dot-in-event-details-page">.</span></div>
+                    <div className="end-time">{dateTimeFix(event.endDate)[1]}</div>
+                  </div>
+                </div>
+              </div>
+            <div className="event-price-container-event-details">
+              <i id="font-awesome-dollar-sign" class="fa-sharp fa-solid fa-dollar-sign"></i>
+              <div className="event-price">{event.price}</div>
             </div>
-            <div className="end-container">
-              <div className="end-date"><span>END</span> {dateTimeFix(event.endDate)[0]}</div>
-              <div><span className="dot-in-event-details-page">.</span></div>
-              <div className="end-time">{dateTimeFix(event.endDate)[1]}</div>
-            </div>
-            <div className="event-price">{`$${event.price}`}</div>
             <div className="event-type-buttons-container">
-              <div className="online-in-person-in-event-detail">{event.type}</div>
+              <div className="event-type-container-event-details">
+                <i id="font-awesome-location-icon" class="fa-solid fa-location-dot"></i>
+                <div className="online-in-person-in-event-detail">{event.type}</div>
+              </div>
               <div className="update-delete-buttons-on-event-detail">
                 {currUser && currUser.id === organizerId && (
                   <>
