@@ -30,9 +30,9 @@ function GroupForm({ group, formType }) {
 
   const history = useHistory()
 
-  if (!sessionUser || sessionUser.id !== group.organizerId) {
-    history.push('/')
-  }
+  // if (!sessionUser || sessionUser.id !== group.organizerId) {
+  //   history.push('/')
+  // }
 
   const dispatch = useDispatch()
   const [errors, setErrors] = useState({})
@@ -163,11 +163,11 @@ function GroupForm({ group, formType }) {
             <li>Who should join?</li>
             <li>What will you do at your events?</li>
           </ol>
-          <input
-            type='text'
+          <textarea
             placeholder="Please write at least 30 characters"
             className='user-input-on-group-form-about-info'
             required={true}
+            rows={10}
             value={description}
             onChange={e => setDescription(e.target.value)}
           />
