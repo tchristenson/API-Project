@@ -24,9 +24,9 @@ import { makeNewGroupThunk, editGroupThunk } from '../../store/groups';
 function GroupForm({ group, formType }) {
 
   const sessionUser = useSelector(state => state.session.user)
-  console.log('sessionUser inside group form', sessionUser)
+  // console.log('sessionUser inside group form', sessionUser)
 
-  console.log('group inside of group form', group)
+  // console.log('group inside of group form', group)
 
   const history = useHistory()
 
