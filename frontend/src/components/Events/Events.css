@@ -47,6 +47,8 @@
   display: flex;
   align-items: flex-start;
   flex-direction: column;
+  max-width: 1024px;
+  min-width: 1024px;
 }
 
 .event-info {
@@ -76,7 +78,9 @@
   align-items: top;
   border-top: 2px solid lightgrey;
   padding: 15px;
-  min-width: 800px;
+  max-width: 1024px;
+  min-width: 1024px;
+  word-wrap: break-word;
 }
 
 .date-time-wrapper {
