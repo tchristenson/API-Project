@@ -36,7 +36,7 @@ function GroupDetails() {
               <div className="event-image-in-group-detail" key={event.id}>
                 {console.log('event.EventImages[0].url', event.EventImages[0].url)}
                 <img src={event.EventImages[0].url} alt="event image"/>
-                {/* {event.EventImages[0].url && (<img src={event.EventImages[0].url} alt="event image"/>)} */}
+                {/* {event.EventImages.length && (<img src={event.EventImages[0].url} alt="event image"/>)} */}
 
               </div>
               <div className="event-info">
