@@ -4,6 +4,9 @@ import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
 import { useHistory } from "react-router";
 import './Navigation.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { NavLink } from "react-router-dom";
+
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -40,16 +43,34 @@ function ProfileButton({ user }) {
 
   return (
     <>
+    <div className="dropdown">
       <button onClick={openMenu}>
-        <i className="fas fa-user-circle" />
+        <i id="font-awesome-profile-button" class="fa-sharp fa-solid fa-user"></i>
+        {showMenu ? (
+          <i id="font-awesome-angle-up-button" class="fa-solid fa-angle-up"></i>
+        ) : (
+          <i id="font-awesome-angle-down-button" class="fa-solid fa-angle-down"></i>
+        )}
+
       </button>
       <ul className={ulClassName} ref={ulRef}>
         <li>Hello, {user.firstName}</li>
         <li>{user.email}</li>
-        <li>
+        <li id="groups-navlink-in-profile-button">
+          <NavLink exact to="/groups">
+            View groups
+          </NavLink>
+        </li>
+        <li id="events-navlink-in-profile-button">
+          <NavLink exact to="/events">
+            View events
+          </NavLink>
+        </li>
+        <li className="logout-in-profile-dropdown">
           <button onClick={logout}>Log Out</button>
         </li>
       </ul>
+    </div>
     </>
   );
 }

@@ -105,8 +105,8 @@ export const makeNewGroupThunk = (group) => async (dispatch) => {
 }
 
 export const editGroupThunk = (editedGroup) => async (dispatch) => {
-  console.log('editedGroup inside editGroup thunk', editedGroup)
-  console.log('editedGroup.isPrivate', editedGroup.isPrivate)
+  // console.log('editedGroup inside editGroup thunk', editedGroup)
+  // console.log('editedGroup.isPrivate', editedGroup.isPrivate)
   const response = await csrfFetch(`/api/groups/${editedGroup.id}`, {
     method: "PUT",
     headers: {
@@ -133,6 +133,8 @@ export const editGroupThunk = (editedGroup) => async (dispatch) => {
 }
 
 export const deleteGroupThunk = (groupId) => async (dispatch) => {
+  const groupResponse = await csrfFetch(`/api/groups/${groupId}`);
+  const deletedGroup = await groupResponse.json()
   const response = await csrfFetch(`/api/groups/${groupId}`, {
     method: "DELETE",
     headers: {
@@ -141,7 +143,9 @@ export const deleteGroupThunk = (groupId) => async (dispatch) => {
   })
   if (response.ok) {
     dispatch(deleteGroupAction(groupId))
-    return {'message': 'delete successful'}
+    return {'message': 'delete successful',
+    'deletedGroup': deletedGroup
+  }
   }
 
 }
@@ -155,11 +159,8 @@ const groupReducer = (state = {}, action) => {
       action.groups.Groups.forEach(group => newState[group.id] = group)
       return newState
     case GET_SINGLE_GROUP:
-      // console.log('action inside of reducer', action)
       newState = {...state}
-      // console.log('newState inside of reducer before edits', newState)
       newState[action.group.id] = action.group
-      // console.log('newState inside of reducer after edits', newState)
       return newState
     case MAKE_NEW_GROUP:
       newState = {...state}
@@ -170,11 +171,59 @@ const groupReducer = (state = {}, action) => {
       newState[action.group.id] = action.group
       return newState
     case DELETE_GROUP:
-      // console.log('newState inside Delete Reducer - AS RECEIVED', newState)
       newState = {...state}
-      console.log('newState inside Delete Reducer - SPREAD', newState)
+
+      // // START - scratch work to fix cascade issue
+      // // Get the keys from the current state and place them into an array
+      // const keys = Object.keys(newState)
+      // // map over the keys, and each group will be an object with its properties, all held in an array. An array of objects
+      // const groupsArr = Object.keys(newState).map(group => {
+      //   return {...newState[group]}
+      // })
+
+      // // iterate over the groupArr and access the nested Events objects. Put those into their own events Array
+      // const eventsArr = [];
+      // for (let i = 0; i < groupsArr.length; i++) {
+      //   let currEvents = groupsArr[i].Events
+      //   currEvents.forEach(event => {
+      //     eventsArr.push(event)
+      //   })
+      // }
+
+      // // filter over the array of objects, removing the group who's id matches the action.groupId that was deleted
+      // const filteredGroupsArr = groupsArr.filter((group) => group.id !== action.groupId)
+
+      // // filter over the array of objects, removing the event who's id matches the action.groupId that was deleted
+      // const filteredEventsArr = eventsArr.filter((event) => event.groupId !== action.groupId)
+
+      // // Normalize the both arrays to get them back into an objects - had issues with forEach, so used a regular for loop
+      // const filteredGroupsObj = {}
+      // for (let i = 0; i < filteredGroupsArr.length; i++) {
+      //   let currGroup = filteredGroupsArr[i]
+      //   filteredGroupsObj[currGroup.id] = currGroup
+      // }
+
+      // const filteredEventsObj = {}
+      // for (let i = 0; i < filteredEventsArr.length; i++) {
+      //   let currEvent = filteredEventsArr[i]
+      //   filteredEventsObj[currEvent.id] = currEvent
+      // }
+
+      // console.log('keys inside reducer', keys)
+      // console.log('groupsArr inside reducer', groupsArr)
+      // console.log('eventsArr inside reducer', eventsArr)
+      // console.log('filteredGroupsArr inside reducer', filteredGroupsArr)
+      // console.log('filteredEventsArr inside reducer', filteredEventsArr)
+      // console.log('filteredGroupsObj inside reducer', filteredGroupsObj)
+      // console.log('filteredEventsObj inside reducer', filteredEventsObj)
+
+      // newState.groups = filteredGroupsObj
+      // newState.events = filteredEventsObj
+      // return newState
+
+      // // END - scratch work to fix cascade issue
+
       delete newState[action.groupId]
-      console.log('newState inside Delete Reducer - DELETION', newState)
       return newState
     default:
       return state

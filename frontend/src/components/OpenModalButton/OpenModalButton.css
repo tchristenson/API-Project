@@ -1,0 +1,7 @@
+.open-modal-button button {
+  font-weight: bold;
+  background-color: transparent;
+  border: none;
+  padding: 10px;
+  cursor: pointer
+}

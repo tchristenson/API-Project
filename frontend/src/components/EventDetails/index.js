@@ -6,6 +6,7 @@ import { useEffect } from "react"
 import { dateTimeFix } from "../Events"
 import OpenModalButton from "../OpenModalButton"
 import DeleteEventModal from "../EventDeleteModal"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 function EventDetails() {
   const dispatch = useDispatch()
@@ -27,54 +28,75 @@ function EventDetails() {
   console.log('event inside of EventDetail', event)
 
   return (
-    <body>
+    <div className="content">
       <div className="breadcrumb-link">
         <span>{'< '}<NavLink to='/events'>Events</NavLink></span>
       </div>
       <h2>{event.name}</h2>
       <h5 className="event-organizer">{`Hosted by ${event.Group.User.firstName} ${event.Group.User.lastName}`}</h5>
-      <div className="event-container">
+      <div className="whole-event-container">
         <div className="event-image">
           {event.previewImage}
+          <img src={event.EventImages[0].url} alt="Event Image" />
         </div>
         <div className="group-event-info-container">
+        <NavLink className="nav-link" to={`/groups/${event.Group.id}`}>
           <div className="group-image-detail">
-            <div className="group-image">
+            <div className="group-image-inside-event-details">
               <img src={event.Group.GroupImages[0].url} alt="Group Image" />
             </div>
             <div className="group-detail-container">
               <div>{event.Group.name}</div>
-              <div>{event.Group.private ? "Private" : "Public"}</div>
+              <div className="private-public-in-event-detail">{event.Group.private ? "Private" : "Public"}</div>
             </div>
           </div>
+        </NavLink>
           <div className="event-details">
-            <div className="start-container">
-              <div className="start-date">Start {dateTimeFix(event.startDate)[0]}</div>
-              <div className="start-time">{dateTimeFix(event.startDate)[1]}</div>
+
+              <div className="clock-and-date-container">
+                <div className="clock-icon-event-details">
+                  <i class="fa-solid fa-clock"></i>
+                </div>
+                <div className="start-and-end-container">
+                  <div className="start-container">
+                    <div className="start-date"><span>START</span> {dateTimeFix(event.startDate)[0]}</div>
+                    <div><span className="dot-in-event-details-page">.</span></div>
+                    <div className="start-time">{dateTimeFix(event.startDate)[1]}</div>
+                  </div>
+                  <div className="end-container">
+                    <div className="end-date"><span>END</span> {dateTimeFix(event.endDate)[0]}</div>
+                    <div><span className="dot-in-event-details-page">.</span></div>
+                    <div className="end-time">{dateTimeFix(event.endDate)[1]}</div>
+                  </div>
+                </div>
+              </div>
+            <div className="event-price-container-event-details">
+              <i id="font-awesome-dollar-sign" class="fa-sharp fa-solid fa-dollar-sign"></i>
+              <div className="event-price">{event.price === 0 ? 'FREE' : `$${event.price}`}</div>
             </div>
-            <div className="end-container">
-              <div className="end-date">End {dateTimeFix(event.endDate)[0]}</div>
-              <div className="end-time">{dateTimeFix(event.endDate)[1]}</div>
-            </div>
-            <div className="event-price">{`$${event.price}`}</div>
             <div className="event-type-buttons-container">
-              <div>{event.type}</div>
-              {currUser && currUser.id === organizerId && (
-                <>
-                  <button>Update</button>
-                  <OpenModalButton
-                    buttonText="Delete"
-                    modalComponent={<DeleteEventModal event={event} eventId={eventId}/>}
-                  />
-                </>
-              )}
+              <div className="event-type-container-event-details">
+                <i id="font-awesome-location-icon" class="fa-solid fa-location-dot"></i>
+                <div className="online-in-person-in-event-detail">{event.type}</div>
+              </div>
+              <div className="update-delete-buttons-on-event-detail">
+                {currUser && currUser.id === organizerId && (
+                  <>
+                    <button>Update</button>
+                    <OpenModalButton
+                      buttonText="Delete"
+                      modalComponent={<DeleteEventModal event={event} eventId={eventId}/>}
+                    />
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <h2>Details</h2>
+      <h2>Description</h2>
       <p className="event-description">{event.description}</p>
-    </body>
+    </div>
   )
 }
 

@@ -33,33 +33,29 @@ import "./Events.css"
 function Events() {
   const dispatch = useDispatch()
 
-  // // original
-  // const events = useSelector(state => state.events)
-  // const eventsArr = Object.values(events)
-  // // console.log('events inside of Events component', events)
+  const events = useSelector(state => state.events)
+  const eventsArr = Object.values(events)
 
-  // useEffect(() => {
-  //   dispatch(getAllEventsThunk())
-  // }, [dispatch])
-  // // original end
+  useEffect(() => {
+    dispatch(getAllEventsThunk())
+  }, [dispatch])
 
-
-    // new approach - now using thunk instead of useSelector
-    const [events, setEvents] = useState('')
-
-    useEffect(() => {
-      dispatch(getAllEventsThunk())
-      .then((data) => setEvents(data))
-    }, [dispatch])
-
-    console.log('events inside All Events', events)
+    // console.log('events inside All Events', events)
+    console.log('eventsArr inside of All Events', eventsArr)
     // console.log('events.Events inside All Events', events.Events)
 
     if (!events) return null
 
+    // const sortedEventsArr = eventsArr.sort((event1, event2) => new Date(event1.startDate).getTime() - new Date(event2.startDate).getTime())
+    // console.log(sortedEventsArr)
+
+    const currentDate = new Date()
 
 // I was mapping over eventsArr in the original approach
-  const eventList = events.Events.map(event => (
+  const eventList = eventsArr.filter(event =>
+    new Date(event.startDate).getTime() > currentDate.getTime())
+    .sort((event1, event2) => new Date(event1.startDate).getTime() - new Date(event2.startDate).getTime())
+    .map(event => (
     <NavLink className="nav-link" to={`/events/${event.id}`}>
       <div className="single-event" key={event.id}>
         <div className="image-event-wrapper">
@@ -69,6 +65,34 @@ function Events() {
           <div className="event-info">
             <div className="date-time-wrapper">
               <div className="event-date">{dateTimeFix(event.startDate)[0]}</div>
+              <div><span className="dot-in-event-details-of-group-page">.</span></div>
+              <div className="event-time">{dateTimeFix(event.startDate)[1]}</div>
+            </div>
+            <div className="event-name"><h3>{event.name}</h3></div>
+            <div className="event-city-state">{event.Venue.address},  {event.Venue.city}, {event.Venue.state}</div>
+          </div>
+        </div>
+        <div className="event-about">{event.description}</div>
+      </div>
+    </NavLink>
+  ))
+
+  // console.log('eventList', eventList)
+
+  const pastEventList = eventsArr.filter(event =>
+    new Date(event.startDate).getTime() < currentDate.getTime())
+    .sort((event1, event2) => new Date(event2.startDate).getTime() - new Date(event1.startDate).getTime())
+    .map(event => (
+    <NavLink className="nav-link" to={`/events/${event.id}`}>
+      <div className="single-event" key={event.id}>
+        <div className="image-event-wrapper">
+          <div className="event-image">
+           <img src={event.previewImage} alt="Group Image" />
+          </div>
+          <div className="event-info">
+            <div className="date-time-wrapper">
+              <div className="event-date">{dateTimeFix(event.startDate)[0]}</div>
+              <div><span className="dot-in-event-details-of-group-page">.</span></div>
               <div className="event-time">{dateTimeFix(event.startDate)[1]}</div>
             </div>
             <div className="event-name"><h3>{event.name}</h3></div>
@@ -80,19 +104,24 @@ function Events() {
     </NavLink>
   ))
 
+  // console.log('pastEventList', pastEventList)
+
   return (
-    <body>
+    <div className="content">
       <div className="event-and-group-links">
-        <NavLink exact to="/events">Events</NavLink>
+        <NavLink className="current-page" exact to="/events">Events</NavLink>
         <NavLink exact to="/groups">Groups</NavLink>
       </div>
-      <div className="subheader">
+      <div className="subheading">
         <h5>Events in Meetup</h5>
       </div>
       <div className="full-event-list">
-        {eventList}
+        <>
+          {eventList}
+          {pastEventList}
+        </>
       </div>
-    </body>
+    </div>
   )
 }
 

@@ -2,6 +2,124 @@
   display: none
 }
 
+.login-signup-buttons {
+  list-style: none;
+}
+
+.masthead__home-button {
+  text-decoration: none;
+  font-weight: bold;
+  color: #FF5A5F;
+
+}
+
 .sessionUser-nav-links {
   display: flex;
+  align-items: center;
 }
+
+.sessionUser-nav-links li {
+  list-style: none;
+}
+
+.sessionUser-nav-links a {
+  display: flex;
+  text-decoration: none;
+  color: teal;
+  font-size: 14px;
+  align-items: center;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.login-signup-buttons button {
+  background-color: transparent;
+  text-decoration: none;
+  border: none;
+  color: black;
+  font-size: 14px;
+  align-items: center;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.profile-dropdown ul  {
+  border: solid black 2px;
+}
+
+.profile-dropdown {
+  padding: 5px;
+  font-size: 14px;
+  border: solid black 2px;
+  background-color: white;
+}
+
+.profile-dropdown li {
+  padding: 3px 0 3px 0;
+}
+
+.profile-dropdown button {
+  cursor: pointer;
+  background-color: transparent;
+  color: black;
+  border: none;
+  padding: 0;
+}
+
+#groups-navlink-in-profile-button a {
+  font-size: 14px;
+  text-decoration: none;
+  color: black;
+  padding: 0;
+  font-weight: normal;
+}
+
+#events-navlink-in-profile-button a {
+  font-size: 14px;
+  text-decoration: none;
+  color: black;
+  padding: 0;
+  font-weight: normal;
+}
+
+.logout-in-profile-dropdown {
+  border-top: solid black 2px;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown button {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+}
+
+.dropdown ul {
+  position: absolute;
+  top: 100%;
+  right: 0
+}
+
+#font-awesome-profile-button {
+  color: #FF5A5F;
+  cursor: pointer;
+  font-size: 28px;
+  padding: 3px;
+}
+
+#font-awesome-angle-down-button {
+  color: gray;
+  padding: 3px;
+}
+
+#font-awesome-angle-up-button {
+  color: gray;
+  padding: 3px;
+}
+
+/* .dropdown i {
+  size: 20px;
+} */

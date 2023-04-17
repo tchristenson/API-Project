@@ -28,7 +28,7 @@ const makeNewEventAction = (event) => {
   }
 }
 
-const deleteEventAction = (eventId) => {
+export const deleteEventAction = (eventId) => {
   return {
     type: DELETE_EVENT,
     eventId
@@ -115,28 +115,19 @@ const eventReducer = (state = {}, action) => {
   switch (action.type) {
     case GET_ALL_EVENTS:
       newState = {...state}
-      // console.log('action.payload inside of eventReducer', action.payload)
       action.payload.Events.forEach(event => newState[event.id] = event)
-      // console.log('newState inside events reducer', newState)
       return newState
     case GET_SINGLE_EVENT:
       newState = {...state}
-      // console.log('newState inside GET_SINGLE_EVENT Reducer case', newState)
-      // console.log('action inside GET_SINGLE_EVENT Reducer case', action)
       newState[action.event.id] = action.event
-      // console.log('newState inside GET_SINGLE_EVENT Reducer case ---- AFTER', newState)
       return newState
     case MAKE_NEW_EVENT:
       newState = {...state}
-      // console.log('state inside MAKE NEW EVENT case', newState)
       newState[action.event.id] = action.event
-      // console.log('state inside MAKE NEW EVENT case --- Revised', newState)
       return newState
     case DELETE_EVENT:
       newState = {...state}
-      console.log('newState inside Delete Reducer - SPREAD', newState)
       delete newState[action.eventId]
-      console.log('newState inside Delete Reducer - DELETION', newState)
       return newState
     default:
       return state

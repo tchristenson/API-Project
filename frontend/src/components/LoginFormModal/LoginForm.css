@@ -7,10 +7,41 @@
   color: red;
 }
 
-.login-container {
-  text-align: center;
+.credentials-container input {
+  background-color: rgb(197, 222, 230);
+  border: 3px solid black;
+  margin-bottom: 10px;
+  padding: 5px;
 }
 
-.placeholder {
-  color: red
+.credentials-container button.real-user-login-button {
+  background-color: red;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  border: solid black 3px;
+  box-shadow: 2px 2px 2px black;
+  height: 45px;
+  margin-bottom: 10px;
+}
+
+.credentials-container button.demo-user-button {
+  background-color: transparent;
+  border: none;
+  color: teal;
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.login-container {
+  text-align: center;
+  padding: 15px;
+  background-color: lightgray;
+  width: 400px;
+}
+
+.login-container h1 {
+  margin-top: 0;
 }

@@ -7,6 +7,7 @@ import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import "./Navigation.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
@@ -21,16 +22,19 @@ function Navigation({ isLoaded }) {
         <li>
           <ProfileButton user={sessionUser} />
         </li>
+
       </div>
     );
   } else {
     sessionLinks = (
-      <li>
+      <li className="login-signup-buttons">
         <OpenModalButton
+          className="login-button"
           buttonText="Log In"
           modalComponent={<LoginFormModal />}
         />
         <OpenModalButton
+          className="signup-button"
           buttonText="Sign Up"
           modalComponent={<SignupFormModal />}
         />
@@ -39,23 +43,22 @@ function Navigation({ isLoaded }) {
   }
 
   return (
-    <body>
+
       <header>
         <div className="masthead">
-          <div className="masthead__home-button">
-            <h2>
-              <NavLink exact to="/">
+
+          <h2>
+            <NavLink className="masthead__home-button" exact to="/">
               Meetup
             </NavLink>
+          </h2>
 
-              </h2>
-          </div>
           <div className="masthead__actions">
             {isLoaded && sessionLinks}
           </div>
         </div>
       </header>
-    </body>
+
   );
 }
 

@@ -1,0 +1,95 @@
+.errors {
+  color: red
+}
+
+.new-event-form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.date-wrapper-in-event-form {
+  border-top: solid gray 2px;
+  margin-bottom: 20px;
+}
+
+.event-name-wrapper {
+  margin-bottom: 20px;
+}
+
+.new-event-form h2 {
+  margin-bottom: 0px;
+}
+
+.new-event-form h4 {
+  margin-bottom: 5px;
+}
+
+
+.url-wrapper-in-event-form {
+  border-top: solid gray 2px;
+  margin-bottom: 20px;
+}
+
+.event-description-wrapper-in-event-form {
+  border-top: solid gray 2px;
+  margin-bottom: 20px;
+}
+
+.type-private-price-wrapper {
+  border-top: solid gray 2px;
+  margin-bottom: 20px;
+}
+
+.user-input-on-event-form {
+  background-color: rgb(228, 237, 240);
+  border: 2px solid black;
+  padding: 4px;
+
+  width: 30%;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+#price-input-on-event-form {
+  text-align: right;
+  position: relative; /* new */
+}
+
+.dollar-sign-symbol-event-form {
+  position: absolute;
+  top: 37%;
+  left: 11.5%;
+  z-index: 1;
+  font-size: 16px;
+}
+
+.user-input-on-event-form-description {
+  width: 100%;
+  height: 150px;
+  background-color: rgb(228, 237, 240);
+  border: 2px solid black;
+  padding: 4px;
+  margin-bottom: 10px;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+  text-align: start;
+  vertical-align: top;
+}
+
+.event-start-wrapper-event-form {
+  display: flex;
+  align-items: center;
+}
+
+.event-end-wrapper-event-form {
+  display: flex;
+  align-items: center;
+}
+
+#font-awesome-calendar-in-event-form {
+  color: black;
+  font-size: 20px;
+  padding-left: 10px;
+
+}
