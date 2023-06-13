@@ -45,11 +45,11 @@ function ProfileButton({ user }) {
     <>
     <div className="dropdown">
       <button onClick={openMenu}>
-        <i id="font-awesome-profile-button" class="fa-sharp fa-solid fa-user"></i>
+        <i id="font-awesome-profile-button" className="fa-sharp fa-solid fa-user"></i>
         {showMenu ? (
-          <i id="font-awesome-angle-up-button" class="fa-solid fa-angle-up"></i>
+          <i id="font-awesome-angle-up-button" className="fa-solid fa-angle-up"></i>
         ) : (
-          <i id="font-awesome-angle-down-button" class="fa-solid fa-angle-down"></i>
+          <i id="font-awesome-angle-down-button" className="fa-solid fa-angle-down"></i>
         )}
 
       </button>

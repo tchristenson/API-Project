@@ -56,8 +56,8 @@ function Events() {
     new Date(event.startDate).getTime() > currentDate.getTime())
     .sort((event1, event2) => new Date(event1.startDate).getTime() - new Date(event2.startDate).getTime())
     .map(event => (
-    <NavLink className="nav-link" to={`/events/${event.id}`}>
-      <div className="single-event" key={event.id}>
+    <NavLink key={event.id} className="nav-link" to={`/events/${event.id}`}>
+      <div className="single-event">
         <div className="image-event-wrapper">
           <div className="event-image">
            <img src={event.previewImage} alt="Group Image" />
@@ -83,8 +83,8 @@ function Events() {
     new Date(event.startDate).getTime() < currentDate.getTime())
     .sort((event1, event2) => new Date(event2.startDate).getTime() - new Date(event1.startDate).getTime())
     .map(event => (
-    <NavLink className="nav-link" to={`/events/${event.id}`}>
-      <div className="single-event" key={event.id}>
+    <NavLink key={event.id} className="nav-link" to={`/events/${event.id}`}>
+      <div className="single-event">
         <div className="image-event-wrapper">
           <div className="event-image">
            <img src={event.previewImage} alt="Group Image" />

@@ -1,43 +1,36 @@
 import { NavLink } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { getAllGroupsThunk } from "../../store/groups"
-import { useState } from "react"
 import "./Groups.css"
 
 function Groups() {
   const dispatch = useDispatch()
-  // console.log('groups inside of Groups component', groups)
+  const [query, setQuery] = useState('')
 
-  // // original
   useEffect(() => {
     dispatch(getAllGroupsThunk())
   }, [dispatch])
 
   const groups = useSelector(state => state.groups)
-
-  // // original stop
-
-  // new approach - getting groups using thunk instead of useSelector
-  // const [groups, setGroups] = useState('')
-
-  // useEffect(() => {
-  //   dispatch(getAllGroupsThunk())
-  //   .then((data) => setGroups(data))
-  // }, [dispatch])
-
-  // console.log('groups inside All Groups', groups)
-  // console.log('groups.Groups inside All Groups', groups.Groups)
-
   if (!groups) return null
 
-// Change const groupList to equal groupsArr.map if going back to original
-// also now returning from the getAllGroupsThunk whereas I wasn't prior
   const groupsArr = Object.values(groups)
 
-  const groupList = groupsArr.map(group => (
-    <NavLink className="nav-link" to={`/groups/${group.id}`}>
-      <div className="single-group" key={group.id}>
+  const groupList = groupsArr.filter(group => {
+    if (query === '') {
+        return group;
+    } else if (group.name.toLowerCase().includes(query.toLowerCase())) {
+        return group
+    } else if (group.city.toLowerCase().includes(query.toLowerCase())) {
+        return group
+    } else if (group.state.toLowerCase().includes(query.toLowerCase())) {
+        return group
+    }
+  })
+  .map(group => (
+    <NavLink key={group.id} className="nav-link" to={`/groups/${group.id}`}>
+      <div className="single-group">
         <div className="group-image">
           <img src={group.previewImage} alt="Group Image" />
         </div>
@@ -68,6 +61,15 @@ function Groups() {
       <div className="subheading">
         <h5>Groups in Meetup</h5>
       </div>
+        <div className='search-bar-container'>
+            <input
+                className='search-bar'
+                value={query}
+                onChange={e => setQuery(e.target.value)}
+                type='search'
+                placeholder="Search"
+            />
+        </div>
       <div className="full-group-list">
         {groupList}
       </div>
