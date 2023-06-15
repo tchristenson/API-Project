@@ -6,6 +6,7 @@ const GET_SINGLE_GROUP = 'groups/getSingleGroup'
 const MAKE_NEW_GROUP = 'groups/makeNewGroup'
 const EDIT_GROUP = 'groups/editGroup'
 const DELETE_GROUP = 'groups/deleteGroup'
+const GET_GROUPS_BY_USER = 'groups/getGroupsByUser'
 
 // const history = useHistory()
 
@@ -43,6 +44,13 @@ const deleteGroupAction = (groupId) => {
     groupId
   }
 }
+
+const getGroupsByUserAction = (groups) => {
+    return {
+      type: GET_GROUPS_BY_USER,
+      groups
+    }
+  }
 
 // THUNKS
 export const getAllGroupsThunk = () => async (dispatch) => {
@@ -147,8 +155,17 @@ export const deleteGroupThunk = (groupId) => async (dispatch) => {
     'deletedGroup': deletedGroup
   }
   }
-
 }
+
+export const getGroupsByUserThunk = () => async (dispatch) => {
+    const response = await csrfFetch('/api/groups/current')
+    if (response.ok) {
+      const groups = await response.json()
+      // console.log('groups inside of getAllGroupsThunk', groups)
+      dispatch(getGroupsByUserAction(groups))
+      return groups
+    }
+  }
 
 //REDUCER
 const groupReducer = (state = {}, action) => {
@@ -225,6 +242,14 @@ const groupReducer = (state = {}, action) => {
 
       delete newState[action.groupId]
       return newState
+    case GET_GROUPS_BY_USER:
+        const userGroups = action.groups.Groups.reduce((acc, group) => {
+            acc[group.id] = group;
+            return acc;
+          }, {});
+        return {
+        ...userGroups
+        };
     default:
       return state
   }

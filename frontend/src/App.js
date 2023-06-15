@@ -11,6 +11,7 @@ import EventDetails from "./components/EventDetails";
 import CreateGroupForm from "./components/GroupNewForm";
 import EditGroupForm from "./components/GroupEditForm";
 import CreateEventForm from "./components/EventNewForm";
+import UserProfilePage from "./components/UserProfilePage";
 
 function App() {
   const dispatch = useDispatch();
@@ -48,6 +49,9 @@ function App() {
           <Route exact path='/events/:eventId'>
             <EventDetails />
           </Route>
+          <Route exact path="/users/:userId">
+              <UserProfilePage />
+            </Route>
           <Route>
             Page Not Found
           </Route>
