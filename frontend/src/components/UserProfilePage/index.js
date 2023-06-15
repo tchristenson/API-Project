@@ -40,6 +40,7 @@ function UserProfilePage() {
     return (
         <div className={styles["profile-page-container"]}>
             <h1>{`Hello, ${sessionUser.firstName}`}</h1>
+            <h3>Your Groups:</h3>
             <div className={styles["profile-groups-container"]}>
                 {userGroupsList}
             </div>
