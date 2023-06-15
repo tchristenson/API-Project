@@ -94,11 +94,11 @@ function GroupDetails() {
 
   const organizerId = group.Organizer.id
 
-  const handleMembership = async (e) => {
+  const handleMembership = () => {
     if (!membershipRequested.length) {
-        await dispatch(requestMembershipThunk(groupId))
+        dispatch(requestMembershipThunk(groupId))
     } else {
-        await dispatch(deleteMembershipThunk(groupId, currUser.id))
+        dispatch(deleteMembershipThunk(groupId, currUser.id))
     }
   }
 

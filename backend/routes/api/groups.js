@@ -890,9 +890,12 @@ router.delete('/:groupId/membership/:memberId', requireAuth, async (req, res, ne
 
 //   const { memberId } = req.body
 
-  const userId = await User.findByPk(req.params.memberId)
+  let user = await User.findByPk(req.params.memberId)
+  user = user.toJSON()
+//   console.log('user inside route ---->', user)
+//   console.log('user.toJSON() inside route ---->', user.toJSON())
 
-  if (!userId) {
+  if (!user) {
     let newErr = new Error()
     newErr.message = "User couldn't be found"
     newErr.status = 400;
@@ -929,9 +932,9 @@ router.delete('/:groupId/membership/:memberId', requireAuth, async (req, res, ne
 
   const deletedMembership = member
 
-  if (userId === req.user.id || group.organizerId === req.user.id) {
+  if (user.id === req.user.id || group.organizerId === req.user.id) {
     await member.destroy()
-    res.status(200).json(deletedMembership)
+    res.status(200).json(deletedMembership.toJSON())
   }
   else {
     let newErr = new Error()

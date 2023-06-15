@@ -43,6 +43,7 @@ export const requestMembershipThunk = (groupId) => async (dispatch) => {
 }
 
 export const deleteMembershipThunk = (groupId, memberId) => async (dispatch) => {
+    console.log('groupId and memberId inside thunk ---->', groupId, memberId)
     const response = await csrfFetch(`/api/groups/${groupId}/membership/${memberId}`, {
         method: "DELETE",
         headers: {
@@ -50,7 +51,8 @@ export const deleteMembershipThunk = (groupId, memberId) => async (dispatch) => 
         },
     })
     if (response.ok) {
-        const deletedMembership = response.json()
+        const deletedMembership = await response.json()
+        console.log('deletedMembership response from backend', deletedMembership)
         dispatch(deleteMembershipAction(deletedMembership.id))
         return deletedMembership
     }
