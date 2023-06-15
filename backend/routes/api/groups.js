@@ -677,10 +677,10 @@ router.get('/:groupId/members', async (req, res, next) => {
   if (isCoHostorOrganizer || group.organizerId === req.user.id) {
 
     let members = await User.findAll({
-      attributes: ['id', 'firstName', 'lastName'],
+    //   attributes: ['id', 'firstName', 'lastName'],
       include: {
         model: Membership,
-        attributes: ['status'],
+        // attributes: ['status'],
         where: {
           groupId: req.params.groupId
         }
@@ -692,6 +692,7 @@ router.get('/:groupId/members', async (req, res, next) => {
       currMember = currMember.toJSON()
       currMember.Membership = currMember.Memberships[0]
       delete currMember.Memberships
+      currMember.memberId = req.user.id
       memberArr.push(currMember)
     }
 
@@ -702,23 +703,23 @@ router.get('/:groupId/members', async (req, res, next) => {
   } else if (group) {
 
     let members = await User.findAll({
-      attributes: ['id', 'firstName', 'lastName'],
+    //   attributes: ['id', 'firstName', 'lastName'],
       include: {
         model: Membership,
-        attributes: ['status'],
+        // attributes: ['status'],
         where: {
           groupId: req.params.groupId,
-          [Op.or]: [
-            {
-              status: 'co-host'
-            },
-            {
-              status: 'member'
-            },
-            {
-              status: 'organizer'
-            }
-          ]
+        //   [Op.or]: [
+        //     {
+        //       status: 'co-host'
+        //     },
+        //     {
+        //       status: 'member'
+        //     },
+        //     {
+        //       status: 'organizer'
+        //     }
+        //   ]
         }
       }
     })
@@ -728,6 +729,7 @@ router.get('/:groupId/members', async (req, res, next) => {
       currMember = currMember.toJSON()
       currMember.Membership = currMember.Memberships[0]
       delete currMember.Memberships
+      currMember.memberId = req.user.id
       memberArr.push(currMember)
     }
 
@@ -767,10 +769,7 @@ router.post('/:groupId/membership', requireAuth, async (req, res, next) => {
     pendingMember = pendingMember.toJSON()
     delete pendingMember.updatedAt
     delete pendingMember.createdAt
-    delete pendingMember.id
-    delete pendingMember.groupId
     pendingMember.memberId = pendingMember.userId
-    delete pendingMember.userId
 
     res.status(200).json(pendingMember);
   }
@@ -887,13 +886,13 @@ router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
 
 
 // DELETE MEMBERSHIP TO A GROUP SPECIFIED BY ITS ID
-router.delete('/:groupId/membership', requireAuth, async (req, res, next) => {
+router.delete('/:groupId/membership/:memberId', requireAuth, async (req, res, next) => {
 
-  const { memberId } = req.body
+//   const { memberId } = req.body
 
-  const user = await User.findByPk(memberId)
+  const userId = await User.findByPk(req.params.memberId)
 
-  if (!user) {
+  if (!userId) {
     let newErr = new Error()
     newErr.message = "User couldn't be found"
     newErr.status = 400;
@@ -915,7 +914,7 @@ router.delete('/:groupId/membership', requireAuth, async (req, res, next) => {
     attributes: ['id', 'groupId', 'status'],
     where: {
       groupId: req.params.groupId,
-      userId: memberId
+      userId: req.params.memberId
     }
   })
 
@@ -928,9 +927,11 @@ router.delete('/:groupId/membership', requireAuth, async (req, res, next) => {
   }
   // console.log(member.toJSON());
 
-  if (memberId === req.user.id || group.organizerId === req.user.id) {
+  const deletedMembership = member
+
+  if (userId === req.user.id || group.organizerId === req.user.id) {
     await member.destroy()
-    res.status(200).json({ message: 'Successfully deleted membership from group'})
+    res.status(200).json(deletedMembership)
   }
   else {
     let newErr = new Error()
