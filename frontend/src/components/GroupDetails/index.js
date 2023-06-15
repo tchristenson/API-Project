@@ -7,6 +7,7 @@ import { useEffect, useState } from "react"
 import DeleteGroupModal from "../GroupDeleteModal"
 import OpenModalButton from "../OpenModalButton";
 import { dateTimeFix } from "../Events"
+import ManageMembersModal from "../ManageMembersModal"
 
 function GroupDetails() {
   const dispatch = useDispatch()
@@ -145,14 +146,17 @@ function GroupDetails() {
                 </Link>
 
                 <Link to={`/groups/${group.id}/edit`}>
-                  <button className="organizer-buttons-in-group-details">Update</button>
+                  <button className="organizer-buttons-in-group-details">Update Group</button>
                 </Link>
-
-
                 <OpenModalButton
-                  buttonText="Delete"
+                  buttonText="Delete Group"
                   className="organizer-buttons-in-group-details"
                   modalComponent={<DeleteGroupModal groupId={groupId}/>}
+                />
+                <OpenModalButton
+                  buttonText="Manage Members"
+                  className="organizer-buttons-in-group-details"
+                  modalComponent={<ManageMembersModal membershipsArr={membershipsArr}/>}
                 />
               </>
             )}
