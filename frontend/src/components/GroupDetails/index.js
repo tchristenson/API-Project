@@ -156,7 +156,7 @@ function GroupDetails() {
                 <OpenModalButton
                   buttonText="Manage Members"
                   className="organizer-buttons-in-group-details"
-                  modalComponent={<ManageMembersModal membershipsArr={membershipsArr}/>}
+                  modalComponent={<ManageMembersModal groupId={groupId} membershipsArr={membershipsArr}/>}
                 />
               </>
             )}

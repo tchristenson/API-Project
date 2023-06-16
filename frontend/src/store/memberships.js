@@ -4,6 +4,7 @@ import { csrfFetch } from "./csrf";
 const REQUEST_MEMBERSHIP = 'memberships/requestMembership'
 const DELETE_MEMBERSHIP = 'memberships/deleteMembership'
 const GET_MEMBERS_BY_GROUP = 'memberships/getMembersByGroup'
+const CHANGE_MEMBER_STATUS = 'memberships/changeMemberStatus'
 
 const requestMembershipAction = (membershipStatus) => {
     return {
@@ -23,6 +24,13 @@ const getMembersByGroupAction = members => {
     return {
         type: GET_MEMBERS_BY_GROUP,
         members
+    }
+}
+
+const changeMemberStatusAction = (member) => {
+    return {
+        type: CHANGE_MEMBER_STATUS,
+        member
     }
 }
 
@@ -67,6 +75,20 @@ export const getMembersByGroupThunk = (groupId) => async (dispatch) => {
     }
 }
 
+export const changeMemberStatusThunk = (groupId, member) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}/members/${member.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          memberId: member.memberId,
+          status: member.Membership.status
+        }),
+
+    })
+}
+
 
 // ------------------------------------ REDUCER ------------------------------------
 const membershipReducer = (state = {}, action) => {
@@ -89,10 +111,10 @@ const membershipReducer = (state = {}, action) => {
             return {
             ...updatedMembers
             };
-
-            // newState = {...state}
-            // action.members.Members.forEach(member => newState[member.id] = member)
-            // return newState
+        case CHANGE_MEMBER_STATUS:
+            newState = {...state}
+            newState[action.member.id] = action.member
+            return newState
         default:
             return state
     }

@@ -793,17 +793,17 @@ router.post('/:groupId/membership', requireAuth, async (req, res, next) => {
 
 
 // CHANGE THE STATUS OF A MEMBERSHIP FOR A GROUP SPECIFIED BY ID
-router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
+router.put('/:groupId/members/:memberId', requireAuth, async (req, res, next) => {
 
   const { memberId, status } = req.body
 
-  if (status === 'pending') {
-    let newErr = new Error()
-    newErr.message = "Cannot change a membership status to pending"
-    newErr.status = 400;
+//   if (status === 'pending') {
+//     let newErr = new Error()
+//     newErr.message = "Cannot change a membership status to pending"
+//     newErr.status = 400;
 
-    next(newErr);
-  }
+//     next(newErr);
+//   }
 
   const user = await User.findByPk(memberId)
 
@@ -857,7 +857,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
     }
   })
 
-  if (group.organizerId === req.user.id && status === 'co-host') {
+  if (group.organizerId === req.user.id && status === 'member') {
     member.status = 'co-host'
     await member.save()
     member = member.toJSON()
@@ -866,7 +866,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
 
     res.status(200).json(member)
   }
-  else if ((isCoHostorOrganizer || group.organizerId === req.user.id) && status === 'member') {
+  else if ((isCoHostorOrganizer || group.organizerId === req.user.id) && status === 'pending') {
     member.status = 'member'
     await member.save()
     member = member.toJSON()

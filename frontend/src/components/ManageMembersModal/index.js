@@ -1,13 +1,36 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { useHistory } from "react-router-dom";
-
+import { changeMemberStatusThunk, getMembersByGroupThunk } from "../../store/memberships";
 import styles from './ManageMembersModal.module.css'
 
-function ManageMembersModal({membershipsArr}) {
+function ManageMembersModal({groupId}) {
     const dispatch = useDispatch();
     const { closeModal } = useModal();
+
+    const [statusUpdated, setStatusUpdated] = useState(false)
+
+    useEffect(() => {
+        dispatch(getMembersByGroupThunk(groupId))
+        setStatusUpdated(false)
+      }, [dispatch, groupId, statusUpdated])
+
+    const memberships = useSelector(state => state.memberships)
+    const membershipsArr = Object.values(memberships)
+    console.log('memberships inside modal ------>', memberships)
+    console.log('membershipsArr inside modal ------>', membershipsArr)
+
+    const handleMemberStatus = (groupId, member) => {
+        if (member.Membership.status === 'co-host') {
+            alert('Group can only have one organizer')
+        } else if (member.Membership.status === 'organizer') {
+            alert("You are already this group's organizer")
+        } else {
+            dispatch(changeMemberStatusThunk(groupId, member))
+            setStatusUpdated(true)
+        }
+    }
 
     const membershipList = membershipsArr.map(member => (
         <div key={member.id} className={styles['member-container']}>
@@ -20,10 +43,9 @@ function ManageMembersModal({membershipsArr}) {
                 </div>
                 <div className={styles['edit-membership-button-container']}>
                     {(member.Membership.status === 'pending' || member.Membership.status === 'member') &&
-                    <button className={styles['edit-membership-button']}>+</button>
+                    <button onClick={() => handleMemberStatus(groupId, member)} className={styles['edit-membership-button']}>+</button>
                     }
                 </div>
-
             </div>
         </div>
     ))
@@ -32,9 +54,7 @@ function ManageMembersModal({membershipsArr}) {
         <div className={styles['modal-container']}>
             {membershipList}
         </div>
-
     )
-
 }
 
 export default ManageMembersModal
