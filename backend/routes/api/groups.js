@@ -889,6 +889,8 @@ router.put('/:groupId/members/:memberId', requireAuth, async (req, res, next) =>
 router.delete('/:groupId/membership/:memberId', requireAuth, async (req, res, next) => {
 
 //   const { memberId } = req.body
+let finalObj = {};
+let memberArr = [];
 
   let user = await User.findByPk(req.params.memberId)
   user = user.toJSON()
@@ -934,7 +936,7 @@ router.delete('/:groupId/membership/:memberId', requireAuth, async (req, res, ne
 
   if (user.id === req.user.id || group.organizerId === req.user.id) {
     await member.destroy()
-    res.status(200).json(deletedMembership)
+    // res.status(200).json(deletedMembership)
   }
   else {
     let newErr = new Error()
@@ -943,6 +945,28 @@ router.delete('/:groupId/membership/:memberId', requireAuth, async (req, res, ne
 
     next(newErr);
   }
+
+  let members = await User.findAll({
+      include: {
+        model: Membership,
+        where: {
+          groupId: req.params.groupId,
+
+        }
+      }
+    })
+
+    for (let i = 0; i < members.length; i++) {
+      let currMember = members[i]
+      currMember = currMember.toJSON()
+      currMember.Membership = currMember.Memberships[0]
+      delete currMember.Memberships
+      currMember.memberId = currMember.id
+      memberArr.push(currMember)
+    }
+
+    finalObj.Members = memberArr
+    res.status(200).json(finalObj)
 })
 
 
