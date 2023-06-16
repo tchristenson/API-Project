@@ -32,6 +32,7 @@ import "./Events.css"
 
 function Events() {
   const dispatch = useDispatch()
+  const [query, setQuery] = useState('')
 
   const events = useSelector(state => state.events)
   const eventsArr = Object.values(events)
@@ -39,6 +40,20 @@ function Events() {
   useEffect(() => {
     dispatch(getAllEventsThunk())
   }, [dispatch])
+
+  const filteredEvents = eventsArr.filter(event => {
+    if (query === '') {
+        return event;
+    } else if (event.name.toLowerCase().includes(query.toLowerCase())) {
+        return event
+    } else if (event.Group.name.toLowerCase().includes(query.toLowerCase())) {
+        return event
+    } else if (event.Group.city.toLowerCase().includes(query.toLowerCase())) {
+        return event
+    } else if (event.Group.state.toLowerCase().includes(query.toLowerCase())) {
+        return event
+    }
+  })
 
     // console.log('events inside All Events', events)
     console.log('eventsArr inside of All Events', eventsArr)
@@ -52,7 +67,7 @@ function Events() {
     const currentDate = new Date()
 
 // I was mapping over eventsArr in the original approach
-  const eventList = eventsArr.filter(event =>
+  const eventList = filteredEvents.filter(event =>
     new Date(event.startDate).getTime() > currentDate.getTime())
     .sort((event1, event2) => new Date(event1.startDate).getTime() - new Date(event2.startDate).getTime())
     .map(event => (
@@ -79,7 +94,7 @@ function Events() {
 
   // console.log('eventList', eventList)
 
-  const pastEventList = eventsArr.filter(event =>
+  const pastEventList = filteredEvents.filter(event =>
     new Date(event.startDate).getTime() < currentDate.getTime())
     .sort((event1, event2) => new Date(event2.startDate).getTime() - new Date(event1.startDate).getTime())
     .map(event => (
@@ -114,6 +129,15 @@ function Events() {
       </div>
       <div className="subheading">
         <h5>Events in Meetup</h5>
+        <div className='search-bar-container'>
+            <input
+                className='search-bar'
+                value={query}
+                onChange={e => setQuery(e.target.value)}
+                type='search'
+                placeholder="Search"
+            />
+        </div>
       </div>
       <div className="full-event-list">
         <>
