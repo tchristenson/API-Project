@@ -692,7 +692,7 @@ router.get('/:groupId/members', async (req, res, next) => {
       currMember = currMember.toJSON()
       currMember.Membership = currMember.Memberships[0]
       delete currMember.Memberships
-      currMember.memberId = req.user.id
+      currMember.memberId = currMember.id
       memberArr.push(currMember)
     }
 
@@ -729,7 +729,7 @@ router.get('/:groupId/members', async (req, res, next) => {
       currMember = currMember.toJSON()
       currMember.Membership = currMember.Memberships[0]
       delete currMember.Memberships
-      currMember.memberId = req.user.id
+      currMember.memberId = currMember.id
       memberArr.push(currMember)
     }
 
