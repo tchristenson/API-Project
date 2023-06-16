@@ -914,7 +914,6 @@ router.delete('/:groupId/membership/:memberId', requireAuth, async (req, res, ne
   }
 
   let member = await Membership.findOne({
-    attributes: ['id', 'groupId', 'status'],
     where: {
       groupId: req.params.groupId,
       userId: req.params.memberId
@@ -930,11 +929,12 @@ router.delete('/:groupId/membership/:memberId', requireAuth, async (req, res, ne
   }
   // console.log(member.toJSON());
 
-  const deletedMembership = member
+  const deletedMembership = member.toJSON()
+  console.log('deletedMembership ========>>>>>>>>', deletedMembership)
 
   if (user.id === req.user.id || group.organizerId === req.user.id) {
     await member.destroy()
-    res.status(200).json(deletedMembership.toJSON())
+    res.status(200).json(deletedMembership)
   }
   else {
     let newErr = new Error()
