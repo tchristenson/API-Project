@@ -52,7 +52,11 @@ function ManageMembersModal({groupId}) {
 
     return (
         <div className={styles['modal-container']}>
-            {membershipList}
+            {membershipList.length > 1 ? (
+                membershipList
+            ) : (
+                <div className={styles['no-members']}>No current members</div>
+            )}
         </div>
     )
 }
