@@ -2,6 +2,7 @@
 const express = require('express');
 const { Op } = require('sequelize');
 const bcrypt = require('bcryptjs');
+const {storage, singleMulterUpload, singlePublicFileUpload} = require('../../awsS3')
 
 const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
 const { Attendance, EventImage, Event, User, Group, Membership, GroupImage, Venue } = require('../../db/models');
@@ -333,9 +334,12 @@ router.delete('/:eventId', requireAuth, async (req, res, next) => {
 
 
 // ADD AN IMAGE TO AN EVENT BASED ON THE EVENT'S ID
-router.post('/:eventId/images', requireAuth, async (req, res, next) => {
+router.post('/:eventId/images', singleMulterUpload('url'), requireAuth, async (req, res, next) => {
 
-  const { url, preview } = req.body
+  const { preview } = req.body
+  console.log('checking line 340 inside backend route')
+  const eventImageUrl = await singlePublicFileUpload(req.file);
+  console.log('eventImageUrl ------>', eventImageUrl)
 
   const event = await Event.findByPk(req.params.eventId);
 
@@ -358,8 +362,8 @@ router.post('/:eventId/images', requireAuth, async (req, res, next) => {
   if (isAttendee) {
     let newImg = await EventImage.create({
       eventId: req.params.eventId,
-      url: url,
-      preview: preview
+      url: eventImageUrl,
+      preview: true // hardcoded
     })
     // console.log(newImg)
 
