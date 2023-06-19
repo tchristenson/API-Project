@@ -379,6 +379,7 @@ router.delete('/:groupId', requireAuth, async (req, res, next) => {
 router.post('/:groupId/images', singleMulterUpload('url'), requireAuth, async (req, res, next) => {
 
     console.log('Checking line 381 inside backend route')
+    console.log('req.body', req.body)
 
     const { preview } = req.body
     const groupImageUrl = await singlePublicFileUpload(req.file);
@@ -400,7 +401,7 @@ router.post('/:groupId/images', singleMulterUpload('url'), requireAuth, async (r
       let newImg = await GroupImage.create({
         groupId: req.params.groupId,
         url: groupImageUrl,
-        preview: preview
+        preview: true // hardcoded
       })
       newImg = newImg.toJSON()
       delete newImg.createdAt
