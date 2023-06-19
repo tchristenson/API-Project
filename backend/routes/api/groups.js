@@ -2,6 +2,7 @@
 const express = require('express');
 const { Op } = require('sequelize');
 const bcrypt = require('bcryptjs');
+const {storage, singleMulterUpload, singlePublicFileUpload} = require('../../awsS3')
 
 const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
 const { Attendance, EventImage, Event, User, Group, Membership, GroupImage, Venue } = require('../../db/models');
@@ -375,9 +376,14 @@ router.delete('/:groupId', requireAuth, async (req, res, next) => {
 })
 
 // ADD AN IMAGE TO A GROUP BASED ON THE GROUP'S ID
-router.post('/:groupId/images', requireAuth, async (req, res, next) => {
+router.post('/:groupId/images', singleMulterUpload('url'), requireAuth, async (req, res, next) => {
 
-    const { url, preview } = req.body
+    console.log('Checking line 381 inside backend route')
+
+    const { preview } = req.body
+    const groupImageUrl = await singlePublicFileUpload(req.file);
+
+    console.log('groupImageUrl inside backend route -------->', groupImageUrl)
 
     let group = await Group.findByPk(req.params.groupId)
 
@@ -393,13 +399,15 @@ router.post('/:groupId/images', requireAuth, async (req, res, next) => {
 
       let newImg = await GroupImage.create({
         groupId: req.params.groupId,
-        url: url,
+        url: groupImageUrl,
         preview: preview
       })
       newImg = newImg.toJSON()
       delete newImg.createdAt
       delete newImg.updatedAt
       delete newImg.groupId
+
+      console.log('newImg inside backend route -------->', newImg)
 
       res.status(200).json(newImg);
     }
