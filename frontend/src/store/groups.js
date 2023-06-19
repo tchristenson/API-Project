@@ -90,20 +90,23 @@ export const makeNewGroupThunk = (group) => async (dispatch) => {
     }),
   });
   if (response.ok) {
-    // console.log('response inside of makeNewGroupThunk', response)
+
     const newGroup = await response.json();
-    // console.log('group inside of makeNewGroupThunk', group)
+    const formData = new FormData();
+    formData.append('url', group.imageUrl)
+
+    for (let key of formData.entries()) {
+    console.log('formData inside of the thunk', key[0] + '----->' + key[1]);
+    }
 
     const imageResponse = await csrfFetch(`/api/groups/${newGroup.id}/images`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
-      body: JSON.stringify({
-        url: group.imageUrl,
-        preview: true
-      }),
+      body: formData,
     })
+    console.log('Checking line 109 inside thunk')
     if (imageResponse.ok) {
       // history.push(`/groups/${newGroup.id}`)
       dispatch(makeNewGroupAction(newGroup));
@@ -133,9 +136,28 @@ export const editGroupThunk = (editedGroup) => async (dispatch) => {
   if (response.ok) {
     // console.log('response inside of editGroupThunk', response)
     const group = await response.json();
-    console.log('response.json inside of editGroupThunk', group)
+    const formData = new FormData();
+    formData.append('url', editedGroup.imageUrl)
+
+    for (let key of formData.entries()) {
+        console.log('formData inside of the thunk', key[0] + '----->' + key[1]);
+        }
+
+    const imageResponse = await csrfFetch(`/api/groups/${group.id}/images`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        body: formData,
+      })
+    // console.log('response.json inside of editGroupThunk', group)
     // history.push(`/groups/${group.id}`)
-    dispatch(editGroupAction(group));
+    if (imageResponse.ok) {
+        // history.push(`/groups/${newGroup.id}`)
+
+        dispatch(editGroupAction(group));
+        return group
+      }
     return group
   }
 }

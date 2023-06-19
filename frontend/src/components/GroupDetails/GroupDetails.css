@@ -36,6 +36,12 @@
   padding-right: 25px;
 }
 
+.event-image-in-group-detail img {
+    object-fit: cover;
+    width: 300px;
+    height: 300px
+  }
+
 .group-buttons {
   display: flex;
   gap: 10px;
@@ -86,14 +92,6 @@
   flex-direction: column;
 }
 
-/* .gray-wrapper {
-  background-color: lightgray;
-  position: relative;
-  left: 0;
-  top: 0;
-  width: 100%;
-} */
-
 .group-info-in-group-detail {
   display: flex;
   flex-direction: column;
@@ -109,6 +107,12 @@
 .group-image {
   padding-right: 25px;
 }
+
+.group-image img {
+    object-fit: cover;
+    width: 300px;
+    height: 300px
+  }
 
 .group-organizer {
   color: gray;

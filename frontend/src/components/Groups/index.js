@@ -16,6 +16,7 @@ function Groups() {
   if (!groups) return null
 
   const groupsArr = Object.values(groups)
+  console.log('groupsArr', groupsArr)
 
   const groupList = groupsArr.filter(group => {
     if (query === '') {

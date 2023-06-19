@@ -77,17 +77,19 @@ export const makeNewEventThunk = (payload) => async (dispatch) => {
   });
   if (response.ok) {
     const newEvent = await response.json()
-    console.log('newEvent inside newEvent thunk', newEvent)
+    const formData = new FormData();
+    formData.append('url', payload.url)
+
+    for (let key of formData.entries()) {
+        console.log('formData inside of the thunk', key[0] + '----->' + key[1]);
+        }
 
     const imageResponse = await csrfFetch(`/api/events/${newEvent.id}/images`,  {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
-      body: JSON.stringify({
-        url: payload.url,
-        preview: true
-      }),
+      body: formData,
     })
     if (imageResponse.ok) {
       dispatch(makeNewEventAction(newEvent))

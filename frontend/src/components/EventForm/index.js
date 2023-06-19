@@ -32,7 +32,8 @@ function EventForm({event, group, formType}) {
       if (price < 0) newErrors['price'] = 'Price is required'
       if (!startDate) newErrors['startDate'] = 'Event start is required'
       if (!endDate) newErrors['endDate'] = 'Event end is required'
-      if (!['png', 'jpg', 'jpeg'].includes(fileTypeCheck(url))) newErrors['url'] = 'Image URL must end in .png, .jpg, or .jpeg'
+      if (!url) newErrors['url'] = 'Event image is required'
+    //   if (!['png', 'jpg', 'jpeg'].includes(fileTypeCheck(url))) newErrors['url'] = 'Image URL must end in .png, .jpg, or .jpeg'
       if (description.length < 30) newErrors['description'] = 'Description must be at least 30 characters long'
       // console.log('newErrors', newErrors)
       // const startCheck = new Date(startDate).getTime()
@@ -153,7 +154,7 @@ function EventForm({event, group, formType}) {
                 value={startDate}
                 onChange={e => setStartDate(e.target.value)}
               />
-            <i id="font-awesome-calendar-in-event-form" class="fa-solid fa-calendar-days"></i>
+            <i id="font-awesome-calendar-in-event-form" className="fa-solid fa-calendar-days"></i>
           </div>
           {hasSubmitted && errors.startDate && (<p className='errors'>{errors.startDate}</p>)}
 
@@ -167,20 +168,21 @@ function EventForm({event, group, formType}) {
                 value={endDate}
                 onChange={e => setEndDate(e.target.value)}
               />
-            <i id="font-awesome-calendar-in-event-form" class="fa-solid fa-calendar-days"></i>
+            <i id="font-awesome-calendar-in-event-form" className="fa-solid fa-calendar-days"></i>
           </div>
           {hasSubmitted && errors.endDate && (<p className='errors'>{errors.endDate}</p>)}
         </div>
 
         <div className="url-wrapper-in-event-form">
-          <h4>Please add an image url for your event below</h4>
+          <h4>Please add an image file for your event below</h4>
           <input
-              type="text"
+              type="file"
               className='user-input-on-event-form'
               required={true}
-              placeholder="Image URL"
-              value={url}
-              onChange={e => setUrl(e.target.value)}
+              accept="image/*"
+            //   placeholder="Image URL"
+            //   value={url}
+              onChange={e => setUrl(e.target.files[0])}
             />
             {hasSubmitted && errors.url && (<p className='errors'>{errors.url}</p>)}
         </div>

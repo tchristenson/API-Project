@@ -27,6 +27,7 @@ function GroupDetails() {
 
   console.log('currUser.id', currUser.id)
 
+  console.log('group ------>', group)
   console.log('memberships ------>', memberships)
   const membershipsArr = Object.values(memberships)
   console.log('membershipsArr ------>', membershipsArr)
@@ -48,8 +49,7 @@ function GroupDetails() {
         <div className="event-container">
             <div className="image-and-details">
               <div className="event-image-in-group-detail" key={event.id}>
-                {console.log('event.EventImages[0].url', event.EventImages[0].url)}
-                <img src={event.EventImages[0].url} alt="event image"/>
+                <img src={event?.EventImages[0]?.url} alt="event image"/>
                 {/* {event.EventImages.length && (<img src={event.EventImages[0].url} alt="event image"/>)} */}
 
               </div>
@@ -111,7 +111,7 @@ function GroupDetails() {
       <div className="group-and-image-wrapper">
         {group.GroupImages.length ? (
           <div className="group-image">
-            <img src={group.GroupImages[0].url} alt="Group Image" />
+            <img src={(group.GroupImages[group.GroupImages.length - 1]).url} alt="Group Image" />
           </div>
           ) : (
           <div className="group-image">
