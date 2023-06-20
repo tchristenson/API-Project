@@ -26,16 +26,16 @@ function UserProfilePage() {
 
     if (!sessionUser) return null
 
-    const organizedGroups = sessionUserGroupsArr.filter(group => {
-        return group.Memberships.some(membership => membership.status === 'organizer' && membership.userId === sessionUser.id)
+    const organizedGroups = sessionUserGroupsArr?.filter(group => {
+        return group.Memberships && group.Memberships.some(membership => membership.status === 'organizer' && membership.userId === sessionUser.id)
     })
 
-    const memberGroups = sessionUserGroupsArr.filter(group => {
-        return group.Memberships.some(membership => membership.status === 'member' && membership.userId === sessionUser.id || membership.status === 'co-host' && membership.userId === sessionUser.id)
+    const memberGroups = sessionUserGroupsArr?.filter(group => {
+        return group.Memberships && group.Memberships.some(membership => membership.status === 'member' && membership.userId === sessionUser.id || membership.status === 'co-host' && membership.userId === sessionUser.id)
     })
 
-    const pendingGroups = sessionUserGroupsArr.filter(group => {
-        return group.Memberships.some(membership => membership.status === 'pending' && membership.userId === sessionUser.id)
+    const pendingGroups = sessionUserGroupsArr?.filter(group => {
+        return group.Memberships && group.Memberships.some(membership => membership.status === 'pending' && membership.userId === sessionUser.id)
     })
 
     console.log('organizedGroups', organizedGroups)
