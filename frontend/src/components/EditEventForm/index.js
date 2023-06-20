@@ -31,8 +31,8 @@ const EditEventForm = () => {
     // Object.keys(event).length > 1 && (
       <>
         <EventForm
-          group={group}
           event={event}
+          group={group}
           formType="Edit Event"
         />
       </>

@@ -3,6 +3,7 @@ import { useHistory} from "react-router"
 import { useDispatch } from "react-redux"
 import { fileTypeCheck } from "../GroupForm"
 import { makeNewEventThunk } from "../../store/events"
+import { editEventThunk } from "../../store/events"
 import './EventNew.css'
 
 function EventForm({event, group, formType}) {
@@ -20,7 +21,20 @@ function EventForm({event, group, formType}) {
   const [errors, setErrors] = useState({})
   const [hasSubmitted, setHasSubmitted] = useState(false)
 
-  // console.log('errors', errors)
+  console.log('event inside EventForm', event)
+  console.log('group inside groupForm', group)
+
+  useEffect(() => {
+    if (event) {
+      setName(event.name);
+      setType(event.type);
+      setIsPrivate(event.isPrivate);
+      setPrice(event.price);
+      setStartDate(event.startDate);
+      setEndDate(event.endDate);
+      setDescription(event.description);
+    }
+  }, [event]);
 
   useEffect(() => {
 
@@ -34,7 +48,7 @@ function EventForm({event, group, formType}) {
       if (!endDate) newErrors['endDate'] = 'Event end is required'
       if (!url) newErrors['url'] = 'Event image is required'
     //   if (!['png', 'jpg', 'jpeg'].includes(fileTypeCheck(url))) newErrors['url'] = 'Image URL must end in .png, .jpg, or .jpeg'
-      if (description.length < 30) newErrors['description'] = 'Description must be at least 30 characters long'
+      if (description?.length < 30) newErrors['description'] = 'Description must be at least 30 characters long'
       // console.log('newErrors', newErrors)
       // const startCheck = new Date(startDate).getTime()
       // console.log('startCheck', startCheck)
@@ -59,10 +73,9 @@ function EventForm({event, group, formType}) {
       endDate,
       url,
       description,
-      // id: event?.id,
+      id: event?.id,
       groupId: group.id
     }
-
 
     setName('')
     setType('')
@@ -86,6 +99,9 @@ function EventForm({event, group, formType}) {
     }
 
     if (formType === 'Edit Event') {
+        console.log('payload before dispatching thunk', payload)
+        const editedEvent = await dispatch(editEventThunk(payload))
+        history.push(`/events/${editedEvent.id}`)
       // this is where you'll dispatch the editEventThunk with the payload. Remember to await the dispatch
       // Then you'll probably have to history.push the user to that event page
     }

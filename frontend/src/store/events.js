@@ -4,6 +4,7 @@ import { csrfFetch } from "./csrf";
 const GET_ALL_EVENTS = 'events/getAllEvents'
 const GET_SINGLE_EVENT = 'events/getSingleEvent'
 const MAKE_NEW_EVENT = 'events/makeNewEvent'
+const EDIT_EVENT = 'events/editEvent'
 const DELETE_EVENT = 'events/deleteEvent'
 
 const getAllEventsAction = (payload) => {
@@ -24,6 +25,13 @@ const getSingleEventAction = (event) => {
 const makeNewEventAction = (event) => {
   return {
     type: MAKE_NEW_EVENT,
+    event
+  }
+}
+
+const editEventAction = (event) => {
+  return {
+    type: EDIT_EVENT,
     event
   }
 }
@@ -52,6 +60,7 @@ export const getSingleEventThunk = (eventId) => async (dispatch) => {
     const event = await response.json()
     console.log('event inside of getSingleEventThunk', event)
     dispatch(getSingleEventAction(event))
+    return event
   }
 }
 
@@ -98,6 +107,48 @@ export const makeNewEventThunk = (payload) => async (dispatch) => {
   }
 }
 
+export const editEventThunk = (editedEvent) => async (dispatch) => {
+    const response = await csrfFetch(`/api/events/${editedEvent.id}`, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            venueId: 1,
+            capacity: 10,
+            name: editedEvent.name,
+            type: editedEvent.type,
+            price: editedEvent.price,
+            description: editedEvent.description,
+            startDate: editedEvent.startDate,
+            endDate: editedEvent.endDate,
+            private: editedEvent.isPrivate,
+            groupId: editedEvent.groupId
+        }),
+    });
+    if (response.ok) {
+        const event = await response.json()
+        const formData = new FormData();
+        formData.append('url', editedEvent.url)
+
+        for (let key of formData.entries()) {
+            console.log('formData inside of the thunk', key[0] + '----->' + key[1]);
+        }
+
+        const imageResponse = await csrfFetch(`/api/events/${event.id}/images`,  {
+          method: "POST",
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          body: formData,
+        })
+        if (imageResponse.ok) {
+          dispatch(editEventAction(event))
+          return event
+        }
+    }
+}
+
 export const deleteEventThunk = (eventId) => async (dispatch) => {
   const response = await csrfFetch(`/api/events/${eventId}`, {
     method: "DELETE",
@@ -124,6 +175,10 @@ const eventReducer = (state = {}, action) => {
       newState[action.event.id] = action.event
       return newState
     case MAKE_NEW_EVENT:
+      newState = {...state}
+      newState[action.event.id] = action.event
+      return newState
+    case EDIT_EVENT:
       newState = {...state}
       newState[action.event.id] = action.event
       return newState

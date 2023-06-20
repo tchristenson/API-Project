@@ -37,7 +37,7 @@ function EventDetails() {
       <div className="whole-event-container">
         <div className="event-image">
           {event.previewImage}
-          <img src={event.EventImages[0].url} alt="Event Image" />
+          <img src={(event.EventImages[event.EventImages.length - 1]).url} alt="Event Image" />
         </div>
         <div className="group-event-info-container">
         <NavLink className="nav-link" to={`/groups/${event.Group.id}`}>
