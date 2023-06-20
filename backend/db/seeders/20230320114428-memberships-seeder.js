@@ -60,7 +60,52 @@ module.exports = {
         userId: 4,
         groupId: 3,
         status: 'organizer'
-      }
+      },
+      {
+        userId: 3,
+        groupId: 4,
+        status: 'organizer'
+      },
+      {
+        userId: 2,
+        groupId: 5,
+        status: 'organizer'
+      },
+      {
+        userId: 4,
+        groupId: 6,
+        status: 'organizer'
+      },
+      {
+        userId: 1,
+        groupId: 7,
+        status: 'organizer'
+      },
+      {
+        userId: 3,
+        groupId: 8,
+        status: 'organizer'
+      },
+      {
+        userId: 1,
+        groupId: 9,
+        status: 'organizer'
+      },
+      {
+        userId: 2,
+        groupId: 10,
+        status: 'organizer'
+      },
+      {
+        userId: 2,
+        groupId: 11,
+        status: 'organizer'
+      },
+      {
+        userId: 4,
+        groupId: 12,
+        status: 'organizer'
+      },
     ])
   },
 

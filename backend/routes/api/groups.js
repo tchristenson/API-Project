@@ -166,7 +166,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
     where: {
       [Op.or]: [
         {organizerId: userId},
-        {'$Memberships.userId$': userId,'$Memberships.status$': {[Op.not]: 'pending'} }
+        {'$Memberships.userId$': userId }
       ]
     },
     include: [
