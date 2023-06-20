@@ -172,7 +172,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
     include: [
       {
         model: Membership,
-        attributes: [],
+        // attributes: [],
         include: [
           {
             model: User,
