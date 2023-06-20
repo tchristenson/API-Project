@@ -25,7 +25,7 @@ function GroupDetails() {
   const group = useSelector(state => state.groups[groupId])
   const memberships = useSelector(state => state.memberships)
 
-  console.log('currUser.id', currUser.id)
+//   console.log('currUser.id', currUser.id)
 
   console.log('group ------>', group)
   console.log('memberships ------>', memberships)
