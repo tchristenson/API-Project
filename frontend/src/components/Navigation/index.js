@@ -56,7 +56,7 @@ function Navigation({ isLoaded }) {
 
           <h2>
             <NavLink className="masthead__home-button" exact to="/">
-              Meetup
+              Come Together Right Now
             </NavLink>
           </h2>
 
