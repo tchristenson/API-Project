@@ -13,62 +13,62 @@ module.exports = {
     await queryInterface.bulkInsert(options, [
       {
         groupId: 1,
-        url: 'https://d136swi17h0tnq.cloudfront.net/Upload/2017-05/8d0a71c2-9daa-4298-b6fe-e84a9a89dc44_lrg.jpg',
+        url: 'https://i.imgur.com/Pl1oUUJ.jpg',
         preview: true
       },
       {
         groupId: 2,
-        url: 'https://nationaltoday.com/wp-content/uploads/2021/12/National-Gourmet-Coffee-Day-300x300.jpg',
+        url: 'https://i.imgur.com/D1AWE1k.jpg',
         preview: true
       },
       {
         groupId: 3,
-        url: 'https://nationaltoday.com/wp-content/uploads/2020/12/New-Years-Eve-1-1-300x300.jpg',
+        url: 'https://i.imgur.com/yYUxxBi.jpg',
         preview: true
       },
       {
         groupId: 4,
-        url: 'https://bostonbioedit.com/wp-content/uploads/2018/01/pile-of-books-open_books-300x300.jpg',
+        url: 'https://i.imgur.com/5UJWx6v.jpg',
         preview: true
       },
       {
         groupId: 5,
-        url: 'https://res.cloudinary.com/simpleview/image/upload/v1623428221/clients/steamboat/Hiking_NWETZEL_Lifetime_MKTG_WEB_ONLY_d9e2053a-6490-4b42-8208-c0b89a10d228.jpg',
+        url: 'https://i.imgur.com/t07lC8q.jpg',
         preview: true
       },
       {
         groupId: 6,
-        url: 'https://stanfordinn.com/wp-content/uploads/2019/09/mendocino-resort-hotel-cooking-classes-1-300x300.jpg',
+        url: 'https://i.imgur.com/Aq7CXmn.jpg',
         preview: true
       },
       {
         groupId: 7,
-        url: 'https://m.media-amazon.com/images/S/aplus-media/vc/633ad629-db9b-4b56-b0fa-29507335b673.__CR0,0,300,300_PT0_SX300_V1___.jpg',
+        url: 'https://i.imgur.com/AB0nGq2.jpg',
         preview: true
       },
       {
         groupId: 8,
-        url: 'https://nationaltoday.com/wp-content/uploads/2022/06/International-Mother-Language-Day-300x300.jpg',
+        url: 'https://i.imgur.com/apcbyop.jpg',
         preview: true
       },
       {
         groupId: 9,
-        url: 'https://images.squarespace-cdn.com/content/v1/5653860ce4b0a1d6c2d24e2a/1533396475663-6CK82AXMSISCYPFSHE0K/dtree-Meditation-bundle.jpg',
+        url: 'https://i.imgur.com/YlKEAy2.jpg',
         preview: true
       },
       {
         groupId: 10,
-        url: 'https://continuinged.isl.in.gov/wp-content/uploads/2021/10/Gameschooling-300x300.png',
+        url: 'https://i.imgur.com/T48J60g.png',
         preview: true
       },
       {
         groupId: 11,
-        url: 'https://commercial-acoustics.com/wp-content/uploads/2017/01/theater-resize-300x300.jpg',
+        url: 'https://i.imgur.com/Bp74wQJ.jpg',
         preview: true
       },
       {
         groupId: 12,
-        url: 'https://nationaltoday.com/wp-content/uploads/2022/06/National-Photography-Day-300x300.jpg',
+        url: 'https://i.imgur.com/INrdGmF.jpg',
         preview: true
       }
     ])
