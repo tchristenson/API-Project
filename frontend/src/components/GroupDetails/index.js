@@ -140,10 +140,10 @@ const handleMembership = () => {
             {currUser && currUser.id !== organizerId && !membershipRequested.length && (
               <button className="join-group-button-in-group-details" onClick={handleMembership}>Join this group</button>
             )}
-            {currUser && currUser.id !== organizerId && membershipRequested.length && ((membershipRequested[0]).Membership).status === 'pending' && (
+            {currUser && currUser.id !== organizerId && membershipRequested.length && (membershipRequested[0]).Membership && ((membershipRequested[0]).Membership).status === 'pending' && (
               <button className="membership-requested-button-in-group-details" onClick={handleMembership}>Membership requested</button>
             )}
-            {currUser && currUser.id !== organizerId && membershipRequested.length && (((membershipRequested[0]).Membership).status === 'member' || ((membershipRequested[0]).Membership).status === 'co-host')  && (
+            {currUser && currUser.id !== organizerId && membershipRequested.length && (membershipRequested[0]).Membership && (((membershipRequested[0]).Membership).status === 'member' || ((membershipRequested[0]).Membership).status === 'co-host')  && (
               <button id="current-member-button-in-group-details" onClick={handleMembership}>Current Member</button>
             )}
             {currUser && currUser.id === organizerId && (
