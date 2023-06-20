@@ -27,3 +27,22 @@
 .profile-subheader {
     font-weight: normal;
 }
+
+.toggle-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 700px;
+    cursor: pointer;
+}
+
+.toggle-button-selected {
+    text-decoration: underline;
+    color: teal
+}
+
+.toggle-buttons-container {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}

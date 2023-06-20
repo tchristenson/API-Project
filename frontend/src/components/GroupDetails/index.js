@@ -27,6 +27,14 @@ function GroupDetails() {
 
 //   console.log('currUser.id', currUser.id)
 
+const handleMembership = () => {
+    if (!membershipRequested.length) {
+        dispatch(requestMembershipThunk(groupId))
+    } else {
+        dispatch(deleteMembershipThunk(groupId, currUser.id))
+    }
+  }
+
   console.log('group ------>', group)
   console.log('memberships ------>', memberships)
   const membershipsArr = Object.values(memberships)
@@ -34,6 +42,8 @@ function GroupDetails() {
 
   const membershipRequested = membershipsArr.filter(membership => membership.memberId === currUser.id)
   console.log('membershipRequested ------>', membershipRequested)
+  console.log('membershipRequested[0] ------>', membershipRequested[0])
+
 
   if (!group || !group.Organizer ) return null
 
@@ -95,13 +105,7 @@ function GroupDetails() {
 
   const organizerId = group.Organizer.id
 
-  const handleMembership = () => {
-    if (!membershipRequested.length) {
-        dispatch(requestMembershipThunk(groupId))
-    } else {
-        dispatch(deleteMembershipThunk(groupId, currUser.id))
-    }
-  }
+
 
   return (
     <div className="content">
@@ -136,8 +140,11 @@ function GroupDetails() {
             {currUser && currUser.id !== organizerId && !membershipRequested.length && (
               <button className="join-group-button-in-group-details" onClick={handleMembership}>Join this group</button>
             )}
-            {currUser && currUser.id !== organizerId && membershipRequested.length && (
+            {currUser && currUser.id !== organizerId && membershipRequested.length && ((membershipRequested[0]).Membership).status === 'pending' && (
               <button className="membership-requested-button-in-group-details" onClick={handleMembership}>Membership requested</button>
+            )}
+            {currUser && currUser.id !== organizerId && membershipRequested.length && (((membershipRequested[0]).Membership).status === 'member' || ((membershipRequested[0]).Membership).status === 'co-host')  && (
+              <button id="current-member-button-in-group-details" onClick={handleMembership}>Current Member</button>
             )}
             {currUser && currUser.id === organizerId && (
               <>
