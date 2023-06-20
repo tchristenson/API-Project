@@ -13,6 +13,8 @@ import EditGroupForm from "./components/GroupEditForm";
 import CreateEventForm from "./components/EventNewForm";
 import UserProfilePage from "./components/UserProfilePage";
 import EditEventForm from "./components/EditEventForm";
+import Footer from "./components/Footer"
+import AboutMe from "./components/AboutMe"
 
 function App() {
   const dispatch = useDispatch();
@@ -28,6 +30,9 @@ function App() {
         <Switch>
           <Route exact path='/'>
             <LandingPage />
+          </Route>
+          <Route exact path='/about'>
+            <AboutMe />
           </Route>
           <Route exact path='/groups'>
             <Groups />
@@ -60,6 +65,7 @@ function App() {
             Page Not Found
           </Route>
         </Switch>}
+        {/* <Footer isLoaded={isLoaded} /> */}
     </>
   );
 }

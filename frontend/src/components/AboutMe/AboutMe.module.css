@@ -1,0 +1,13 @@
+.about-link {
+    text-decoration: underline;
+    color: teal;
+}
+
+.about-link:visited {
+    text-decoration: underline;
+    color: teal;
+}
+
+.container {
+    color: teal;
+}

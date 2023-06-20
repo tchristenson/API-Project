@@ -16,6 +16,9 @@ function Navigation({ isLoaded }) {
   if (sessionUser) {
     sessionLinks = (
       <div className="sessionUser-nav-links">
+        <NavLink exact to="/about">
+          About
+        </NavLink>
         <NavLink exact to="/groups/new">
           Start a new group
         </NavLink>
@@ -28,6 +31,10 @@ function Navigation({ isLoaded }) {
   } else {
     sessionLinks = (
       <li className="login-signup-buttons">
+        <NavLink className={'about-button'} exact to="/about">
+          About
+        </NavLink>
+
         <OpenModalButton
           className="login-button"
           buttonText="Log In"
