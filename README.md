@@ -26,19 +26,28 @@ Come Together Right Now is a website clone, inspired by [Youtube](https://www.yo
 ### Features:
 
 #### Groups
-* [ ]
+* View all groups
+* Create groups
+* Update their group's details
+* Delete their group
 
 #### Events
-* [ ]
+* View all events
+* Create events
+* Update their event's details
+* Delete their events
 
 #### Memberships
-* [ ]
+* Request to join other group's as a member
+* Group organizer's can approve other members' requests to join
+* Group organizers can update other users' membership statuses
+* Group organizers or the users themselves can delete their membership to a group
 
 #### Search
-* [ ]
+* Search for groups and events
 
 #### AWS
-* [ ]
+* Upload image files for groups and events
 
 ### Splash Page
 ![Splash Page](/frontend/public/meetup-splash-page.gif)
