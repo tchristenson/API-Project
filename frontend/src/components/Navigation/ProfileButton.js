@@ -1,6 +1,6 @@
 // frontend/src/components/Navigation/ProfileButton.js
 import React, { useState, useEffect, useRef } from "react";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as sessionActions from '../../store/session';
 import { useHistory } from "react-router";
 import './Navigation.css';
@@ -13,6 +13,8 @@ function ProfileButton({ user }) {
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
   const history = useHistory()
+
+  const sessionUser = useSelector(state => state.session.user)
 
   const openMenu = () => {
     if (showMenu) return;
@@ -45,11 +47,11 @@ function ProfileButton({ user }) {
     <>
     <div className="dropdown">
       <button onClick={openMenu}>
-        <i id="font-awesome-profile-button" class="fa-sharp fa-solid fa-user"></i>
+        <i id="font-awesome-profile-button" className="fa-sharp fa-solid fa-user"></i>
         {showMenu ? (
-          <i id="font-awesome-angle-up-button" class="fa-solid fa-angle-up"></i>
+          <i id="font-awesome-angle-up-button" className="fa-solid fa-angle-up"></i>
         ) : (
-          <i id="font-awesome-angle-down-button" class="fa-solid fa-angle-down"></i>
+          <i id="font-awesome-angle-down-button" className="fa-solid fa-angle-down"></i>
         )}
 
       </button>
@@ -64,6 +66,11 @@ function ProfileButton({ user }) {
         <li id="events-navlink-in-profile-button">
           <NavLink exact to="/events">
             View events
+          </NavLink>
+        </li>
+        <li id="profile-navlink-in-profile-button">
+          <NavLink exact to={`/users/${sessionUser.id}`}>
+            Your profile
           </NavLink>
         </li>
         <li className="logout-in-profile-dropdown">

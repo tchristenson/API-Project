@@ -2,6 +2,7 @@
 const express = require('express');
 const { Op } = require('sequelize');
 const bcrypt = require('bcryptjs');
+const {storage, singleMulterUpload, singlePublicFileUpload} = require('../../awsS3')
 
 const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
 const { Attendance, EventImage, Event, User, Group, Membership, GroupImage, Venue } = require('../../db/models');
@@ -119,6 +120,8 @@ router.get('/', async (req, res, next) => {
   let groupsArr = [];
   let finalObj = {};
 
+  console.log('groups printing here ======>>>>>>>', groups)
+
   for (let i = 0; i < groups.length; i++) {
     let currGroup = groups[i].toJSON()
 
@@ -165,13 +168,13 @@ router.get('/current', requireAuth, async (req, res, next) => {
     where: {
       [Op.or]: [
         {organizerId: userId},
-        {'$Memberships.userId$': userId,'$Memberships.status$': {[Op.not]: 'pending'} }
+        {'$Memberships.userId$': userId }
       ]
     },
     include: [
       {
         model: Membership,
-        attributes: [],
+        // attributes: [],
         include: [
           {
             model: User,
@@ -375,9 +378,15 @@ router.delete('/:groupId', requireAuth, async (req, res, next) => {
 })
 
 // ADD AN IMAGE TO A GROUP BASED ON THE GROUP'S ID
-router.post('/:groupId/images', requireAuth, async (req, res, next) => {
+router.post('/:groupId/images', singleMulterUpload('url'), requireAuth, async (req, res, next) => {
 
-    const { url, preview } = req.body
+    console.log('Checking line 381 inside backend route')
+    console.log('req.body', req.body)
+
+    const { preview } = req.body
+    const groupImageUrl = await singlePublicFileUpload(req.file);
+
+    console.log('groupImageUrl inside backend route -------->', groupImageUrl)
 
     let group = await Group.findByPk(req.params.groupId)
 
@@ -393,13 +402,15 @@ router.post('/:groupId/images', requireAuth, async (req, res, next) => {
 
       let newImg = await GroupImage.create({
         groupId: req.params.groupId,
-        url: url,
-        preview: preview
+        url: groupImageUrl,
+        preview: true // hardcoded
       })
       newImg = newImg.toJSON()
       delete newImg.createdAt
       delete newImg.updatedAt
       delete newImg.groupId
+
+      console.log('newImg inside backend route -------->', newImg)
 
       res.status(200).json(newImg);
     }
@@ -677,10 +688,10 @@ router.get('/:groupId/members', async (req, res, next) => {
   if (isCoHostorOrganizer || group.organizerId === req.user.id) {
 
     let members = await User.findAll({
-      attributes: ['id', 'firstName', 'lastName'],
+    //   attributes: ['id', 'firstName', 'lastName'],
       include: {
         model: Membership,
-        attributes: ['status'],
+        // attributes: ['status'],
         where: {
           groupId: req.params.groupId
         }
@@ -692,6 +703,7 @@ router.get('/:groupId/members', async (req, res, next) => {
       currMember = currMember.toJSON()
       currMember.Membership = currMember.Memberships[0]
       delete currMember.Memberships
+      currMember.memberId = currMember.id
       memberArr.push(currMember)
     }
 
@@ -702,23 +714,23 @@ router.get('/:groupId/members', async (req, res, next) => {
   } else if (group) {
 
     let members = await User.findAll({
-      attributes: ['id', 'firstName', 'lastName'],
+    //   attributes: ['id', 'firstName', 'lastName'],
       include: {
         model: Membership,
-        attributes: ['status'],
+        // attributes: ['status'],
         where: {
           groupId: req.params.groupId,
-          [Op.or]: [
-            {
-              status: 'co-host'
-            },
-            {
-              status: 'member'
-            },
-            {
-              status: 'organizer'
-            }
-          ]
+        //   [Op.or]: [
+        //     {
+        //       status: 'co-host'
+        //     },
+        //     {
+        //       status: 'member'
+        //     },
+        //     {
+        //       status: 'organizer'
+        //     }
+        //   ]
         }
       }
     })
@@ -728,6 +740,7 @@ router.get('/:groupId/members', async (req, res, next) => {
       currMember = currMember.toJSON()
       currMember.Membership = currMember.Memberships[0]
       delete currMember.Memberships
+      currMember.memberId = currMember.id
       memberArr.push(currMember)
     }
 
@@ -767,10 +780,7 @@ router.post('/:groupId/membership', requireAuth, async (req, res, next) => {
     pendingMember = pendingMember.toJSON()
     delete pendingMember.updatedAt
     delete pendingMember.createdAt
-    delete pendingMember.id
-    delete pendingMember.groupId
     pendingMember.memberId = pendingMember.userId
-    delete pendingMember.userId
 
     res.status(200).json(pendingMember);
   }
@@ -794,17 +804,17 @@ router.post('/:groupId/membership', requireAuth, async (req, res, next) => {
 
 
 // CHANGE THE STATUS OF A MEMBERSHIP FOR A GROUP SPECIFIED BY ID
-router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
+router.put('/:groupId/members/:memberId', requireAuth, async (req, res, next) => {
 
   const { memberId, status } = req.body
 
-  if (status === 'pending') {
-    let newErr = new Error()
-    newErr.message = "Cannot change a membership status to pending"
-    newErr.status = 400;
+//   if (status === 'pending') {
+//     let newErr = new Error()
+//     newErr.message = "Cannot change a membership status to pending"
+//     newErr.status = 400;
 
-    next(newErr);
-  }
+//     next(newErr);
+//   }
 
   const user = await User.findByPk(memberId)
 
@@ -858,7 +868,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
     }
   })
 
-  if (group.organizerId === req.user.id && status === 'co-host') {
+  if (group.organizerId === req.user.id && status === 'member') {
     member.status = 'co-host'
     await member.save()
     member = member.toJSON()
@@ -867,7 +877,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
 
     res.status(200).json(member)
   }
-  else if ((isCoHostorOrganizer || group.organizerId === req.user.id) && status === 'member') {
+  else if ((isCoHostorOrganizer || group.organizerId === req.user.id) && status === 'pending') {
     member.status = 'member'
     await member.save()
     member = member.toJSON()
@@ -887,11 +897,16 @@ router.put('/:groupId/membership', requireAuth, async (req, res, next) => {
 
 
 // DELETE MEMBERSHIP TO A GROUP SPECIFIED BY ITS ID
-router.delete('/:groupId/membership', requireAuth, async (req, res, next) => {
+router.delete('/:groupId/membership/:memberId', requireAuth, async (req, res, next) => {
 
-  const { memberId } = req.body
+//   const { memberId } = req.body
+let finalObj = {};
+let memberArr = [];
 
-  const user = await User.findByPk(memberId)
+  let user = await User.findByPk(req.params.memberId)
+  user = user.toJSON()
+//   console.log('user inside route ---->', user)
+//   console.log('user.toJSON() inside route ---->', user.toJSON())
 
   if (!user) {
     let newErr = new Error()
@@ -912,10 +927,9 @@ router.delete('/:groupId/membership', requireAuth, async (req, res, next) => {
   }
 
   let member = await Membership.findOne({
-    attributes: ['id', 'groupId', 'status'],
     where: {
       groupId: req.params.groupId,
-      userId: memberId
+      userId: req.params.memberId
     }
   })
 
@@ -928,9 +942,12 @@ router.delete('/:groupId/membership', requireAuth, async (req, res, next) => {
   }
   // console.log(member.toJSON());
 
-  if (memberId === req.user.id || group.organizerId === req.user.id) {
+  const deletedMembership = member.toJSON()
+  console.log('deletedMembership ========>>>>>>>>', deletedMembership)
+
+  if (user.id === req.user.id || group.organizerId === req.user.id) {
     await member.destroy()
-    res.status(200).json({ message: 'Successfully deleted membership from group'})
+    // res.status(200).json(deletedMembership)
   }
   else {
     let newErr = new Error()
@@ -939,6 +956,28 @@ router.delete('/:groupId/membership', requireAuth, async (req, res, next) => {
 
     next(newErr);
   }
+
+  let members = await User.findAll({
+      include: {
+        model: Membership,
+        where: {
+          groupId: req.params.groupId,
+
+        }
+      }
+    })
+
+    for (let i = 0; i < members.length; i++) {
+      let currMember = members[i]
+      currMember = currMember.toJSON()
+      currMember.Membership = currMember.Memberships[0]
+      delete currMember.Memberships
+      currMember.memberId = currMember.id
+      memberArr.push(currMember)
+    }
+
+    finalObj.Members = memberArr
+    res.status(200).json(finalObj)
 })
 
 

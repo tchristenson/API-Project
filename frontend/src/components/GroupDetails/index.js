@@ -2,23 +2,48 @@ import "./GroupDetails.css"
 import { useParams, NavLink, Link } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { getSingleGroupThunk } from "../../store/groups"
-import { useEffect } from "react"
+import { requestMembershipThunk, deleteMembershipThunk, getMembersByGroupThunk } from "../../store/memberships"
+import { useEffect, useState } from "react"
 import DeleteGroupModal from "../GroupDeleteModal"
 import OpenModalButton from "../OpenModalButton";
 import { dateTimeFix } from "../Events"
+import ManageMembersModal from "../ManageMembersModal"
 
 function GroupDetails() {
   const dispatch = useDispatch()
   let {groupId} = useParams()
   groupId = parseInt(groupId)
-  // console.log('groupId inside GroupDetail component', (groupId))
+
+//   const [joinButton, setJoinButton] = useState(membershipRequested?.length === 0? true : false)
 
   useEffect(() => {
     dispatch(getSingleGroupThunk(groupId))
+    dispatch(getMembersByGroupThunk(groupId))
   }, [dispatch, groupId])
 
   const currUser = useSelector(state => state.session.user)
   const group = useSelector(state => state.groups[groupId])
+  const memberships = useSelector(state => state.memberships)
+
+//   console.log('currUser.id', currUser.id)
+
+const handleMembership = () => {
+    if (!membershipRequested.length) {
+        dispatch(requestMembershipThunk(groupId))
+    } else {
+        dispatch(deleteMembershipThunk(groupId, currUser.id))
+    }
+  }
+
+  console.log('group ------>', group)
+  console.log('memberships ------>', memberships)
+  const membershipsArr = Object.values(memberships)
+  console.log('membershipsArr ------>', membershipsArr)
+
+  const membershipRequested = membershipsArr.filter(membership => membership.memberId === currUser.id)
+  console.log('membershipRequested ------>', membershipRequested)
+  console.log('membershipRequested[0] ------>', membershipRequested[0])
+
 
   if (!group || !group.Organizer ) return null
 
@@ -30,12 +55,11 @@ function GroupDetails() {
     new Date(event.startDate).getTime() > currentDate.getTime())
     .sort((event1, event2) => new Date(event1.startDate).getTime() - new Date(event2.startDate).getTime())
     .map(event => (
-      <NavLink to={`/events/${event.id}`}>
+      <NavLink key={event.id} to={`/events/${event.id}`}>
         <div className="event-container">
             <div className="image-and-details">
               <div className="event-image-in-group-detail" key={event.id}>
-                {console.log('event.EventImages[0].url', event.EventImages[0].url)}
-                <img src={event.EventImages[0].url} alt="event image"/>
+                <img src={event?.EventImages[0]?.url} alt="event image"/>
                 {/* {event.EventImages.length && (<img src={event.EventImages[0].url} alt="event image"/>)} */}
 
               </div>
@@ -58,7 +82,7 @@ function GroupDetails() {
     new Date(event.startDate).getTime() < currentDate.getTime())
     .sort((event1, event2) => new Date(event2.startDate).getTime() - new Date(event1.startDate).getTime())
     .map(event => (
-      <NavLink to={`/events/${event.id}`}>
+      <NavLink key={event.id} to={`/events/${event.id}`}>
         <div className="event-container">
             <div className="image-and-details">
               <div className="event-image-in-group-detail" key={event.id}>
@@ -79,18 +103,9 @@ function GroupDetails() {
       </NavLink>
     ));
 
-  // console.log('typeof groupId inside GroupDetail component', typeof (groupId))
-  // console.log('currUserId inside GroupDetail component', currUserId)
-  // console.log('typeof currUserId inside GroupDetail component', typeof currUserId)
-  // console.log('group inside of GroupDetail component', group)
   const organizerId = group.Organizer.id
-  // console.log('organizerId inside of GroupDetail component', organizerId)
 
-  // console.log('groupId', groupId)
-  // console.log('group.GroupImages[0].url printing here ------>', group.GroupImages[0].url)
-  function handleClick() {
-    alert('Feature Coming Soon...')
-  }
+
 
   return (
     <div className="content">
@@ -100,7 +115,7 @@ function GroupDetails() {
       <div className="group-and-image-wrapper">
         {group.GroupImages.length ? (
           <div className="group-image">
-            <img src={group.GroupImages[0].url} alt="Group Image" />
+            <img src={(group.GroupImages[group.GroupImages.length - 1]).url} alt="Group Image" />
           </div>
           ) : (
           <div className="group-image">
@@ -122,8 +137,14 @@ function GroupDetails() {
           </div>
 
           <div className="group-buttons">
-            {currUser && currUser.id !== organizerId && (
-              <button className="join-group-button-in-group-details" onClick={handleClick}>Join this group</button>
+            {currUser && currUser.id !== organizerId && !membershipRequested.length && (
+              <button className="join-group-button-in-group-details" onClick={handleMembership}>Join this group</button>
+            )}
+            {currUser && currUser.id !== organizerId && membershipRequested.length && (membershipRequested[0]).Membership && ((membershipRequested[0]).Membership).status === 'pending' && (
+              <button className="membership-requested-button-in-group-details" onClick={handleMembership}>Membership requested</button>
+            )}
+            {currUser && currUser.id !== organizerId && membershipRequested.length && (membershipRequested[0]).Membership && (((membershipRequested[0]).Membership).status === 'member' || ((membershipRequested[0]).Membership).status === 'co-host')  && (
+              <button id="current-member-button-in-group-details" onClick={handleMembership}>Current Member</button>
             )}
             {currUser && currUser.id === organizerId && (
               <>
@@ -132,14 +153,17 @@ function GroupDetails() {
                 </Link>
 
                 <Link to={`/groups/${group.id}/edit`}>
-                  <button className="organizer-buttons-in-group-details">Update</button>
+                  <button className="organizer-buttons-in-group-details">Update Group</button>
                 </Link>
-
-
                 <OpenModalButton
-                  buttonText="Delete"
+                  buttonText="Delete Group"
                   className="organizer-buttons-in-group-details"
                   modalComponent={<DeleteGroupModal groupId={groupId}/>}
+                />
+                <OpenModalButton
+                  buttonText="Manage Members"
+                  className="organizer-buttons-in-group-details"
+                  modalComponent={<ManageMembersModal groupId={groupId} membershipsArr={membershipsArr}/>}
                 />
               </>
             )}

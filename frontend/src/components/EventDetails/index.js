@@ -37,7 +37,7 @@ function EventDetails() {
       <div className="whole-event-container">
         <div className="event-image">
           {event.previewImage}
-          <img src={event.EventImages[0].url} alt="Event Image" />
+          <img src={(event.EventImages[event.EventImages.length - 1]).url} alt="Event Image" />
         </div>
         <div className="group-event-info-container">
         <NavLink className="nav-link" to={`/groups/${event.Group.id}`}>
@@ -55,7 +55,7 @@ function EventDetails() {
 
               <div className="clock-and-date-container">
                 <div className="clock-icon-event-details">
-                  <i class="fa-solid fa-clock"></i>
+                  <i className="fa-solid fa-clock"></i>
                 </div>
                 <div className="start-and-end-container">
                   <div className="start-container">
@@ -71,18 +71,20 @@ function EventDetails() {
                 </div>
               </div>
             <div className="event-price-container-event-details">
-              <i id="font-awesome-dollar-sign" class="fa-sharp fa-solid fa-dollar-sign"></i>
+              <i id="font-awesome-dollar-sign" className="fa-sharp fa-solid fa-dollar-sign"></i>
               <div className="event-price">{event.price === 0 ? 'FREE' : `$${event.price}`}</div>
             </div>
             <div className="event-type-buttons-container">
               <div className="event-type-container-event-details">
-                <i id="font-awesome-location-icon" class="fa-solid fa-location-dot"></i>
+                <i id="font-awesome-location-icon" className="fa-solid fa-location-dot"></i>
                 <div className="online-in-person-in-event-detail">{event.type}</div>
               </div>
               <div className="update-delete-buttons-on-event-detail">
                 {currUser && currUser.id === organizerId && (
                   <>
-                    <button>Update</button>
+                    <Link to={`/groups/${event.Group.id}/events/${eventId}/edit`}>
+                        <button>Update</button>
+                    </Link>
                     <OpenModalButton
                       buttonText="Delete"
                       modalComponent={<DeleteEventModal event={event} eventId={eventId}/>}

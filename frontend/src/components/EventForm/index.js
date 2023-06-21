@@ -3,6 +3,7 @@ import { useHistory} from "react-router"
 import { useDispatch } from "react-redux"
 import { fileTypeCheck } from "../GroupForm"
 import { makeNewEventThunk } from "../../store/events"
+import { editEventThunk } from "../../store/events"
 import './EventNew.css'
 
 function EventForm({event, group, formType}) {
@@ -20,7 +21,20 @@ function EventForm({event, group, formType}) {
   const [errors, setErrors] = useState({})
   const [hasSubmitted, setHasSubmitted] = useState(false)
 
-  // console.log('errors', errors)
+  console.log('event inside EventForm', event)
+  console.log('group inside groupForm', group)
+
+  useEffect(() => {
+    if (event) {
+      setName(event.name);
+      setType(event.type);
+      setIsPrivate(event.isPrivate);
+      setPrice(event.price);
+      setStartDate(event.startDate);
+      setEndDate(event.endDate);
+      setDescription(event.description);
+    }
+  }, [event]);
 
   useEffect(() => {
 
@@ -32,8 +46,9 @@ function EventForm({event, group, formType}) {
       if (price < 0) newErrors['price'] = 'Price is required'
       if (!startDate) newErrors['startDate'] = 'Event start is required'
       if (!endDate) newErrors['endDate'] = 'Event end is required'
-      if (!['png', 'jpg', 'jpeg'].includes(fileTypeCheck(url))) newErrors['url'] = 'Image URL must end in .png, .jpg, or .jpeg'
-      if (description.length < 30) newErrors['description'] = 'Description must be at least 30 characters long'
+      if (!url) newErrors['url'] = 'Event image is required'
+    //   if (!['png', 'jpg', 'jpeg'].includes(fileTypeCheck(url))) newErrors['url'] = 'Image URL must end in .png, .jpg, or .jpeg'
+      if (description?.length < 30) newErrors['description'] = 'Description must be at least 30 characters long'
       // console.log('newErrors', newErrors)
       // const startCheck = new Date(startDate).getTime()
       // console.log('startCheck', startCheck)
@@ -58,10 +73,9 @@ function EventForm({event, group, formType}) {
       endDate,
       url,
       description,
-      // id: event?.id,
+      id: event?.id,
       groupId: group.id
     }
-
 
     setName('')
     setType('')
@@ -85,6 +99,9 @@ function EventForm({event, group, formType}) {
     }
 
     if (formType === 'Edit Event') {
+        console.log('payload before dispatching thunk', payload)
+        const editedEvent = await dispatch(editEventThunk(payload))
+        history.push(`/events/${editedEvent.id}`)
       // this is where you'll dispatch the editEventThunk with the payload. Remember to await the dispatch
       // Then you'll probably have to history.push the user to that event page
     }
@@ -153,7 +170,7 @@ function EventForm({event, group, formType}) {
                 value={startDate}
                 onChange={e => setStartDate(e.target.value)}
               />
-            <i id="font-awesome-calendar-in-event-form" class="fa-solid fa-calendar-days"></i>
+            <i id="font-awesome-calendar-in-event-form" className="fa-solid fa-calendar-days"></i>
           </div>
           {hasSubmitted && errors.startDate && (<p className='errors'>{errors.startDate}</p>)}
 
@@ -167,20 +184,21 @@ function EventForm({event, group, formType}) {
                 value={endDate}
                 onChange={e => setEndDate(e.target.value)}
               />
-            <i id="font-awesome-calendar-in-event-form" class="fa-solid fa-calendar-days"></i>
+            <i id="font-awesome-calendar-in-event-form" className="fa-solid fa-calendar-days"></i>
           </div>
           {hasSubmitted && errors.endDate && (<p className='errors'>{errors.endDate}</p>)}
         </div>
 
         <div className="url-wrapper-in-event-form">
-          <h4>Please add an image url for your event below</h4>
+          <h4>Please add an image file for your event below</h4>
           <input
-              type="text"
+              type="file"
               className='user-input-on-event-form'
               required={true}
-              placeholder="Image URL"
-              value={url}
-              onChange={e => setUrl(e.target.value)}
+              accept="image/*"
+            //   placeholder="Image URL"
+            //   value={url}
+              onChange={e => setUrl(e.target.files[0])}
             />
             {hasSubmitted && errors.url && (<p className='errors'>{errors.url}</p>)}
         </div>

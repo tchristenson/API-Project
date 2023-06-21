@@ -11,6 +11,11 @@ import EventDetails from "./components/EventDetails";
 import CreateGroupForm from "./components/GroupNewForm";
 import EditGroupForm from "./components/GroupEditForm";
 import CreateEventForm from "./components/EventNewForm";
+import UserProfilePage from "./components/UserProfilePage";
+import EditEventForm from "./components/EditEventForm";
+import Footer from "./components/Footer"
+import AboutMe from "./components/AboutMe"
+import SearchResults from "./components/SearchResults";
 
 function App() {
   const dispatch = useDispatch();
@@ -27,6 +32,9 @@ function App() {
           <Route exact path='/'>
             <LandingPage />
           </Route>
+          <Route exact path='/about'>
+            <AboutMe />
+          </Route>
           <Route exact path='/groups'>
             <Groups />
           </Route>
@@ -39,6 +47,9 @@ function App() {
           <Route exact path='/groups/:groupId/edit'>
             <EditGroupForm />
           </Route>
+          <Route exact path='/groups/:groupId/events/:eventId/edit'>
+            <EditEventForm />
+          </Route>
           <Route exact path='/groups/:groupId'>
             <GroupDetails />
           </Route>
@@ -48,10 +59,17 @@ function App() {
           <Route exact path='/events/:eventId'>
             <EventDetails />
           </Route>
+          <Route exact path="/users/:userId">
+              <UserProfilePage />
+            </Route>
+          <Route exact path="/search">
+            <SearchResults />
+          </Route>
           <Route>
             Page Not Found
           </Route>
         </Switch>}
+        {/* <Footer isLoaded={isLoaded} /> */}
     </>
   );
 }

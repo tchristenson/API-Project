@@ -57,7 +57,8 @@ function GroupForm({ group, formType }) {
       if (description.length < 30) newErrors['description'] = 'Description must be at least 30 characters long'
       if (!groupType) newErrors['groupType'] = 'Group Type is required'
       if (isPrivate !== 'true' && isPrivate !== 'false') newErrors['isPrivate'] = 'Visibility type is required'
-      if (!['png', 'jpg', 'jpeg'].includes(fileTypeCheck(imageUrl))) newErrors['imageUrl'] = 'Image URL must end in .png, .jpg, or .jpeg'
+      if (!imageUrl) newErrors['imageUrl'] = 'Group image is required'
+    //   if (!['png', 'jpg', 'jpeg'].includes(fileTypeCheck(imageUrl))) newErrors['imageUrl'] = 'Image URL must end in .png, .jpg, or .jpeg'
       setErrors(newErrors);
 
   }, [location, groupName, description, groupType, isPrivate, imageUrl, hasSubmitted])
@@ -86,7 +87,6 @@ function GroupForm({ group, formType }) {
       }
 
       if (formType === 'Edit Group') {
-        delete payload.imageUrl
         const editedGroup = await dispatch(editGroupThunk(payload))
         history.push(`/groups/${editedGroup.id}`)
       }
@@ -197,15 +197,16 @@ function GroupForm({ group, formType }) {
           {hasSubmitted && errors.isPrivate && (<p className='errors'>{errors.isPrivate}</p>)}
 
           <p>
-            Please add an image url for your group below:
+            Please add an image file for your group below:
           </p>
           <input
-            type="text"
+            type="file"
             className='user-input-on-group-form'
             required={true}
-            placeholder="Image Url"
-            value={imageUrl}
-            onChange={e => setImageUrl(e.target.value)}
+            accept="image/*"
+            // placeholder="Image Url"
+            // value={imageUrl}
+            onChange={e => setImageUrl(e.target.files[0])}
           />
           {hasSubmitted && errors.imageUrl && (<p className='errors'>{errors.imageUrl}</p>)}
         </div>

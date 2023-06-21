@@ -84,6 +84,24 @@
   color: black
 }
 
+.search-bar {
+    background-color: transparent;
+    height: 30px;
+    width: 45%;
+    max-width: 100%;
+    border-radius: 30px;
+    border: 1px solid black;
+    padding: 5px 5px 5px 10px;
+}
+
+.search-bar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    margin-bottom: 15px;
+}
+
 .single-group {
   box-sizing: border-box;
   display: flex;

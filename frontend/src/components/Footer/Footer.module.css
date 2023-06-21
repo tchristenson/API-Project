@@ -1,0 +1,38 @@
+.footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: 0;
+    position: fixed;
+    width: 1550px;
+    background-color: rgb(0, 0, 62);
+    padding: 7px;
+    margin-top: 40px;
+    color: whitesmoke;
+  }
+
+  .container {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    align-items: center;
+    width: 100%;
+  }
+
+  .container li {
+    display: flex;
+    justify-content: center;
+  }
+
+  .name {
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  .link {
+    font-size: 14px;
+  }
+
+  .link:hover {
+    text-decoration: underline;
+  }
