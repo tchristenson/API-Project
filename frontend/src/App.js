@@ -15,6 +15,7 @@ import UserProfilePage from "./components/UserProfilePage";
 import EditEventForm from "./components/EditEventForm";
 import Footer from "./components/Footer"
 import AboutMe from "./components/AboutMe"
+import SearchResults from "./components/SearchResults";
 
 function App() {
   const dispatch = useDispatch();
@@ -61,6 +62,9 @@ function App() {
           <Route exact path="/users/:userId">
               <UserProfilePage />
             </Route>
+          <Route exact path="/search">
+            <SearchResults />
+          </Route>
           <Route>
             Page Not Found
           </Route>

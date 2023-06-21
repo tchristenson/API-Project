@@ -8,6 +8,7 @@ import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import "./Navigation.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Search from "../Search";
 
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
@@ -59,6 +60,8 @@ function Navigation({ isLoaded }) {
               Come Together Right Now
             </NavLink>
           </h2>
+
+          <Search />
 
           <div className="masthead__actions">
             {isLoaded && sessionLinks}

@@ -62,7 +62,7 @@ function Groups() {
       <div className="subheading">
         <h5>Groups in Meetup</h5>
       </div>
-        <div className='search-bar-container'>
+        {/* <div className='search-bar-container'>
             <input
                 className='search-bar'
                 value={query}
@@ -70,7 +70,7 @@ function Groups() {
                 type='search'
                 placeholder="Search"
             />
-        </div>
+        </div> */}
       <div className="full-group-list">
         {groupList}
       </div>

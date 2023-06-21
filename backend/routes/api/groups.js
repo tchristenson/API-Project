@@ -120,6 +120,8 @@ router.get('/', async (req, res, next) => {
   let groupsArr = [];
   let finalObj = {};
 
+  console.log('groups printing here ======>>>>>>>', groups)
+
   for (let i = 0; i < groups.length; i++) {
     let currGroup = groups[i].toJSON()
 

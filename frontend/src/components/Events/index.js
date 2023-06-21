@@ -129,7 +129,7 @@ function Events() {
       </div>
       <div className="subheading">
         <h5>Events in Meetup</h5>
-        <div className='search-bar-container'>
+        {/* <div className='search-bar-container'>
             <input
                 className='search-bar'
                 value={query}
@@ -137,7 +137,7 @@ function Events() {
                 type='search'
                 placeholder="Search"
             />
-        </div>
+        </div> */}
       </div>
       <div className="full-event-list">
         <>
