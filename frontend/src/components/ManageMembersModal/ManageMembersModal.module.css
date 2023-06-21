@@ -1,13 +1,27 @@
 .edit-membership-button {
     border: none;
     background-color: transparent;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
+    color: green
 }
 
 .edit-membership-button:hover {
     cursor: pointer;
-    background-color: lightblue
+    background-color: rgb(179, 235, 179)
+}
+
+.delete-membership-button {
+    border: none;
+    background-color: transparent;
+    font-size: 20px;
+    font-weight: bold;
+    color: red
+}
+
+.delete-membership-button:hover {
+    cursor: pointer;
+    background-color: rgb(232, 149, 149)
 }
 
 .member-container {
