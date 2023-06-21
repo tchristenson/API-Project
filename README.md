@@ -1,6 +1,6 @@
 ## <h1>Come Together Right Now</h1>
 
-Come Together Right Now is a website clone, inspired by [Youtube](https://www.youtube.com/). Come Together Right Now can be used to post videos, comment on videos, create playlists of your favorite videos, like videos, and subscribe to other users on the platform. Interested parties can sign up to post content at their leisure.
+Come Together Right Now is a website clone, inspired by [Meetup](https://www.meetup.com/). Come Together Right Now can be used to create groups, create events, join your favorite groups, and search for groups and events on the platform. Interested parties can sign up to post content at their leisure.
 
 **Live Site: [Come Together Right Now](https://meetup-api-iy6y.onrender.com)**
 
@@ -59,27 +59,29 @@ Come Together Right Now is a website clone, inspired by [Youtube](https://www.yo
 ### API Endpoints
 | HTTP Verbs | Endpoints | Action |
 | --- | --- | --- |
-| --- | --- | --- |
-| --- | --- | --- |
-| --- | --- | --- |
-| --- | --- | --- |
-| --- | --- | --- |
-| --- | --- | --- |
-| --- | --- | --- |
-| --- | --- | --- |
-| --- | --- | --- |
-| --- | --- | --- |
-| --- | --- | --- |
-| --- | --- | --- |
-| --- | --- | --- |
-| --- | --- | --- |
-| --- | --- | --- |
-| --- | --- | --- |
-| --- | --- | --- |
-| --- | --- | --- |
-| --- | --- | --- |
-| --- | --- | --- |
-| --- | --- | --- |
+| GET | /api/session | Returns the information about the current user that is logged in. |
+| POST | /api/session | Logs in a current user with valid credentials and returns the current user's information. |
+| POST | /api/users | Creates a new user, logs them in as the current user, and returns the current user's information. |
+| GET | /api/groups | Returns all the groups as objects inside a single array. |
+| GET | /api/groups/current | Returns all the groups joined or organized by the current user as objects inside a single array. |
+| GET | /api/groups/:groupId | Returns the details of a group specified by its id. |
+| POST | /api/groups | Creates and returns a new group. |
+| POST | /api/groups/:groupId/images | Create and return a new image for a group specified by id. |
+| PUT | /api/groups/:groupId | Updates and returns an existing group. |
+| DELETE | /api/groups/:groupId | Deletes an existing group. |
+| GET | /api/events | Returns all the events as objects inside a single array. |
+| GET | /api/groups/:groupId/events | Returns all the events of a group specified by its id |
+| GET | /api/events/:eventId | Returns the details of an event specified by its id. |
+| POST | /api/groups/:groupId/events | Creates and returns a new event for a group specified by its id |
+| POST | /api/events/:eventId/images | Create and return a new image for an event specified by id. |
+| PUT | /api/events/:eventId | Edit and returns an event specified by its id |
+| DELETE | /api/events/:eventId | Delete an event specified by its id |
+| GET | /api/groups/:groupId/members | Returns the members of a group specified by its id. |
+| POST | /api/groups/:groupId/membership | Request a new membership for a group specified by id. |
+| PUT | /api/groups/:groupId/members/:memberId | Change the status of a membership for a group specified by id. |
+| DELETE | /api/groups/:groupId/members/:memberId | Delete a membership to a group specified by id. |
+| DELETE | /api/group-images/:imageId | Delete an existing image for a Group. |
+| DELETE | /api/event-images/:imageId | Delete an existing image for an Event. |
 
 ### Technologies Used:
 * [JavaScript](https://devdocs.io/javascript/)
