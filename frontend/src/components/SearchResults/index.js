@@ -69,23 +69,21 @@ function SearchResults() {
     console.log('groups', groups)
     console.log('events', events)
 
-    const searchResultsList = searchResultsArr.map(result => (
-        // <NavLink key={result.id}>
-            <div className={styles['single-result']}>
-                {result.name}
-            </div>
-        // {/* </NavLink> */}
-    ))
-
-    console.log('searchResultsList', searchResultsList)
-
     return (
         <div>
             <h2>Your search results:</h2>
             <h3>Groups:</h3>
-            <div>{groupsList}</div>
+            <div>{groupsList.length ? (
+                groupsList
+            ) : (
+                <h4>No groups match your search</h4>
+            )}</div>
             <h3>Events:</h3>
-            <div>{eventsList}</div>
+            <div>{eventsList.length ? (
+                eventsList
+            ) : (
+                <h4>No events match your search</h4>
+            )}</div>
         </div>
     )
 }
