@@ -75,7 +75,7 @@ router.post('/', async (req, res, next) => {
           })
           currGroup.numMembers = count;
 
-          // console.log(currGroup)
+          console.log('currGroup inside for loop -------->>>>>>>>', currGroup)
           const groupImages = await GroupImage.findAll({
             where: {
               groupId: currGroup.id,
@@ -98,6 +98,7 @@ router.post('/', async (req, res, next) => {
 
     for (let i = 0; i < events.length; i++) {
         let currEvent = events[i].toJSON()
+        console.log('currEvent inside for loop -------->>>>>>>>', currEvent)
 
         const numAttending = await Attendance.count({
             where: {
