@@ -18,6 +18,12 @@ router.post('/', async (req, res, next) => {
 
     const groups = await Group.findAll({
         where: {
+            // [Op.or]: [
+            //     { name: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}},
+            //     { about: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}},
+            //     { city: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}},
+            //     { state: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}}
+            // ]
             [Op.or]: [
                 { name: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}},
                 { about: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}},
