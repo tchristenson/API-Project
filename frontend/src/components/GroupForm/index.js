@@ -201,7 +201,6 @@ function GroupForm({ group, formType }) {
           </p>
           <input
             type="file"
-            className='user-input-on-group-form'
             required={true}
             accept="image/*"
             // placeholder="Image Url"

@@ -193,7 +193,6 @@ function EventForm({event, group, formType}) {
           <h4>Please add an image file for your event below</h4>
           <input
               type="file"
-              className='user-input-on-event-form'
               required={true}
               accept="image/*"
             //   placeholder="Image URL"
