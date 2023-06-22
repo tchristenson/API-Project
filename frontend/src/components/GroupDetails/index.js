@@ -41,7 +41,7 @@ const handleMembership = () => {
   const membershipsArr = Object.values(memberships)
 //   console.log('membershipsArr ------>', membershipsArr)
 
-  const membershipRequested = membershipsArr.filter(membership => membership.memberId === currUser.id)
+  const membershipRequested = membershipsArr?.filter(membership => membership.memberId === currUser.id)
 //   console.log('membershipRequested ------>', membershipRequested)
 //   console.log('membershipRequested[0] ------>', membershipRequested[0])
 
