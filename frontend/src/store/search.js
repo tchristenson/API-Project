@@ -2,10 +2,18 @@ import {csrfFetch} from "./csrf"
 
 // ACTIONS
 const SEARCH_GROUPS_EVENTS = 'search/searchGroupsEvents'
+const CLEAR_SEARCH_RESULTS = 'search/clearSearchResults'
 
 const searchGroupsEventsAction = (payload) => {
     return {
         type: SEARCH_GROUPS_EVENTS,
+        payload
+    }
+}
+
+const clearSearchResultsAction = (payload) => {
+    return {
+        type: CLEAR_SEARCH_RESULTS,
         payload
     }
 }
@@ -30,6 +38,10 @@ export const searchGroupsEventsThunk = (query) => async (dispatch) => {
     }
 }
 
+export const clearSearchResultsThunk = () => async (dispatch) => {
+    dispatch(clearSearchResultsAction({}))
+}
+
 // REDUCER
 const searchReducer = (state = {}, action) => {
     let newState;
@@ -37,10 +49,16 @@ const searchReducer = (state = {}, action) => {
         case SEARCH_GROUPS_EVENTS:
             newState = {...state}
             let id = 1;
+            console.log('action.payload inside reducer', action.payload)
             action.payload.searchResults.forEach(item => {
               newState[id] = item;
               id += 1;
+              console.log('newState inside for loop --->', newState)
             });
+            return newState
+        case CLEAR_SEARCH_RESULTS:
+            newState = {...state}
+            newState = action.payload
             return newState
         default:
             return state

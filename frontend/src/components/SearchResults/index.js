@@ -20,8 +20,8 @@ function SearchResults() {
     })
 
     const groupsList = groups.map(group => (
-        <NavLink key={group.id} className="nav-link" to={`/groups/${group.id}`}>
-        <div className="single-group">
+        <NavLink className="nav-link" to={`/groups/${group.id}`}>
+        <div key={group.id} className="single-group">
           <div className="group-image">
             <img src={group.previewImage} alt="Group Image" />
           </div>
@@ -44,8 +44,8 @@ function SearchResults() {
     ))
 
     const eventsList = events.map(event => (
-        <NavLink key={event.id} className="nav-link" to={`/events/${event.id}`}>
-        <div className="single-event">
+        <NavLink className="nav-link" to={`/events/${event.id}`}>
+        <div key={event.id} className="single-event">
           <div className="image-event-wrapper">
             <div className="event-image">
              <img src={event.previewImage} alt="Group Image" />

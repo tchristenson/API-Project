@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect, useState } from "react"
 import styles from './Search.module.css'
-import { searchGroupsEventsThunk } from "../../store/search"
+import { searchGroupsEventsThunk, clearSearchResultsThunk } from "../../store/search"
 import { useHistory } from "react-router-dom";
 
 function Search() {
@@ -12,6 +12,7 @@ function Search() {
 
     const handleSearch = async (e) => {
         e.preventDefault()
+        await dispatch(clearSearchResultsThunk())
         await dispatch(searchGroupsEventsThunk(query))
         setQuery('')
         history.push('/search')

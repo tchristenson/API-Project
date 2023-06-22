@@ -18,18 +18,18 @@ router.post('/', async (req, res, next) => {
 
     const groups = await Group.findAll({
         where: {
-            // [Op.or]: [
-            //     { name: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}},
-            //     { about: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}},
-            //     { city: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}},
-            //     { state: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}}
-            // ]
             [Op.or]: [
                 { name: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}},
                 { about: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}},
                 { city: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}},
                 { state: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}}
             ]
+            // [Op.or]: [
+            //     { name: { [Op.substring]: (`${query.toLowerCase()}`)}},
+            //     { about: { [Op.substring]: (`${query.toLowerCase()}`)}},
+            //     { city: { [Op.substring]: (`${query.toLowerCase()}`)}},
+            //     { state: { [Op.substring]: (`${query.toLowerCase()}`)}}
+            // ]
         },
         include: {
             model: Event,
@@ -47,6 +47,10 @@ router.post('/', async (req, res, next) => {
                 { name: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}},
                 { description: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}}
             ]
+            // [Op.or]: [
+            //     { name: { [Op.substring]: (`${query.toLowerCase()}`)}},
+            //     { description: { [Op.substring]: (`${query.toLowerCase()}`)}}
+            // ]
         },
         include: [
             {
