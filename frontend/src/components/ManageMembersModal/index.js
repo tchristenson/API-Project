@@ -42,16 +42,16 @@ function ManageMembersModal({groupId}) {
             <div className={styles['member-name']}>
                 <h4>{member.firstName} {member.lastName}</h4>
             </div>
-            <div className={styles['status-button-container']}>
-                <div className={styles['member-status']}>
-                    <h4>{((member.Membership.status).charAt(0).toUpperCase()).concat((member.Membership.status).slice(1))}</h4>
-                </div>
+            <div className={styles['member-status']}>
+                <h4>{((member.Membership.status).charAt(0).toUpperCase()).concat((member.Membership.status).slice(1))}</h4>
+            </div>
+            <div className={styles['button-container']}>
                 <div className={styles['edit-membership-button-container']}>
                     {(member.Membership.status === 'pending' || member.Membership.status === 'member') &&
-                    <button onClick={() => handleMemberStatus(groupId, member)} className={styles['edit-membership-button']}>+</button>
+                    <button onClick={() => handleMemberStatus(groupId, member)} className={styles['edit-membership-button']}>Promote</button>
                     }
                     {(member.Membership.status === 'pending' || member.Membership.status === 'member' || member.Membership.status === 'co-host') &&
-                    <button onClick={() => handleDeleteMembership(groupId, member.id)} className={styles['delete-membership-button']}>-</button>
+                    <button onClick={() => handleDeleteMembership(groupId, member.id)} className={styles['delete-membership-button']}>Remove</button>
                     }
                 </div>
             </div>

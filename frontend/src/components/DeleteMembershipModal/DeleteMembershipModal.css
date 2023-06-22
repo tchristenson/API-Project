@@ -1,0 +1,45 @@
+.delete-container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 300px;
+    margin: 0 auto;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  .delete-container h2 {
+    margin-top: 0;
+  }
+
+  .delete-container h4 {
+    margin-bottom: 20px;
+  }
+
+  #delete-membership-button {
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    border: solid black 3px;
+    box-shadow: 2px 2px 2px black;
+    height: 45px;
+    margin-bottom: 10px;
+  }
+
+  #cancel-delete-membership-button {
+    background-color: gray;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    border: solid black 3px;
+    box-shadow: 2px 2px 2px black;
+    height: 45px;
+    margin-bottom: 10px;
+
+  }
