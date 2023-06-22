@@ -12,123 +12,180 @@ const router = express.Router();
 
 router.post('/', async (req, res, next) => {
 
+
     const { query } = req.body
     let searchResults = [];
     let finalObj = {};
 
-    const groups = await Group.findAll({
-        where: {
-            // [Op.or]: [
-            //     { name: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}},
-            //     { about: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}},
-            //     { city: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}},
-            //     { state: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}}
-            // ]
-            [Op.or]: [
-                { name: { [Op.substring]: (`${query.toLowerCase()}`)}},
-                { about: { [Op.substring]: (`${query.toLowerCase()}`)}},
-                { city: { [Op.substring]: (`${query.toLowerCase()}`)}},
-                { state: { [Op.substring]: (`${query.toLowerCase()}`)}}
-            ]
-        },
-        include: {
-            model: Event,
-            attributes: {
-              exclude: ['createdAt', 'updatedAt']
-            }
-          }
-    });
-
-    console.log('groups in backend route =====>>>>>', groups)
-
-    const events = await Event.findAll({
-        where: {
-            // [Op.or]: [
-            //     { name: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}},
-            //     { description: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}}
-            // ]
-            [Op.or]: [
-                { name: { [Op.substring]: (`${query.toLowerCase()}`)}},
-                { description: { [Op.substring]: (`${query.toLowerCase()}`)}}
-            ]
-        },
-        include: [
-            {
-              model: Group,
-              attributes: ['id', 'name', 'city', 'state']
-            }
-        ]
-    });
-
-    console.log('events in backend route =====>>>>>', events)
-
-    for (let i = 0; i < groups.length; i++) {
-        let currGroup = groups[i].toJSON()
-
-        let count = await Membership.count({
+    if (process.env.NODE_ENV === 'production') {
+        const groups = await Group.findAll({
             where: {
-              groupId: currGroup.id,
-              status: {
-                [Op.not]: 'pending'
+                [Op.or]: [
+                    { name: { [Op.iLike]: (`%${query.toLowerCase()}%`)}},
+                    { about: { [Op.iLike]: (`%${query.toLowerCase()}%`)}},
+                    { city: { [Op.iLike]: (`%${query.toLowerCase()}%`)}},
+                    { state: { [Op.iLike]: (`%${query.toLowerCase()}%`)}}
+                ]
+            },
+            include: {
+                model: Event,
+                attributes: {
+                exclude: ['createdAt', 'updatedAt']
+                }
+            }
+        });
+        console.log('groups in backend route =====>>>>>', groups)
+
+        const events = await Event.findAll({
+            where: {
+                [Op.or]: [
+                    { name: { [Op.iLike]: (`%${query.toLowerCase()}%`)}},
+                    { description: { [Op.iLike]: (`%${query.toLowerCase()}%`)}}
+                ]
+            },
+            include: [
+                {
+                  model: Group,
+                  attributes: ['id', 'name', 'city', 'state']
+                }
+            ]
+        });
+
+        console.log('events in backend route =====>>>>>', events)
+
+        for (let i = 0; i < groups.length; i++) {
+            let currGroup = groups[i].toJSON()
+
+              console.log('currGroup inside for loop -------->>>>>>>>', currGroup)
+              const groupImages = await GroupImage.findAll({
+                where: {
+                  groupId: currGroup.id,
+                  preview: true
+                }
+              })
+
+              if (groupImages.length) {
+                let groupImage = groupImages[0].toJSON()
+
+                  currGroup.previewImage = groupImage.url
+
+              } else {
+                currGroup.previewImage = 'no preview image available'
               }
-            }
-          })
-          currGroup.numMembers = count;
 
-          console.log('currGroup inside for loop -------->>>>>>>>', currGroup)
-          const groupImages = await GroupImage.findAll({
+            searchResults.push(currGroup)
+        }
+
+        for (let i = 0; i < events.length; i++) {
+            let currEvent = events[i].toJSON()
+            console.log('currEvent inside for loop -------->>>>>>>>', currEvent)
+
+              const eventImages = await EventImage.findAll({
+                where: {
+                  eventId: currEvent.id,
+                  preview: true
+                }
+              })
+
+              if (eventImages.length) {
+                let eventImage = eventImages[0].toJSON()
+                currEvent.previewImage = eventImage.url
+              } else {
+                currEvent.previewImage = 'no preview image available'
+              }
+
+            searchResults.push(currEvent)
+        }
+
+        finalObj.searchResults = searchResults
+        console.log('finalObj in backend route =====>>>>>', finalObj)
+        res.status(200).json(finalObj)
+
+      } else {
+          const groups = await Group.findAll({
             where: {
-              groupId: currGroup.id,
-              preview: true
+
+                [Op.or]: [
+                    { name: { [Op.substring]: (`${query.toLowerCase()}`)}},
+                    { about: { [Op.substring]: (`${query.toLowerCase()}`)}},
+                    { city: { [Op.substring]: (`${query.toLowerCase()}`)}},
+                    { state: { [Op.substring]: (`${query.toLowerCase()}`)}}
+                ]
+            },
+            include: {
+                model: Event,
+                attributes: {
+                exclude: ['createdAt', 'updatedAt']
+                }
             }
-          })
-          // console.log(groupImages)
-          if (groupImages.length) {
-            let groupImage = groupImages[0].toJSON()
-            // console.log(groupImage)
+        });
+        console.log('groups in backend route =====>>>>>', groups)
 
-              currGroup.previewImage = groupImage.url
-
-          } else {
-            currGroup.previewImage = 'no preview image available'
-          }
-
-        searchResults.push(currGroup)
-    }
-
-    for (let i = 0; i < events.length; i++) {
-        let currEvent = events[i].toJSON()
-        console.log('currEvent inside for loop -------->>>>>>>>', currEvent)
-
-        const numAttending = await Attendance.count({
+        const events = await Event.findAll({
             where: {
-              eventId: currEvent.id,
-              status: 'attending'
-            }
-          })
-          currEvent.numAttending = numAttending
+                [Op.or]: [
+                    { name: { [Op.substring]: (`${query.toLowerCase()}`)}},
+                    { description: { [Op.substring]: (`${query.toLowerCase()}`)}}
+                ]
+            },
+            include: [
+                {
+                  model: Group,
+                  attributes: ['id', 'name', 'city', 'state']
+                }
+            ]
+        });
 
-          const eventImages = await EventImage.findAll({
-            where: {
-              eventId: currEvent.id,
-              preview: true
-            }
-          })
+        console.log('events in backend route =====>>>>>', events)
 
-          if (eventImages.length) {
-            let eventImage = eventImages[0].toJSON()
-            currEvent.previewImage = eventImage.url
+        for (let i = 0; i < groups.length; i++) {
+            let currGroup = groups[i].toJSON()
 
-          } else {
-            currEvent.previewImage = 'no preview image available'
-          }
+              console.log('currGroup inside for loop -------->>>>>>>>', currGroup)
+              const groupImages = await GroupImage.findAll({
+                where: {
+                  groupId: currGroup.id,
+                  preview: true
+                }
+              })
 
-        searchResults.push(currEvent)
-    }
+              if (groupImages.length) {
+                let groupImage = groupImages[0].toJSON()
 
-    finalObj.searchResults = searchResults
-    console.log('finalObj in backend route =====>>>>>', finalObj)
-    res.status(200).json(finalObj)
+                  currGroup.previewImage = groupImage.url
+
+              } else {
+                currGroup.previewImage = 'no preview image available'
+              }
+
+            searchResults.push(currGroup)
+        }
+
+        for (let i = 0; i < events.length; i++) {
+            let currEvent = events[i].toJSON()
+            console.log('currEvent inside for loop -------->>>>>>>>', currEvent)
+
+              const eventImages = await EventImage.findAll({
+                where: {
+                  eventId: currEvent.id,
+                  preview: true
+                }
+              })
+
+              if (eventImages.length) {
+                let eventImage = eventImages[0].toJSON()
+                currEvent.previewImage = eventImage.url
+              } else {
+                currEvent.previewImage = 'no preview image available'
+              }
+
+            searchResults.push(currEvent)
+        }
+
+        finalObj.searchResults = searchResults
+        console.log('finalObj in backend route =====>>>>>', finalObj)
+        res.status(200).json(finalObj)
+      }
   })
 
 module.exports = router;
