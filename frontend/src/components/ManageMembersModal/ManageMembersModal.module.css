@@ -1,9 +1,13 @@
 .edit-membership-button {
     border: none;
     background-color: transparent;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
     color: green
+}
+
+.edit-membership-button-container {
+    display: flex;
 }
 
 .edit-membership-button:hover {
@@ -14,28 +18,30 @@
 .delete-membership-button {
     border: none;
     background-color: transparent;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
     color: red
 }
 
 .delete-membership-button:hover {
     cursor: pointer;
-    background-color: rgb(232, 149, 149)
+    background-color: rgb(235, 194, 194)
 }
 
 .member-container {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* justify-content: space-between; */
     column-gap: 10px;
     margin: 0 5px;
+    width: 500px;
     border-bottom: 1px solid lightblue
 }
 
 .member-name {
     padding: 3px;
     word-break: break-all;
-    width: fit-content
+    /* width: fit-content */
 }
 
 .member-status {
@@ -44,13 +50,15 @@
 }
 
 .modal-container {
-    width: 300px;
+    width: 500px;
     margin: 5px;
 }
 
-.status-button-container {
+.button-container {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
+    margin-right: 5px;
 }
 
 .no-members {

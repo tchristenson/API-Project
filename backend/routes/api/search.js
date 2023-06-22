@@ -5,6 +5,7 @@ const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth')
 const { Attendance, EventImage, Event, Group, Membership, GroupImage } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
+const { sequelize } = require('../../db/models/index.js');
 
 
 const router = express.Router();
@@ -18,10 +19,10 @@ router.post('/', async (req, res, next) => {
     const groups = await Group.findAll({
         where: {
             [Op.or]: [
-                { name: { [Op.like]: `%${query.toLowerCase()}%`}},
-                { about: { [Op.like]: `%${query.toLowerCase()}%`}},
-                { city: { [Op.like]: `%${query.toLowerCase()}%`}},
-                { state: { [Op.like]: `%${query.toLowerCase()}%`}}
+                { name: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}},
+                { about: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}},
+                { city: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}},
+                { state: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}}
             ]
         },
         include: {
@@ -37,8 +38,8 @@ router.post('/', async (req, res, next) => {
     const events = await Event.findAll({
         where: {
             [Op.or]: [
-                { name: { [Op.like]: `%${query.toLowerCase()}%`}},
-                { description: { [Op.like]: `%${query.toLowerCase()}%`}}
+                { name: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}},
+                { description: { [Op.like]: sequelize.literal(`\'%${query.toLowerCase()}%\'`)}}
             ]
         },
         include: [

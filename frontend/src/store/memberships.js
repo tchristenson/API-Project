@@ -6,10 +6,10 @@ const DELETE_MEMBERSHIP = 'memberships/deleteMembership'
 const GET_MEMBERS_BY_GROUP = 'memberships/getMembersByGroup'
 const CHANGE_MEMBER_STATUS = 'memberships/changeMemberStatus'
 
-const requestMembershipAction = (membershipStatus) => {
+const requestMembershipAction = (member) => {
     return {
         type: REQUEST_MEMBERSHIP,
-        membershipStatus
+        member
     }
 }
 
@@ -43,10 +43,10 @@ export const requestMembershipThunk = (groupId) => async (dispatch) => {
         }
     })
     if (response.ok) {
-        const membershipStatus = await response.json()
-        console.log('membershipStatus response from backend', membershipStatus)
-        dispatch(requestMembershipAction(membershipStatus))
-        return membershipStatus
+        const member = await response.json()
+        console.log('member response from backend', member)
+        dispatch(requestMembershipAction(member))
+        return member
     }
 }
 
@@ -96,8 +96,8 @@ const membershipReducer = (state = {}, action) => {
     switch (action.type) {
         case REQUEST_MEMBERSHIP:
             newState = {...state}
-            console.log('action.membershipStatus inside reducer', action.membershipStatus)
-            newState[action.membershipStatus.id] = action.membershipStatus
+            console.log('action.member inside reducer', action.member)
+            newState[action.member.id] = action.member
             return newState
         case DELETE_MEMBERSHIP:
             const updatedMembers = action.members.Members.reduce((acc, member) => {

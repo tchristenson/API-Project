@@ -13,6 +13,11 @@
   padding-bottom: 5px;
 }
 
+.file-upload.button input {
+    border: none;
+    background-color: transparent;
+}
+
 
 .header-container h4 {
   color: teal;

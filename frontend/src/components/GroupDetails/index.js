@@ -8,6 +8,7 @@ import DeleteGroupModal from "../GroupDeleteModal"
 import OpenModalButton from "../OpenModalButton";
 import { dateTimeFix } from "../Events"
 import ManageMembersModal from "../ManageMembersModal"
+import DeleteMembershipModal from "../DeleteMembershipModal"
 
 function GroupDetails() {
   const dispatch = useDispatch()
@@ -35,14 +36,14 @@ const handleMembership = () => {
     }
   }
 
-  console.log('group ------>', group)
-  console.log('memberships ------>', memberships)
+//   console.log('group ------>', group)
+//   console.log('memberships ------>', memberships)
   const membershipsArr = Object.values(memberships)
-  console.log('membershipsArr ------>', membershipsArr)
+//   console.log('membershipsArr ------>', membershipsArr)
 
   const membershipRequested = membershipsArr.filter(membership => membership.memberId === currUser.id)
-  console.log('membershipRequested ------>', membershipRequested)
-  console.log('membershipRequested[0] ------>', membershipRequested[0])
+//   console.log('membershipRequested ------>', membershipRequested)
+//   console.log('membershipRequested[0] ------>', membershipRequested[0])
 
 
   if (!group || !group.Organizer ) return null
@@ -137,14 +138,24 @@ const handleMembership = () => {
           </div>
 
           <div className="group-buttons">
-            {currUser && currUser.id !== organizerId && !membershipRequested.length && (
+            {currUser && currUser.id !== organizerId && membershipRequested.length === 0 && (
               <button className="join-group-button-in-group-details" onClick={handleMembership}>Join this group</button>
             )}
-            {currUser && currUser.id !== organizerId && membershipRequested.length && (membershipRequested[0]).Membership && ((membershipRequested[0]).Membership).status === 'pending' && (
-              <button className="membership-requested-button-in-group-details" onClick={handleMembership}>Membership requested</button>
+            {currUser && currUser.id !== organizerId && membershipRequested.length !== 0 && (membershipRequested[0]).Membership && ((membershipRequested[0]).Membership).status === 'pending' && (
+                <OpenModalButton
+                buttonText="Membership requested"
+                className="membership-requested-button-in-group-details"
+                modalComponent={<DeleteMembershipModal groupId={groupId} membershipRequested={membershipRequested}/>}
+            />
+            //   <button className="membership-requested-button-in-group-details" onClick={handleMembership}>Membership requested</button>
             )}
-            {currUser && currUser.id !== organizerId && membershipRequested.length && (membershipRequested[0]).Membership && (((membershipRequested[0]).Membership).status === 'member' || ((membershipRequested[0]).Membership).status === 'co-host')  && (
-              <button id="current-member-button-in-group-details" onClick={handleMembership}>Current Member</button>
+            {currUser && currUser.id !== organizerId && membershipRequested.length !== 0 && (membershipRequested[0]).Membership && (((membershipRequested[0]).Membership).status === 'member' || ((membershipRequested[0]).Membership).status === 'co-host')  && (
+                <OpenModalButton
+                buttonText="Current Member"
+                id="current-member-button-in-group-details"
+                modalComponent={<DeleteMembershipModal groupId={groupId} membershipRequested={membershipRequested}/>}
+            />
+            //   <button id="current-member-button-in-group-details" onClick={handleMembership}>Current Member</button>
             )}
             {currUser && currUser.id === organizerId && (
               <>

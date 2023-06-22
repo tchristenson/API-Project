@@ -771,18 +771,28 @@ router.post('/:groupId/membership', requireAuth, async (req, res, next) => {
   })
 
   if (!currMemberCheck) {
-    let pendingMember = await Membership.create({
+    await Membership.create({
       userId: req.user.id,
       groupId: req.params.groupId,
       status: 'pending'
     })
 
-    pendingMember = pendingMember.toJSON()
-    delete pendingMember.updatedAt
-    delete pendingMember.createdAt
-    pendingMember.memberId = pendingMember.userId
+    let newMember = await User.findByPk(req.user.id, {
+        include: {
+          model: Membership,
+          where: {
+            groupId: req.params.groupId,
+          }
+        }
+      })
 
-    res.status(200).json(pendingMember);
+    newMember = newMember.toJSON()
+
+    newMember.memberId = req.user.id
+    newMember.Membership = newMember.Memberships[0]
+    delete newMember.Memberships
+
+    res.status(200).json(newMember);
   }
 
   else if (currMemberCheck.status === 'pending') {
