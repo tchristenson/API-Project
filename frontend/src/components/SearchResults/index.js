@@ -66,11 +66,11 @@ function SearchResults() {
 
     ))
 
-    console.log('groups', groups)
-    console.log('events', events)
+    // console.log('groups', groups)
+    // console.log('events', events)
 
     return (
-        <div>
+        <div className="search-results-container">
             <h2>Your search results:</h2>
             <h3>Groups:</h3>
             <div>{groupsList.length ? (

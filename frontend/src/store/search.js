@@ -49,11 +49,11 @@ const searchReducer = (state = {}, action) => {
         case SEARCH_GROUPS_EVENTS:
             newState = {...state}
             let id = 1;
-            console.log('action.payload inside reducer', action.payload)
+            // console.log('action.payload inside reducer', action.payload)
             action.payload.searchResults.forEach(item => {
               newState[id] = item;
               id += 1;
-              console.log('newState inside for loop --->', newState)
+            //   console.log('newState inside for loop --->', newState)
             });
             return newState
         case CLEAR_SEARCH_RESULTS:
