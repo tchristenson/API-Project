@@ -137,6 +137,9 @@ router.get('/', queryValidator, async (req, res, next) => {
       {
         model: Venue,
         attributes: ['id', 'city', 'state', 'address']
+      },
+      {
+        model: EventImage,
       }
     ],
     limit: pagination.limit,

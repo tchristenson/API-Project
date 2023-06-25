@@ -109,12 +109,15 @@ const validateVenueBody = [
 // Consider putting mechanics into a single function if there is time later
 router.get('/', async (req, res, next) => {
   const groups = await Group.findAll({
-    include: {
+    include: [{
       model: Event,
       attributes: {
         exclude: ['createdAt', 'updatedAt']
       }
-    }
+    },
+    {
+        model: GroupImage,
+      }]
   });
 
   let groupsArr = [];
@@ -181,7 +184,13 @@ router.get('/current', requireAuth, async (req, res, next) => {
             attributes: []
           }
         ]
-      }
+      },
+      {
+        model: GroupImage,
+        attributes: {
+          exclude: ['createdAt', 'updatedAt', 'groupId']
+        }
+      },
     ]
 
   })

@@ -75,7 +75,7 @@ function Events() {
       <div className="single-event">
         <div className="image-event-wrapper">
           <div className="event-image">
-           <img src={event.previewImage} alt="Group Image" />
+           <img src={(event.EventImages[event.EventImages.length - 1]).url} alt="Event Image" />
           </div>
           <div className="event-info">
             <div className="date-time-wrapper">

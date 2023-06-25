@@ -41,7 +41,7 @@ const handleMembership = () => {
   const membershipsArr = Object.values(memberships)
 //   console.log('membershipsArr ------>', membershipsArr)
 
-  const membershipRequested = membershipsArr.filter(membership => membership.memberId === currUser.id)
+  const membershipRequested = membershipsArr?.filter(membership => membership.memberId === currUser.id)
 //   console.log('membershipRequested ------>', membershipRequested)
 //   console.log('membershipRequested[0] ------>', membershipRequested[0])
 
@@ -60,7 +60,7 @@ const handleMembership = () => {
         <div className="event-container">
             <div className="image-and-details">
               <div className="event-image-in-group-detail" key={event.id}>
-                <img src={event?.EventImages[0]?.url} alt="event image"/>
+                <img src={(event?.EventImages[event.EventImages.length - 1])?.url} alt="event image"/>
                 {/* {event.EventImages.length && (<img src={event.EventImages[0].url} alt="event image"/>)} */}
 
               </div>
@@ -87,7 +87,7 @@ const handleMembership = () => {
         <div className="event-container">
             <div className="image-and-details">
               <div className="event-image-in-group-detail" key={event.id}>
-                <img src={event.EventImages[0].url} alt="event image"/>
+                <img src={(event?.EventImages[event.EventImages.length - 1])?.url} alt="event image"/>
               </div>
               <div className="event-info">
                 <div className="date-time-wrapper">

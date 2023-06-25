@@ -34,12 +34,14 @@
 
 .event-image-in-group-detail {
   padding-right: 25px;
+  width: 210px;
+  height: 210px
 }
 
 .event-image-in-group-detail img {
     object-fit: cover;
-    width: 300px;
-    height: 300px
+    /* width: 300px;
+    height: 300px */
   }
 
 .group-buttons {
@@ -182,8 +184,10 @@
 }
 
 .upcoming-event-wrapper img {
-  max-width: 70%;
-  height: auto;
+    width: 210px;
+    height: 210px;
+    /* max-height: 210px; */
+    /* height: auto; */
 }
 
 .past-event-wrapper {
@@ -224,6 +228,6 @@
 }
 
 .past-event-wrapper img {
-  max-width: 70%;
+  max-width: 210px;
   height: auto;
 }
