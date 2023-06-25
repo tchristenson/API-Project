@@ -1,4 +1,5 @@
 .search-results-container {
+    max-width: 1024px;
     /* display: flex; */
     /* justify-content: center; */
     margin: 0 auto;

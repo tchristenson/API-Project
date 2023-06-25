@@ -70,7 +70,7 @@ function SearchResults() {
     // console.log('events', events)
 
     return (
-        <div className="search-results-container">
+        <div className={styles["search-results-container"]}>
             <h2>Your search results:</h2>
             <h3>Groups:</h3>
             <div>{groupsList.length ? (
