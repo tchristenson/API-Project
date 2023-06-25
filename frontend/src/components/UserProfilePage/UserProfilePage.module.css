@@ -3,6 +3,13 @@
     width: 150px;
 }
 
+.profile-page-container {
+    max-width: 1024px;
+    /* display: flex; */
+    /* justify-content: center; */
+    margin: 0 auto;
+}
+
 .profile-single-group {
     display: flex;
     column-gap: 10px;
