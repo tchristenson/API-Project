@@ -43,7 +43,7 @@ function EventDetails() {
         <NavLink className="nav-link" to={`/groups/${event.Group.id}`}>
           <div className="group-image-detail">
             <div className="group-image-inside-event-details">
-              <img src={event.Group.GroupImages[0].url} alt="Group Image" />
+              <img src={event.Group.GroupImages[event.Group.GroupImages.length - 1].url} alt="Group Image" />
             </div>
             <div className="group-detail-container">
               <div>{event.Group.name}</div>
