@@ -23,7 +23,7 @@ function SearchResults() {
         <NavLink className="nav-link" to={`/groups/${group.id}`}>
         <div key={group.id} className="single-group">
           <div className="group-image">
-            <img src={group.previewImage} alt="Group Image" />
+            <img src={(group.GroupImages[group.GroupImages.length - 1]).url} alt="Group Image" />
           </div>
           <div className="group-info">
             <div className="group-name"><h3>{group.name}</h3></div>
@@ -48,7 +48,7 @@ function SearchResults() {
         <div key={event.id} className="single-event">
           <div className="image-event-wrapper">
             <div className="event-image">
-             <img src={event.previewImage} alt="Group Image" />
+             <img src={(event.EventImages[event.EventImages.length - 1]).url} alt="Event Image" />
             </div>
             <div className="event-info">
               <div className="date-time-wrapper">

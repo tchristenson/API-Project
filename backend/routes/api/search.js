@@ -27,12 +27,18 @@ router.post('/', async (req, res, next) => {
                     { state: { [Op.iLike]: (`%${query.toLowerCase()}%`)}}
                 ]
             },
-            include: {
+            include: [{
                 model: Event,
                 attributes: {
                 exclude: ['createdAt', 'updatedAt']
                 }
-            }
+            },
+            {
+                model: GroupImage,
+                attributes: {
+                  exclude: ['createdAt', 'updatedAt', 'groupId']
+                }
+              }],
         });
         console.log('groups in backend route =====>>>>>', groups)
 
@@ -47,7 +53,10 @@ router.post('/', async (req, res, next) => {
                 {
                   model: Group,
                   attributes: ['id', 'name', 'city', 'state']
-                }
+                },
+                {
+                    model: EventImage
+                  },
             ]
         });
 
@@ -112,12 +121,18 @@ router.post('/', async (req, res, next) => {
                     { state: { [Op.substring]: (`${query.toLowerCase()}`)}}
                 ]
             },
-            include: {
+            include: [{
                 model: Event,
                 attributes: {
                 exclude: ['createdAt', 'updatedAt']
                 }
-            }
+            },
+            {
+                model: GroupImage,
+                attributes: {
+                  exclude: ['createdAt', 'updatedAt', 'groupId']
+                }
+              }],
         });
         console.log('groups in backend route =====>>>>>', groups)
 
@@ -132,7 +147,10 @@ router.post('/', async (req, res, next) => {
                 {
                   model: Group,
                   attributes: ['id', 'name', 'city', 'state']
-                }
+                },
+                {
+                    model: EventImage
+                  },
             ]
         });
 
