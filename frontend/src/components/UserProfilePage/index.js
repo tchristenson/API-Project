@@ -46,7 +46,7 @@ function UserProfilePage() {
         <NavLink key={group.id} className="nav-link" to={`/groups/${group.id}`}>
           <div className={styles["profile-single-group"]}>
             <div className={styles["profile-group-image-container"]}>
-              <img className={styles["profile-group-image"]} src={group.previewImage} alt="Group Image" />
+              <img className={styles["profile-group-image"]} src={(group.GroupImages[group.GroupImages.length - 1]).url} alt="Group Image" />
             </div>
             <div className={styles["profile-group-info"]}>
               <h3>{group.name}</h3>
@@ -61,7 +61,7 @@ function UserProfilePage() {
     <NavLink key={group.id} className="nav-link" to={`/groups/${group.id}`}>
         <div className={styles["profile-single-group"]}>
         <div className={styles["profile-group-image-container"]}>
-            <img className={styles["profile-group-image"]} src={group.previewImage} alt="Group Image" />
+            <img className={styles["profile-group-image"]} src={(group.GroupImages[group.GroupImages.length - 1]).url} alt="Group Image" />
         </div>
         <div className={styles["profile-group-info"]}>
             <h3>{group.name}</h3>
@@ -76,7 +76,7 @@ function UserProfilePage() {
     <NavLink key={group.id} className="nav-link" to={`/groups/${group.id}`}>
         <div className={styles["profile-single-group"]}>
         <div className={styles["profile-group-image-container"]}>
-            <img className={styles["profile-group-image"]} src={group.previewImage} alt="Group Image" />
+            <img className={styles["profile-group-image"]} src={(group.GroupImages[group.GroupImages.length - 1]).url} alt="Group Image" />
         </div>
         <div className={styles["profile-group-info"]}>
             <h3>{group.name}</h3>

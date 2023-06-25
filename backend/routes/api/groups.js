@@ -181,7 +181,13 @@ router.get('/current', requireAuth, async (req, res, next) => {
             attributes: []
           }
         ]
-      }
+      },
+      {
+        model: GroupImage,
+        attributes: {
+          exclude: ['createdAt', 'updatedAt', 'groupId']
+        }
+      },
     ]
 
   })
