@@ -827,14 +827,6 @@ router.put('/:groupId/members/:memberId', requireAuth, async (req, res, next) =>
 
   const { memberId, status } = req.body
 
-//   if (status === 'pending') {
-//     let newErr = new Error()
-//     newErr.message = "Cannot change a membership status to pending"
-//     newErr.status = 400;
-
-//     next(newErr);
-//   }
-
   const user = await User.findByPk(memberId)
 
   if (!user) {
@@ -862,7 +854,6 @@ router.put('/:groupId/members/:memberId', requireAuth, async (req, res, next) =>
       userId: memberId
     }
   })
-  // console.log(member.toJSON());
 
   if (!member) {
     let newErr = new Error()
